@@ -1,0 +1,367 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{dsfont}
+\usepackage[]{geometry}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage[utf8]{inputenc}
+
+\newtheorem{theorem}[equation]{Theorem}
+\newtheorem{assumption}[equation]{Assumption}
+\newtheorem{corollary}[equation]{Corollary}
+\newtheorem{conjecture}[equation]{Conjecture}
+\newtheorem{lemma}[equation]{Lemma}
+\newtheorem{proposition}[equation]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[equation]{Definition}
+
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\E}{\mathbb{E}}
+% \newcommand{\I}{1\!\!\!\;\mathrm{I}}
+\newcommand{\I}{\mathds{1}}
+\newcommand{\N}{\mathbb{N}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\V}{\mathbb{V}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\newcommand{\ind}{\perp\mkern-10mu\perp}
+
+\renewcommand{\geq}{\geqslant}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+\renewcommand{\le}{\leqslant}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{.6em}
+\renewcommand{\baselinestretch}{1.15}
+
+\usepackage{setspace}
+
+\usepackage{embedall}
+
+\begin{document}
+
+\title{Simple Random Walk on $\Z^d$}
+\author{Leonardo T. Rolla}
+\maketitle
+
+{\let\thefootnote\relax
+\footnotetext{\copyright 2017-\the\year\ Leonardo T. Rolla
+\href{http://creativecommons.org/licenses/by-sa/3.0/}
+{\includegraphics[height=1.0em]{by-sa.pdf}}. This typeset file has the source code embedded in it. If you re-use part of this code, you are kindly requested --if possible-- to convey the source code along with or embedded in the typeset file, and to keep this request.}}
+
+\begin{abstract}
+We show that simple symmetric random walk is recurrent for $d\le 2$ and transient for $d>2$.
+\end{abstract}
+
+
+\section*{Setup}
+
+$\Z^d$ is the set of vectors in $\R^d$ with integer coordinates. Each site $x\in \Z^d$ has $2d$ neighbors, $x\pm e_j$, $j=1,\dots,d$, where $e_1=(1,0,0,\dots,0)$, $e_2=(0,1,0,\dots,0)$, etc.
+
+Consider an i.i.d.\ sequence $X_n$ in $\Z^d$ distributed as
+\[
+P(X_n = e_j) = P(X_n = -e_j) = \tfrac{1}{2d}, \quad j=1,\dots,d.
+\]
+The \emph{simple symmetric random walk on $\Z^d$} is defined by
+\[
+S_0 = 0, \quad S_n = S_{n-1} + X_n.
+\]
+
+\begin{theorem}
+\begin{singlespace}
+\[
+P(S_n = 0 \text{ i.o.}) =
+\begin{cases}
+1, & d \leq 2, \\
+0, & d > 2.
+\end{cases}
+\]
+\end{singlespace}
+\end{theorem}
+
+
+\section{Idea of the proof}
+
+Write $Z_n = \I_{S_n=0}$, and let $R=\sum_{n=1}^{\infty} Z_n$ count the number of returns to the origin.
+Then
+\[
+ER = \sum_{n=1}^{\infty} P(S_n=0)
+.
+\]
+
+For $d=1$, using Stirling's formula we have, for a positive constant $c$,
+\[
+P(S_n=0) = \binom{n}{n/2} 2^{-n} \asymp c n^{-1/2}
+\]
+if $n$ is even, and $P(S_n=0) = 0$ if $n$ is odd.
+For $d=2$, in the first $n$ steps, about $\frac{n}{2}$ are horizontal and $\frac{n}{2}$ are vertical.
+Moreover, if we know how many steps were made in each direction, their signs are independent, so it is plausible that
+\[
+P(S_n=0) \asymp \tfrac{1}{2} \ c^2 \  (\tfrac{n}{2})^{-1}
+\]
+for $n$ even (the extra $\frac{1}{2}$ is related to whether the number of horizontal and vertical jumps are both even or both odd).
+In both $d=1$ and $d=2$, $ER = \infty$.
+
+For $d=3$, in the first $n$ steps, about $\frac{n}{3}$ are in the $x$-direction $\frac{n}{3}$ are in the $y$-direction, and $\frac{n}{3}$ are in the $z$-direction.
+Again it is plausible that
+\[
+P(S_n=0|\text{parity}) \asymp c^3 (\tfrac{n}{3})^{-3/2}
+\]
+or $0$ depending on parity.
+This in turn implies that $ER<\infty$, which certainly implies that $R<\infty$ a.s.
+The same reasoning also works for $d=4,5,6,\dots$.
+
+There are two steps that require careful justification: for $d \le 2$, why $ER=\infty$ implies
+$P(R=\infty)=1$; for $d>2$, formalize the idea that about $\frac{n}{d}$ steps are made in each direction (while the sign of the steps remain independent).
+
+\section{Proof of transience}
+
+We consider $d=3$. Higher dimensions are treated analogously.
+
+Let $J_n \in \{1,2,3\}$ denote the direction of $X_n$, that is, $J_n=1$ if $X_n = \pm e_1$, $J_n=2$ if $X_n = \pm e_2$, and $J_n=3$ if $X_n = \pm e_3$, .
+Take $Y_n = +1$ or $-1$ according to whether $X_n = + e_{J_n}$ or $-e_{J_n}$.
+Then $Y_n$ is independent of $J_n$, and they are distributed as discrete uniforms on $\{-1,+1\}$ and $\{1,2,3\}$, respectively.
+
+For $n\in\N$ fixed, let $N_1 = \sum_{k=1}^n \I_{J_k=1}$ count the number of steps given in the $x$-direction.
+Analogously for $N_2 = \sum_{k=1}^n \I_{J_k=2}$ and $N_3 = \sum_{k=1}^n \I_{J_k=3}$.
+
+Given that $N_1=n_1$, $N_2=n_2$ and $N_3=n_3$, the conditional probability of $S_n=0$ is given by
+\[
+P\big(S_n=0\big|(N_1,N_2,N_3)=(n_1,n_2,n_3)\big) =
+\textstyle
+\binom{n_1}{n_1/2} 2^{-n_1}
+\binom{n_2}{n_2/2} 2^{-n_2}
+\binom{n_3}{n_3/2} 2^{-n_3}
+\asymp
+\frac{c^3}{\sqrt{n_1 n_2 n_3}}
+\]
+if $n_1$, $n_2$, $n_3$ are all even, and $0$ if some of them is odd.
+
+Therefore,
+\begin{align*}
+P(S_n=0)
+& \asymp
+\sum_{\stackrel{n_1,n_2,n_3}{\text{all even}}}
+\frac{c^3}{\sqrt{n_1 n_2 n_3}}
+\cdot
+P\big((N_1,N_2,N_3)=(n_1,n_2,n_3)\big)
+\\
+& \le
+\sum_{\stackrel{n_1,n_2,n_3} {\text{ all greater than }\frac{n}{4}}}
+\frac{c^3}{\sqrt{n_1 n_2 n_3}}
+\cdot
+P\big((N_1,N_2,N_3)=(n_1,n_2,n_3)\big)
++
+\\
+& \qquad
++
+\sum_{\stackrel{n_1,n_2,n_3} {\text{ some smaller than }\frac{n}{4}}}
+\frac{c^3}{\sqrt{n_1 n_2 n_3}}
+\cdot
+P\big((N_1,N_2,N_3)=(n_1,n_2,n_3)\big)
+\\
+& \leq
+\frac{c^3}{(\frac{n}{4})^{3/2}}
+\sum_{\stackrel{n_1,n_2,n_3} {\text{ all greater than }\frac{n}{4}}}
+P\big((N_1,N_2,N_3)=(n_1,n_2,n_3)\big)
++
+\\
+& \qquad +
+\sum_{\stackrel{n_1,n_2,n_3} {\text{ some smaller than }\frac{n}{4}}}
+P\big((N_1,N_2,N_3)=(n_1,n_2,n_3)\big)
+\\
+& =
+\frac{8c^3}{n^{3/2}}
+P(\text{all } N_1,N_2,N_3 \text{ are greater than }\tfrac{n}{4})
++
+\\
+& \qquad \qquad +
+P(\text{some of } N_1, N_2,  N_3 \text{ is smaller than }\tfrac{n}{4})
+\\
+& \leq
+\frac{8c^3}{n^{3/2}}
++
+3 \cdot \frac{E(N_1-\frac{n}{3})^4}{(\tfrac{n}{12})^4}
+\\
+& \leq
+(8c^3) n^{-3/2} + (3 \cdot 3 \cdot 12^4) n^{-2}
+.
+\end{align*}
+In the last inequality we used the same estimate as in the proof of Cantelli's Law of Large Numbers, where the centered fourth moment of an i.i.d.\ sum is less than $3n^2$ times the centered fourth moment of each variable.
+
+From the above estimate, we see that $P(S_n=0)$ is summable over $n$, thus $R$ is integrable, and therefore finite almost surely.
+This concludes the proof that the simple symmetric random walk in dimension $3$ is a.s.\ transient.
+
+\section{Proof of recurrence}
+
+
+\begin{lemma}
+For every $k\in\N$,
+\(
+P(R \ge k) = P(R \geq 1)^k
+\)
+\end{lemma}
+\begin{proof}
+When the event ``$R\geq k$'' occurs, define $T_1<\dots<T_k$ as the first $k$ times that the walk returns, that is
+\[
+S_0=S_{T_1}=\cdots=S_{T_k}=0,
+\quad
+S_n \ne 0 \text{ for } T_{j} < n < T_{j+1}
+.
+\]
+Then
+\[
+P(R \geq k)
+=
+\sum_{t_1<t_2<\dots<t_k}
+P(T_1=t_1,T_2=t_2,\dots, T_k=t_k)
+.
+\]
+For the latter probability, notice that every possible path until time $t_k$ has the same probability $\frac{1}{(2d)^{t_k}}$.
+Therefore,
+\[
+\frac{\#\{(x_1,\dots,x_{t_k}) : s_{t_1}=\dots=s_{t_k}=0, s_n\ne 0 \text{ for } t_j<n<t_{j+1}\}}
+{(2d)^{t_k}}
+=
+\frac{\# A_{t_1,\dots,t_k}}{(2d)^{t_k}}
+,
+\]
+where, given a deterministic string $x_1,\dots,x_{t_k}$, we denote the corresponding path by $s_n=x_1+\dots+x_n$.
+
+The main observation is that the strings in the above set can be obtained by the concatenation of substrings corresponding to each return time.
+More precisely, writing
+\[
+A_t = \{(x_1,\dots,x_t):s_t=0, s_n \ne 0 \text{ for } 0<n<t\}
+,
+\]
+we have
+\[
+\# A_{t_1,\dots,t_k} = \# A_{t_1} \times \# A_{t_2-t_1} \times \# A_{t_3-t_2} \dots \times \# A_{t_k-t_{k-1}}
+.
+\]
+To conclude, we write
+\begin{align*}
+P(R \geq k)
+& =
+\sum_{r_1,r_2,\dots,r_k>0}
+P(T_1=r_1,T_2=r_1+r_2,\dots, T_k=r_1+r_2+\dots+r_k)
+\\
+& =
+\sum_{r_1,r_2,\dots,r_k>0}
+\frac{\# A_{r_1,r_1+r_2,\dots,r_1+r_2+\dots+r_k}}{(2d)^{r_1+r_2+\dots+r_k}}
+\\
+& =
+\sum_{r_1,r_2,\dots,r_k>0}
+\frac{\# A_{r_1}}{(2d)^{r_1}}
+\cdot
+\frac{\# A_{r_2}}{(2d)^{r_2}}
+\cdots
+\frac{\# A_{r_k}}{(2d)^{r_k}}
+\\
+& =
+\sum_{r_1>0}
+\frac{\# A_{r_1}}{(2d)^{r_1}}
+\cdot
+\sum_{r_2>0}
+\frac{\# A_{r_2}}{(2d)^{r_2}}
+\times
+\cdots
+\times
+\sum_{r_k>0}
+\frac{\# A_{r_k}}{(2d)^{r_k}}
+\\
+& =
+P(R \geq 1)^k
+.
+\qedhere
+\end{align*}
+
+
+\end{proof}
+
+\begin{corollary}
+\begin{singlespace}
+\(
+P(R=\infty) =
+\begin{cases}
+1, & \sum_n P(S_n=0) = \infty
+,\\
+0, & \sum_n P(S_n=0) < \infty
+.
+\end{cases}
+\)
+\end{singlespace}
+\end{corollary}
+\begin{proof}
+Let $\rho=P(R \geq 1)$. There are only two possibilities:
+
+If $\rho=1$, then $P(R \geq k)=1$ for every $k$, so $P(R=\infty)=1$, and $ER=\infty$.
+
+If $\rho<1$, then $P(R \geq k) = \rho^k \to 0$ as $k\to\infty$, so $P(R=\infty)=0$ and $ER = \sum_{n=1}^\infty P(R \geq n) = \sum_{n=1}^\infty \rho^n = \frac{\rho}{1-\rho} < \infty$. 
+
+Recalling that that
+\(
+ER = \sum_n P(S_n=0)
+,
+\)
+this proves the corollary.
+\end{proof}
+
+We now prove recurrence for dimensions $d=1$ and $d=2$ by showing that $\sum_n P(S_n=0) = \infty$.
+For $d=1$, $P(S_n=0) \asymp c n^{-1/2}$ for even $n$, which is non-summable, concluding the proof.
+
+% Using the above corollary we finish the proof of recurrence in dimension $d=1$.
+
+For $d=2$, recall the definition of $N_1$ and $N_2$ from the beginning of the previous section. We claim that for $n$ even, $P(N_1,N_2 \text{ are both even})=\frac{1}{2}$.
+Indeed, consider the parity of the same counting at step $n-2$: if both are odd, then one step in each direction will make them even at step $n$; if both are even, then two steps in the same direction will keep them even at step $n$. These events occur with probability $\tfrac{1}{2}$ each, thus proving the claim.
+
+So for $n$ even we have
+\begin{align*}
+P(S_n=0)
+& \asymp
+\sum_{\stackrel{n_1,n_2}{\text{both even}}}
+\frac{c^2}{\sqrt{n_1 n_2}}
+\cdot
+P\big((N_1,N_2)=(n_1,n_2)\big)
+\\
+& \le
+\frac{c^2}{\sqrt{\frac{n}{2}\frac{n}{2}}}
+\sum_{\stackrel{n_1,n_2}{\text{both even}}}
+P\big((N_1,N_2)=(n_1,n_2)\big)
+\\
+& =
+\frac{c^2}{\sqrt{\frac{n}{2}\frac{n}{2}}}
+\
+P(N_1,N_2 \text{ are both even})
+\\
+& =
+{c^2} \, n^{-1}
+,
+\end{align*}
+which is non-summable, concluding the proof for $d=2$.
+
+% \begin{theorem}
+% For the random walk on $\Z^d$,
+% \[
+% P(\text{the origin is visited infinitely many times}) =
+% \begin{cases}
+% 0, & d \le 2 ,
+% \\
+% 1, & d > 2
+% .
+% \end{cases}
+% \]
+% \end{theorem}
+% \begin{proof}
+% missing
+% \end{proof}
+
+
+\end{document}

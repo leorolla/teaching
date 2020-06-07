@@ -1,0 +1,422 @@
+\documentclass[12pt]{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage[]{geometry}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage[utf8]{inputenc}
+
+\newtheorem{theorem}[equation]{Theorem}
+\newtheorem{assumption}[equation]{Assumption}
+\newtheorem{corollary}[equation]{Corollary}
+\newtheorem{conjecture}[equation]{Conjecture}
+\newtheorem{lemma}[equation]{Lemma}
+\newtheorem{proposition}[equation]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[equation]{Definition}
+
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\E}{\mathbb{E}}
+% \newcommand{\I}{1\!\!\!\;\mathrm{I}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\V}{\mathbb{V}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\renewcommand{\geq}{\geqslant}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+\renewcommand{\le}{\leqslant}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{.6em}
+\renewcommand{\baselinestretch}{1.15}
+
+\usepackage{embedall}
+
+\begin{document}
+
+\title{De Moivre - Laplace Theorem}
+\author{Leonardo T. Rolla}
+\maketitle
+
+{\let\thefootnote\relax
+\footnotetext{\copyright 2017-\the\year\ Leonardo T. Rolla
+\href{http://creativecommons.org/licenses/by-sa/3.0/}
+{\includegraphics[height=1.0em]{by-sa.pdf}}. This typeset file has the source code embedded in it. If you re-use part of this code, you are kindly requested --if possible-- to convey the source code along with or embedded in the typeset file, and to keep this request.}}
+
+\begin{theorem}
+[De~Moivre 1730, Laplace 1812]
+\label{thm:demoivrelaplace}
+Let $(X_{n})_{n}$ be i.i.d.\ random variables distributed as Bernoulli with parameter $p=1-q\in(0,1)$, and write $S_{n}=X_{1}+\dots+X_{n}$.
+The, for all $a<b$,
+\begin{equation*}
+P \left( a < \frac{S_{n}-np}{\sqrt{npq}} \leq b \right) \to \frac{1}{\sqrt{2\pi}} \int_a^b e^{-\frac{x^2}{2}} \, \dd x.
+\end{equation*}
+\end{theorem}
+
+\section*{Proof}
+
+The theorem was proved by De Moivre assuming that $ p = \frac {1} {2} $ and Laplace to $ 0 <p <1 $. In fact, it follows from a much finer approximation:
+\begin{equation}
+\label{eq:dmlapprox}
+\frac{n!}{k! \, (n-k)!} \ p^k \ q^{n-k}
+\asymp
+\frac{1}{\sqrt{2\pi npq}} e^{-\frac{x_k^2}{2}},
+\tag{$\ast$}
+\end{equation}
+where
+\[
+x_k = x_{n,k} = \frac{k-np}{\sqrt{npq}}
+\]
+and $ \asymp $ means that the ratio between both terms tends to 1 when $ n $ tends to infinity. The limit at~(\ref{eq:dmlapprox}) is uniform if restricted to $ | x_k | <M $ with any $ M <\infty $ fixed.
+
+This approximation is much finer because it says not only that the probability of fluctuation being within a certain range is well approximated by the normal but also that the probability function of each of the possible values within a fixed interval is well approximated by the Gaussian density.
+
+To understand where this approach comes from, we first need a more palpable expression for $ n! $. How likely are we to get exactly 60 if we toss a coin $ 120 $ times? The answer is easy:
+\[
+P(S_{120} = 60) = \frac{120!}{60! \, 60!} \times \frac{1}{2^{120}}.
+\]
+This expression is simple and mathematically perfect. But how much is this probability worth? More than $ 15 \% $? Less than $ 5 \% $? Between $ 5 \% $ and $ 10 \% $? A pocket calculator hangs when calculating $ 120! $. On a computer this calculation results in $ 0.07268...$. But what if it were $ 40,000 $ coin tosses? And if we were interested in calculating $P(S_{40.000} \leq 19.750)$, would we do a similar calculation $ 250 $ times to then add? The expressions with factorial are perfect for the combinatorial, but impractical to make estimates. Our help will be Stirling's formula:
+\[
+\bigg.
+n! \asymp n^n \, e^{-n} \, \sqrt{2\pi n}.
+\]
+The approximation of $ n! $ by the Stirling formula is very good even without taking large $ n$. It approximates $ 1! $ by 0.92, $ 2! $ by $ 1.92 $, $ 4! $ by $ 23.5 $, and from $ 9! =  362,880$, which is approximated by $ 359,537 $, the error is less Than $ 1 \% $. At first glance, $ n ^ n \, e^{- n} \, \sqrt {2 \pi n}$ does not seem any nicer than $ n! $. But let's see how that helps with the previous calculation. We have:
+\[
+\frac{(2k)!}{k!\, k!}\times \frac{1}{2^{2k}}
+\asymp
+\frac{(2k)^{2k} e^{-2k} \sqrt{4\pi k} }{(k^{k} e^{-k} \sqrt{2\pi k})^2} \times \frac{1}{2^{2k}}
+=
+\frac{1}{\sqrt{\pi k}}
+=_{|_{k=60}}
+0.0728...,
+\]
+which can be done even without calculator. More than this, we have just obtained the approximation~(\ref{eq:dmlapprox}) in the case $ p = q = \frac{1}{2} $ and $ x_k=0 $.
+
+Let's show~(\ref{eq:dmlapprox}) for $ | x_k | <M $ where $ M $ is fixed. Applying the Stirling's formula we obtain
+\[
+\frac{n!}{k! \, (n-k)!} \ p^k \ q^{n-k}
+\asymp
+\frac
+{n^n e^{-n} \sqrt{2\pi n}\, p^k \, q^{n-k}}
+{k^k e^{-k} \sqrt{2\pi k} (n-k)^{n-k} e^{k-n} \sqrt{2\pi(n-k)}}
+=
+\frac
+{( \frac{np}{k} )^k ( \frac{nq}{n-k} )^{n-k}}
+{\sqrt{2\pi k(n-k)/n}}
+.
+\]
+Note that for $ | x_k | <M $ we have
+\[
+k = np + \sqrt{npq} \, x_k \asymp np
+\qquad
+\mbox{ and }
+\qquad
+n-k = nq - \sqrt{npq} \, x_k \asymp nq
+,
+\]
+whence
+\[
+\frac{n!}{k! \, (n-k)!} \ p^k \ q^{n-k}
+\asymp
+\frac
+{\left( \dfrac{np}{k} \right)^k \left( \dfrac{nq}{n-k} \right)^{n-k}}
+{\sqrt{2\pi npq}}
+=
+\frac{f(n,k)}{\sqrt{2\pi npq}}
+.
+\]
+Let's study $ \log f (n, k) $. Rewriting every term we have
+\[
+\dfrac{np}{k} = 1 - \frac{\sqrt{npq}\, x_k}{k}
+\qquad
+\mbox{ and }
+\qquad
+\dfrac{nq}{n-k} = 1 + \frac{\sqrt{npq}\, x_k}{n-k}
+.
+\]
+Making the Taylor expansion of $ \log (1 + x) $ we have
+\[
+\log(1+x) = x - \frac{x^2}{2} + r(x)
+,
+\qquad
+\mbox{where } \frac{r(x)}{x^2} \to 0 \mbox{ as } x\to 0.
+\]
+Thus,
+\begin{multline*}
+\log f(n,k) =
+k \left( - \frac{\sqrt{npq}\, x_k}{k} - \frac{npq x_k^2}{2k^2} + r( \tfrac{\sqrt{npq}\, x_k}{k}) \right)
++
+\\
++ (n-k) \left( \frac{\sqrt{npq}\, x_k}{n-k} - \frac{{npq} x_k^2}{2(n-k)^2} + r(\tfrac{\sqrt{npq}\, x_k}{n-k}) \right).
+\end{multline*}
+Notice that the first terms are canceled, and as $n\to\infty$,
+\[
+\log f(n,k)
+\asymp
+- \frac{npq x_k^2}{2k} - \frac{{npq} x_k^2}{2(n-k)}
+=
+- \frac{n^2pqx_k^2}{2k(n-k)}
+\asymp
+- \frac{n^2pqx_k^2}{2npnq}
+=
+- \frac{x_k^2}{2}
+,
+\]
+from which we get
+\[
+f(n,k) \asymp e^{-\frac{x_k^2}{2}}
+\]
+uniformly for $ | x_k | <M $, concluding the proof of~(\ref{eq:dmlapprox}).
+
+Summing up on the possible values of $ S_n $ we have
+\[
+P \left( a < \tfrac{S_{n}-np}{\sqrt{npq}} \leq b \right)
+=
+\sum_{a<x_k\leq b} P(S_n = k)
+=
+\sum_{a<x_k\leq b} \frac{n!}{k! \, (n-k)!} \, p^k \, q^{n-k}
+,
+\]
+Where the sums are about $ k $ with the condition on $ x_k $, which is given by $ x_k = \frac {k-np} {\sqrt {npq}} $. Noting that
+\[
+x_{k+1}-x_k = \frac{1}{\sqrt{npq}}
+,
+\]
+and substituting~(\ref{eq:dmlapprox}), we get
+\[
+P \left( a < \tfrac{S_{n}-np}{\sqrt{npq}} \leq b \right)
+\asymp
+\sum_{a<x_k\leq b} \frac{e^{-\frac{x_k^2}{2}}}{\sqrt{2\pi npq}}
+=
+\frac{1}{\sqrt{2\pi}} \sum_{a<x_k\leq b} e^{-\frac{x_k^2}{2}} \cdot [x_{k+1}-x_k]
+.
+\]
+Finally, we observe that the summation above is a Riemann sum that approaches the integral $\frac{1}{\sqrt{2\pi}} \int_a^b e^{-\frac{x^2}{2}}\, \dd x$. 
+This concludes de proof of Theorem~\ref{thm:demoivrelaplace}.
+
+\section*{Stirling's formula}
+
+In this section we prove the following.
+\begin{theorem}
+[Stirling Formula]
+\(
+n! \asymp n^n \, e^{-n} \, \sqrt{2\pi n}.
+\)
+\end{theorem}
+
+To understand how the formula appears, note that
+\[
+\log n! = \log 1 + \log 2 + \cdots + \log n = \sum_{k=1}^n \log k
+\]
+is an upper approximation for
+\[
+% \int_{\frac{1}{2}}^{n+\frac{1}{2}} \log x \, \dd x = \frac{1}{2}
+\int_{0}^{n} \log x \, \dd x = n \log n - n = \log( n^n e^{-n} )
+.
+\]
+With this argument of approximation of sum by integral, it can be shown that
+\[
+\log n! = n \log n - n + r(n)
+\qquad
+\text{ with }
+\frac{r(n)}{n}\to 0
+,
+\]
+Which is sufficient in many applications, but we want a finer approximation.
+In fact, we want to asymptotically approximate $n!$ and not just $\log n!$.
+
+Assuming a polynomial correction, let's try to approximate $ n! $ by a multiple of
+\(
+n^n e^{-n} n^\alpha
+\)
+with $\alpha\in\R$.
+Taking
+\[
+c_n = \log \left( \frac{n^n e^{-n} n^\alpha}{n!} \right)
+,
+\]
+we get
+\begin{multline*}
+c_{n+1}-c_n
+=
+\log \left[ \textstyle (n+1) \left( \frac{n+1}{n} \right)^n \frac{e^{-n-1}}{e^{-n}} \left( \frac{n+1}{n} \right)^\alpha \frac{n!}{(n+1)!} \right]
+=
+\\
+=
+\left[ \big. n \log (1+\tfrac{1}{n}) - 1 \right] + \alpha \log(1+\tfrac{1}{n})
+.
+\end{multline*}
+
+Making the Taylor expansion of $\log(1+x)$ para $x\in[0,1]$ we have
+\[
+\log(1+x) = x - \frac{x^2}{2} + r(x)
+\]
+where $r(x)$ equals
+\(
+\frac{2}{(1+\tilde{x})^{3}} \frac{x^3}{6}
+\text{ for some }
+\tilde{x} \in [0,x]
+\)
+and satisfies
+\(
+0 \le r(x) \le \frac{x^3}{3}
+.
+\)
+
+Continuing the development of $c_{n+1}-c_n$, we get
+\begin{align*}
+c_{n+1} - c_n
+% &= \log(n+1) + n \log (1+\tfrac{1}{n}) + -1 + \alpha \log(1+\tfrac{1}{n}) - \log(n+1)
+% \\
+&=
+\left[ \big. n \big( \tfrac{1}{n} - \tfrac{1}{2n^2} + r(\tfrac{1}{n}) \big) - 1 \right]
++
+\alpha \left( \big. \tfrac{1}{n} - \tfrac{1}{2n^2} + r(\tfrac{1}{n}) \right)
+\\
+&=
+\tfrac{\alpha}{n} - \tfrac{1}{2n} + n \, r(\tfrac{1}{n}) - \tfrac{\alpha}{2n^2} + \alpha \, r(\tfrac{1}{n})
+\\
+&=
+n \, r(\tfrac{1}{n}) + \tfrac{1}{2} r(\tfrac{1}{n}) - \tfrac{1}{4n^2}
+\end{align*}
+if we choose $\alpha=\frac{1}{2}$ to cancel the terms of order $\frac{1}{n}$.
+
+Finally, combining the latest identity and the Taylor expansion we have
+\begin{align*}
+|c_{n+1}-c_n|
+& \leq
+% |n \, r(\tfrac{1}{n})| + \tfrac{1}{4n^2} + |\tfrac{1}{2} r(\tfrac{1}{n})|
+% \leq
+\tfrac{1}{2 n^2}
+,
+\end{align*}
+Which is summable, so $c_n \to c$ for some $c \in \R$.
+Therefore,
+\[
+\frac{n!}{n^n e^{-n} \sqrt{n}} \to e^{-c} = \sqrt{2 \lambda}
+\]
+for some $\lambda>0$, that is
+\[
+{n!} \asymp n^n e^{-n} \sqrt{2 \lambda n}
+.
+\]
+It remains to show that the constant is given $\lambda=\pi$.
+
+\subsection*{Finding the Constant}
+
+Stirling's formula was first proved by De~Moivre, and Stirling found the value of the constant.
+Let's prove that $\lambda=\pi$ in two different ways.
+
+\paragraph{Using the proof of De Moivre's theorem}
+
+The first proof assumes that the reader saw the demonstration of De Moivre-Laplace's theorem in the previous section.
+By Chebyshev's inequality,
+\[
+1 - \tfrac{1}{m^2} \leq P \left( -m \leq \tfrac{S_n - np}{npq} \leq +m \right) \leq 1
+.
+\]
+Now notice that the proof of De Moivre-Laplace's theorem works assuming Stirling's formula with an unknown constant~$\lambda$ replacing $\pi$.
+Thus, taking $n\to\infty$,
+\[
+1 - \tfrac{1}{m^2} \leq \int_{-m}^{m} \frac{e^{-\frac{x^2}{2}}}{\sqrt{2 \lambda}}\, \dd x \leq 1
+.
+\]
+Taking $m \to \infty$ we get
+\[
+\int_{\R} \frac{e^{-\frac{x^2}{2}}}{\sqrt{2 \lambda}}\, \dd x = 1
+,
+\]
+and therefore $\lambda=\pi$.
+
+\paragraph{Using Wallis product}
+Wallis product is given by
+\[
+\frac{\pi}{2}
+=
+\prod_{n=1}^{\infty} \left( \frac{2n}{2n-1} \cdot \frac{2n}{2n+1} \right)
+=
+\lim_{n\to\infty}
+\frac{2}{1}
+\cdot
+\frac{2}{3}
+\cdot
+\frac{4}{3}
+\cdot
+\frac{4}{5}
+\cdot
+\frac{6}{5}
+\cdot
+\frac{6}{7}
+\cdots
+\frac{2n}{2n-1}
+\cdot
+\frac{2n}{2n+1}
+.
+\]
+
+Taking the square root and using $\frac{2n}{2n+1} \to 1$ we obtain
+\[
+\sqrt{\frac{\pi}{2}}
+=
+\lim_{n\to\infty}
+\frac
+{2 \cdot 4 \cdot 6 \cdots (2n-2)}
+{3 \cdot 5 \cdot 7 \cdots (2n-1)}
+\cdot
+\sqrt{2n}
+.
+\]
+Multiplying by the numerator we arrive at
+\begin{align*}
+\sqrt{\frac{\pi}{2}}
+&
+=
+\lim_{n\to\infty}
+\frac
+{2 \cdot 2 \cdot 4 \cdot 4 \cdot 6 \cdot 6 \cdots (2n-2) \cdot (2n-2)}
+{2 \cdot 3 \cdot 4 \cdot 5 \cdot 6 \cdot 7 \cdots (2n-2) \cdot (2n-1)}
+\cdot
+\frac
+{2n \cdot 2n}
+{2n}
+\cdot
+\frac{\sqrt{2n}}{2n}
+\\
+&
+=
+\lim_{n\to\infty}
+\frac
+{2^{2n}\left( 1^2 \cdot 2^2 \cdot 3^2 \cdots n^2 \right)}
+{(2n)!}
+\cdot
+\frac{1}{\sqrt{2n}}
+=
+\lim_{n\to\infty}
+\frac
+{2^{2n} (n!)^2}
+{(2n)! \, \sqrt{2n}}
+.
+\end{align*}
+Finally, substituting Stirling's formula we get
+\begin{align*}
+\sqrt{\frac{\pi}{2}}
+&
+=
+\lim_{n\to\infty}
+\frac
+{2^{2n} n^{2n} e^{-2n} 2 \lambda n}
+{{(2n)}^{2n} e^{-2n} \sqrt{4 \lambda n}\sqrt{2n}}
+=
+\sqrt{\frac{\lambda}{2}}
+,
+\end{align*}
+and therefore $\lambda=\pi$.
+
+
+\end{document}

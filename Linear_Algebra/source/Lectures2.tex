@@ -1,0 +1,2069 @@
+\documentclass[11pt]{article}
+
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts} 
+\usepackage{hyperref}
+\usepackage{framed}
+\usepackage{color}
+\usepackage{amssymb}
+
+\usepackage[normalem]{ulem}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+\hypersetup{colorlinks=true,urlcolor=blue,linkcolor=black,citecolor=black}
+
+\hyphenpenalty 6000
+\tolerance 4000
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{remark}{Remark}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem*{ack}{Acknowledgement}
+
+\renewcommand{\epsilon}{\varepsilon}
+
+\newcommand{\abs}[1]{\left\vert #1\right\vert}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\inner}[2]{\langle #1, #2 \rangle}
+\newcommand{\proj}[1]{P_{\!\!{}_{#1}}}
+
+\newcommand{\dd}{{\mathrm{d}}}
+\newcommand{\e}{{\mathrm{e}}}
+\newcommand{\re}{{\mathrm{re}}}
+\newcommand{\0}{\mathbf{0}}
+
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\T}{\vec{T}} 
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\PR}{\mathbb{P}}
+\newcommand{\Pb}{\overline{\mathbb{P}}}
+
+\DeclareMathOperator{\mydeg}{\mathsf{deg}}
+\DeclareMathOperator{\myspan}{\mathsf{span}}
+\DeclareMathOperator{\myrange}{\mathsf{range}}
+\DeclareMathOperator{\mynull}{\mathsf{ker}}
+\DeclareMathOperator{\myker}{\mathsf{ker}}
+\DeclareMathOperator{\mydim}{\mathsf{dim}}
+\DeclareMathOperator{\myrank}{\mathsf{rank}}
+\DeclareMathOperator{\mytrace}{\mathsf{trace}}
+\DeclareMathOperator{\mydet}{\mathsf{det}}
+\DeclareMathOperator{\mysgn}{\mathsf{sgn}}
+\DeclareMathOperator{\mydiag}{\mathsf{diag}}
+
+\DeclareMathOperator{\mydot}{\boldsymbol{\cdot}}
+
+
+\renewcommand{\det}{use mydet}
+
+\newcommand{\va}{\vec{a}}
+\newcommand{\vb}{\vec{b}}
+\newcommand{\vc}{\vec{c}}
+\newcommand{\ve}{\vec{e}}
+\newcommand{\vx}{\vec{x}}
+\newcommand{\vy}{\vec{y}}
+\newcommand{\vr}{\vec{r}}
+\newcommand{\vu}{\vec{u}}
+\newcommand{\vv}{\vec{v}}
+\newcommand{\vw}{\vec{w}}
+
+\newcommand{\abba}{{\tiny \begin{bmatrix} a \ {-\!\!\;b} \\ b \ \ \ a \end{bmatrix}}}
+
+\pagestyle{empty}
+
+\parindent 0pt
+\parskip .4em
+
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+
+\usepackage[a4paper]{geometry}
+
+\newcommand{\spitem}{\item[$\circ$]}
+
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+
+\usepackage{embedall}
+
+
+\begin{document}
+
+{NYU-SH Honors Linear Algebra II -- Lectures Summary \hfill -- \hfill Leonardo T. Rolla \href{http://creativecommons.org/licenses/by-sa/3.0/}{\includegraphics[height=1.0em]{by-sa.pdf}}
+\\
+
+\hfil
+\emph{\Large Part I: Inner product spaces}
+
+%\let\thefootnote\relax\footnotetext{Put your text here}
+
+\section{Inner products}
+
+Main reference:
+Axler \S1.B
+
+\begin{itemize}
+
+\item
+
+The \emph{field} $\F$ is either $\R$ or $\C$.
+Elements of $\F$ are called \emph{numbers} or \emph{scalars}.
+A \emph{complex number} $z \in \C$ is a number of the form $z = x+iy$ where $x,y\in \R$.
+In $\C$ we have usual algebraic properties of multiplication and addition, plus the property that $i^2=-1$, so $(1+2i)(3+4i)=3+4i+6i+8i^2=-5+10i$.
+
+\item
+
+Why $\C$?
+Cutting a long story short...
+Want to count: $\N$.
+Want to subtract: $\N \leadsto \Z$.
+Want to divide: $\Z \leadsto \Q$.
+Want intermediate value theorem: $\Q \leadsto \R$.
+Want polynomials to have roots: $\R \leadsto \C$.
+
+\item
+
+A \emph{vector space over the field $\F$} is a set $V$ together with the operations of addition and scalar multiplication satisfying certain properties.
+
+\end{itemize}
+
+Main reference:
+Axler \S6.A
+
+\begin{itemize}
+
+\item
+
+The dot product can be seen as a generalization of multiplication on $\R$.
+The inner product can be seen as a generalization of the usual dot product on $\R^n$.
+
+\item
+
+An \emph{inner product} on a vector space $V$ is a function $\inner{\cdot}{\cdot}:V\times V\to\mathbb{F}$ satisfying:
+\begin{enumerate}
+\item For every $v\in V$, $ \inner{v}{v} \geq 0$ \ \ (in particular $\inner{v}{v} \in\mathbb{R}$);
+\item $\inner{v}{v}=0$ if and only if $v={\mathbf{0}}$;
+\item For every $u,v,w\in V$ and $\alpha\in\mathbb{F}$, $\inner{u+\alpha v}{w}=\inner{u}{w}+\alpha \inner{v}{w}$;
+\item For every $u,v\in V$, $\inner{v}{u}=\overline{\inner{u}{v}}$.
+\end{enumerate}
+Examples:
+\begin{itemize}
+\item
+The dot product $\inner{x}{y} = x \mydot y$ on $\R^n$ is the simplest case.
+
+\item
+For positive real numbers $c_1,\dots,c_n$, we can define $\inner{x}{y} = \sum_j c_j x_j y_j$.
+
+\item
+On $\C^n$, we can define $\inner{z}{w} = \sum_j z_j \overline{w_j}$ or $\inner{z}{w} = \sum_j c_j z_j \overline{w_j}$.
+
+\item
+On $\cP(\C)$, we can define $ \inner{p}{q} = \int_0^\infty e^{-t}p(t)\overline{q(t)} \, \dd t $.
+
+\end{itemize}
+
+\item
+
+An \emph{inner product space} is a vector space endowed with an inner product.
+
+\item 
+
+$\langle u,v+\alpha w\rangle=\langle u,v\rangle+\overline{\alpha}\langle u,w\rangle$, for every $u,v,w\in V$ and for every $\alpha \in \mathbb{F}$.
+
+\item
+
+Two vectors $u,v\in V$ are \emph{orthogonal} if $\langle u,v\rangle=0$.
+We denote it $u\perp v$.
+
+\item
+
+${\bf 0}$ is the only vector orthogonal to itself.
+
+\end{itemize}
+
+
+\clearpage
+\section{Inner products and norms}
+
+Main reference:
+Axler \S6.A
+
+\textbf{Terminology.}
+In these lecture notes, ``proof'' means just the main idea of the proof.
+The complete proof is the one written on the whiteboard or in the textbook.
+
+\begin{itemize}
+
+\item
+
+On an inner product space $V$, the \emph{norm} of $v\in V$ is defined by $\|v\|=\sqrt{\langle v,v\rangle}$.
+\item
+
+Properties of a norm:
+\begin{enumerate}
+\item For every $v\in V$, $\|v\| \geq 0$
+\item $\|v\|=0$ if and only if ${v}=\mathbf{0}$
+\item For every $u,v\in V$, $\|u+v\|\leq \|u\|+\|v\|$
+\item For every $v\in V$ and every $\alpha\in\mathbb{F}$, $\|\alpha v\|=|\alpha|\cdot\|v\|$
+\end{enumerate}
+
+\emph{Proof.}
+Triangle inequality is postponed. The other three immediate from $\inner{\cdot}{\cdot}$.
+
+\item
+
+\emph{Pythagorean Theorem} : If $u \perp v$, then $\|u+v\|^2=\|u\|^2+\|v\|^2$.
+
+\emph{Proof.}
+Just expand $ \inner{u+v}{u+v} $ and group the cross term.
+
+Counter-example: $u=(1,1+i),v=(2-i,-1-i) \in \C^2$.
+By carefully examining the proof, we can see why the inner product is in $i\,\R$ for such examples.
+
+\item
+
+\emph{Orthogonal decomposition:} For $u,v\in V$, $v\neq \0$, we have
+\[
+u= \lambda v+w , \quad \text{ with }\langle w,v\rangle=0,
+\]
+where the scalar $\lambda$ and vector $w$ are given by 
+\(
+\lambda = \frac{\langle u,v\rangle}{\inner{v}{v}}
+\text{ and }
+w = u-\lambda v.
+\)
+
+\emph{Proof.}
+Assume there is such a decomposition and compute $\inner{u}{v}$.
+
+\item
+
+\emph{Cauchy-Schwarz Inequality.}
+For every $u,v\in V$, $|\langle u,v\rangle|\leq \|u\|\cdot\| v\|$.
+\\
+Equality holds if and only if $v={\bf 0}$ or if $u=\lambda v$ for some $\lambda\in\mathbb{F}$.
+
+\emph{Proof.}
+Apply Pythagorean Theorem to the orthogonal decomposition of $u$ onto $v$.
+
+Example:
+for continuous functions $f,g:[0,1]\to \R$,
+\[
+\int_0^1 f(t)g(t) \, \dd t \leq \sqrt{\Big(\int_{0}^{1}f(t)^2 \, \dd t \Big)\Big(\int_{0}^{1} g(t)^2 \, \dd t \Big)}
+.
+\]
+
+\item
+
+\emph{Triangle Inequality.}
+For every $u,v\in V$, $\|u+v\| \leq \|u\| + \|v\|$.
+\\
+Equality holds if and only if $v=\0$ or $u=\lambda v$ for some $\lambda \geq 0$.
+
+\emph{Proof.}
+Expand $\|u+v\|^2$ and use Cauchy-Schwarz Inequality.
+
+Example:
+for continuous functions $f,g:[0,1]\to \C$,
+\begin{align*}
+\sqrt{ \int_{0}^{1} |f(x)+g(x)|^2 \, \dd t }
+\leq
+\sqrt{ \int_{0}^{1} |f(x)|^2 \, \dd t }
++
+\sqrt{ \int_{0}^{1} |g(x)|^2 \, \dd t }
+.\end{align*}
+
+\end{itemize}
+
+
+\clearpage
+\section{Orthonormal bases}
+
+Main reference:
+Axler \S6.B
+
+\begin{itemize}
+
+\item
+
+A family of vectors $e_1,\dots,e_m\in V$ is \emph{orthonormal} if, for every $1\leq j,k\leq m$, 
+\[
+\langle e_j,e_k\rangle=
+\left\{
+\begin{array}{c}
+1\text{ if } j=k , \\
+0\text{ if } j\neq k.
+\end{array}
+\right.
+\]
+
+Examples: $\{(\cos \theta, \sin \theta),(-\sin \theta, \cos \theta)\},\
+\{(0, -\frac{\sqrt{2}}{2}, \frac{\sqrt{2}}{2}),(0, \frac{\sqrt{2}}{2}, \frac{\sqrt{2}}{2}), (1,0,0)\}$.
+
+\spitem
+
+\emph{Parseval's Identity.}
+Let $e_1,\dots,e_m\in V$ be an \emph{orthonormal} family of vectors.
+\\
+For every $a_1,\dots,a_m\in\mathbb{F}$, we have
+\[
+\|a_1e_1+\dots+a_me_m\|^2=|a_1|^2+\dots+|a_m|^2.
+\]
+
+\emph{Proof.}
+Pythagorean Theorem.
+
+\item
+If $e_1,\dots,e_m\in V$ are orthonormal then they are linearly independent.
+
+\emph{Proof.}
+Use previous identity.
+
+\item
+
+An \emph{orthonormal basis} is a basis consisting of orthonormal vectors.
+\\
+Every orthonormal family containing $\mydim V$ vectors is an orthonormal basis.
+
+\item
+\emph{Decomposition.}
+Let $e_1,\dots,e_m$ be an orthonormal basis for $V$.
+For every $v\in V$,
+\[
+v=\langle v,e_1\rangle e_1+\dots+\langle v,e_n\rangle e_n,
+\]
+and $\|v\|^2=|\langle v,e_1\rangle|^2+\dots+|\langle v,e_n\rangle|^2$.
+
+\emph{Proof.}
+Direct computation and Parseval's identity.
+
+\item
+
+\emph{The Gram-Schmidt procedure:} Let $v_1,\dots,v_m\in V$ be linearly independent.
+Define $e_1=\frac{1}{\|v_1\|} v_1$ and, for $j = 2,\dots,m$,
+\[
+\tilde{e}_j = v_j-\displaystyle{\langle v_j,e_1\rangle e_1} - \inner{v_j}{e_2}e_2 - \dots - \inner{v_j}{e_{j-1}}e_{j-1}
+\qquad
+e_j = \tfrac{1}{\left\|\tilde{e}_j\right\|} \, \tilde{e}_j.
+\]
+Then $e_1,\dots\,e_m$ is orthonormal and $\myspan(v_1,\dots,v_j)=\myspan(e_1,\dots,e_j)$ for every $j$.
+
+%Example:
+%$(i,i,i),(-1,0,1),(3,0,3)$.
+
+Example:
+%$\sqrt{\frac{1}{2}},\sqrt{\frac{3}{2}}x,\sqrt{\frac{45}{8}}(x^2 - \frac{1}{3})$ 
+On $\cP_2(\R)$ with $\inner{p}{q} = \int_{-1}^{1}p(t)q(t) \, \dd t$, apply G-S to $t^2,1,t$.
+
+\spitem
+Let $e_1,\dots,e_m$ denote the orthonormal family obtained by applying Gram-Schmidt to $v_1,\dots,v_m$, and let $e_1',\dots,e_m',e_{m+1}'$ denote the family obtained from $v_1,\dots,v_m,v_{m+1}$. Then $e_1=e_1',\dots,e_m=e_m'$.
+
+An analogous property would not hold for $v_{m+1},v_1,\dots,v_m$.
+
+That is, Gram-Schmidt procedure gives a consistent output if we add more vectors at the end of the list, but not at the beginning.
+
+\end{itemize}
+
+
+\clearpage
+\section{Schur's Theorem and Riesz Representation Theorem}
+
+Main reference:
+Axler \S6.B
+\ \ \
+(Uses results from Axler \S5.B)
+
+\textbf{Notation.}
+A `` $\circ$ '' indicates a point that it is not quite following the textbook.
+
+\begin{itemize}
+
+\item
+
+Every \textbf{finite-dimensional} inner product space has an orthonormal basis.
+
+\emph{Proof.}
+Apply Gram-Schmidt to an arbitrary basis.
+
+\item
+
+For \textbf{finite-dimensional} inner product spaces, every orthonormal family can be extended to an orthonormal basis.
+
+\emph{Proof.}
+Extend to an arbitrary basis (add at the end) and apply Gram-Schmidt.
+
+\item
+
+If an operator $T$ on a \textbf{finite-dimensional} inner product space has upper-triangular matrix with respect to some basis, then it has an upper-triangular matrix with respect to some orthonormal basis.
+
+\emph{Proof.}
+Recall that $[T]_{v_1,\dots,v_m}$ is upper-triangular if and only if $\myspan(v_1,\dots,v_j)$ is invariant under $T$ for every $j = 1,\dots,m$.
+Apply Gram-Schmidt and conclude.
+
+\item
+
+\emph{Schur's Theorem}: Every operator on a \textbf{finite-dimensional} and \textbf{complex} inner product space has upper-triangular matrix with respect to some orthonormal basis.
+
+\emph{Proof.}
+Recall that every operator on a finite-dimensional complex vector space is upper-triangular with respect to some basis.
+Apply previous result.
+
+Example:
+compare $T(x,y)=(-y,x)$ on $\R^2$ and $\C^2$.
+
+\item
+
+A \emph{linear functional} $\varphi$ on $V$ is a linear map from $V$ to $\mathbb{F}$, i.e.~$\varphi\in\mathcal{L}(V,\mathbb{F})$.
+
+Example:
+$\varphi(z)=2z_1 -i z_3 + 3z_3 + 5i z_1$ on $\C^3$.
+
+\emph{Remark.}
+The above example can be written as $\varphi(z) = \inner{z}{(2-5i,0,3+i)}$.
+
+Example:
+$\varphi(p)= \int_0^1 p(t) \cos \pi t \, \dd t$ on $\cP(\C)$.
+
+%Remark:
+%This one cannot be written as $\varphi(p) = \inner{p}{q}$ for some fixed $q \in V$.
+
+\item
+
+\emph{Riesz Representation Theorem.}
+Let $V$ be a \textbf{finite-dimensional} inner product space and $\varphi\in\mathcal{L}(V,\mathbb{F})$. There is a unique $u\in V$ such that $\varphi(v)=\langle v,u\rangle \ \forall v$.
+
+\emph{Proof.}
+Take an orthonormal basis, write $u = \sum_j \alpha_j e_j$, and expand $\inner{e_j}{u}$.
+Show that this $u$ has the desired property.
+For uniqueness, compute $\varphi(u-u')$.
+
+\emph{Remark.}
+So we compute $u$, and the result does not depend on the choice of basis.
+
+\spitem
+
+As a remark, for $\varphi(p)= \int_0^1 p(t) \cos \pi t \, \dd t$ on $\cP(\C)$, there is no $q \in \cP(\C)$ with this property.
+The proof is analytic, requiring Stone-Weierstrass Theorem, etc.
+This is Functional Analysis, which combines Linear Algebra, Analysis and Topology.
+
+However, if we restrict this functional $\varphi$ to $\cP_2(\C)$, then we can find $q \in \cP_2(\C)$ such that $\varphi(p) = \inner{p}{q}$ for every $p \in \cP_2(\C)$.
+
+\end{itemize}
+
+
+\clearpage
+\section{Orthogonal complement}
+
+Main reference:
+Axler \S6.C
+
+\textbf{Notation.}
+$C_\R[a,b] = \{f:[a,b]\to\R \text{ continuous}\}$,
+$C_\C[a,b] = \{f+ig:f,g\in\mathcal{C}_\R[a,b]\}$.
+
+\begin{itemize}
+
+\item
+
+If $U$ is a subset of $V$, then the \emph{orthogonal complement} of $U$, denoted $U^{\perp}$, is the set of vectors in $V$ that are orthogonal to every vector in $U$, that is
+\[
+U^{\perp}=\left\{v\in V:\ \langle v,u\rangle=0, \ \forall u\in U\right\}.
+\]
+
+%Examples on $\R^3$.
+
+\item
+
+Let $V$ be an inner product space. Then
+\begin{enumerate}
+\item For every subset $U$ of $V$, $U^\perp$ is a subspace;
+\item $\{\0\}^\perp=V$ and $V^\perp=\{\bf{ 0}\}$;
+\item For every subset $U\subset V$, $U^\perp\cap U\subset \{{\bf 0}\}$;
+\item For every subsets $U\subset W\subset V$, $W^\perp\subset U^\perp$.
+\end{enumerate}
+%  finite-dimensional (not needed?!)
+
+\emph{Proof.}
+\emph{Proof.}
+In each case, check the definitions.
+
+\item
+
+If $V$ is a inner product space and $U\subset V$ is a \textbf{finite-dimensional} subspace then $$V=U\oplus U^\perp.$$
+
+\emph{Proof.}
+For $V=U+U^\perp$, take an orthonormal basis $e_1,\dots,e_m$ of $U$, write $v$ as a sum of its components $\inner{v}{e_j}e_j$ in $U$ plus the remainder $w$ in $U^\perp$.
+\\
+Finally, $\oplus$ follows from $U \cap U^\perp = \{\0\}$.
+
+\spitem
+
+What can go wrong?
+
+Let $V = C_\R[-1,1]$ with $\inner{f}{g} = \int_{-1}^1 f(t)g(t) \,\dd t$.
+\\
+For $U = \{f \in V:f(0)=0\}$, $U^\perp = \{\0\}$ and $U+U^\perp \ne V$.
+
+\item
+
+If $U$ is a finite-dimensional subspace, then $U=(U^\perp)^\perp$.
+
+\emph{Proof.}
+ To show that $U \subset (U^\perp)^\perp$ check the definition.
+For $U \supset (U^\perp)^\perp$, let $v\in (U^\perp)^\perp$, and write $v=u+w$.
+Since $U \subset (U^\perp)^\perp$, $u \in (U^\perp)^\perp$, hence $(v-u) \in (U^\perp)^\perp$.
+On the other hand, $(v-u) = w \in U^\perp$, thus $v-u=\0$, hence $v \in U$.
+
+\spitem
+
+With the previous counter-example, $(U^\perp)^\perp$ is bigger than $U$.
+
+\item
+
+If $V$ is finite-dimensional and $U$ is a subspace, then $\mydim U^\perp = \mydim V - \mydim U$.
+
+\emph{Proof.}
+Just recall that a sum is a direct sum if and only if dimensions add up.
+
+\end{itemize}
+
+
+\clearpage
+\section{Orthogonal projection and best approximation}
+
+Main reference:
+Axler \S6.C
+
+In this lecture, we assume that $U$ is a finite-dimensional subspace of $V$.
+
+\begin{itemize}
+
+\item
+
+The \emph{orthogonal projection} of $V$ onto $U$ is the map $\proj{U} : V \to U$ defined as follows.
+For every $v\in V$, write $v$ as
+$$v=u+w \ \ \text{ with } u\in U \text{ and } w\in U^\perp,$$
+and take $\proj{U} v=u$.
+This is well-defined because $V=U\oplus U^\perp$.
+
+\item
+
+Properties of the projection operator.
+\begin{enumerate}
+\item $\proj{U}\in\mathcal{L}(V)$;
+\item $\proj{U} u=u,\ \forall u\in U$ and $\proj{U} w=\0, \ \forall w\in U^\perp$;
+\item $\myrange \proj{U}=U$ and $\myker \proj{U}=U^\perp$;
+\item $(v - \proj{U} v )\in U^\perp$;
+\item $\big(\proj{U}\big)^2=\proj{U}$;
+\item $\|\proj{U} v\|\leq \|v\|$ and equality holds if and only if $v\in U$.
+\item Given an orthonormal basis $e_1,\dots,e_n$ of $U$, we have, for every $v\in V$,
+$$\proj{U} v = \sum_{i=1}^m\langle v,e_i\rangle e_i.$$
+\end{enumerate}
+\emph{Proof.}
+Check the definition of linear.
+Use the definition of $\proj{U}$.
+Use previous property and $V=U\oplus U^\perp$.
+Use the definition of $\proj{U}$.
+Use the second property.
+Pythagorean Theorem to $v=\proj{U} v + (v - \proj{U} v)$.
+Done in the proof of $V=U\oplus U^\perp$.
+
+\item
+
+\emph{Best approximation.}
+For every $v\in V$ and every $u\in U$, we have that
+\[
+\|v-\proj{U}v\| \leq \|v-u\|,
+\]
+and equality holds if and only if $u=\proj{U} v$.
+
+\emph{Proof.}
+Apply Pythagorean Theorem to $v-u=(v - \proj{U} v) + (\proj{U} v - u)$.
+
+\item
+
+The assumption that $U$ is finite-dimensional is of course very restrictive.
+But the theory is still very powerful under this assumption, see Example 6.58.
+
+\spitem
+
+Example:
+Find the affine function that best approximates $g(t)=\sqrt{t}$ in terms of mean squared difference on $[0,1]$.
+
+\end{itemize}
+
+
+\clearpage
+
+\hfil
+\emph{\Large Part II: Operators on inner product spaces}
+
+\bigskip
+
+\hfill
+We assume that all spaces are finite-dimensional.
+
+\section{The adjoint operator}
+
+Main reference:
+Axler \S7.A
+
+\begin{itemize}
+
+\item
+
+Let $V$ and $W$ be two inner product spaces. The \emph{adjoint} of a linear map $T\in\mathcal{L}(V,W)$ is the map $T^*$ defined by $w \mapsto T^* w$ where $T^* w$ is the unique vector in $V$ such tat
+$$\langle Tv,w\rangle_{{}_W} = \langle v,T^*w\rangle_{{}_V}$$ for every $v\in V$.
+The operator $T^*$ is well-defined by Riesz Representation Theorem.
+
+\item
+
+Examples:
+
+$T(x_1,x_2,x_3)=(- 2 x_2, 5 x_3 - 3 x_1)$
+
+$Tv = \inner{v}{u}_{{}_V} \, x$ for fixed $u\in V$ and $x\in W$
+
+$Tv = Av$ on $\R^4$, where
+$ A =
+\left[ \begin{array}{cccc}
+0 & 1 & 2 & 3 \\
+4 & 5 & 6 & 7
+\end{array} \right]$
+
+\item
+
+Properties. On the appropriate spaces,
+
+\begin{enumerate}
+\item
+$T^*\in\mathcal{L}(W,V)$
+\item
+$(S+T)^*=S^*+T^*$
+\item
+$(\lambda T)^*=\bar{\lambda}T^*$
+\item
+$(T^*)^*=T$
+\item
+$(ST)^*=T^*S^*$
+\item
+$I^* = I$
+\end{enumerate}
+\emph{Proof.}
+Check the definitions.
+
+\item
+For every $T$, $\myker T^*=(\myrange T)^\perp$.
+
+\emph{Proof.}
+Use $V^\perp = \{\0\}$ and the definitions of $\myker$, adjoint, $\perp$ and $\myrange$.
+
+\item
+Corollaries:
+$\myrange T = (\myker T^*)^\perp$,
+$\myrange T^* = (\myker T)^\perp$,
+$\myker T=(\myrange T^*)^\perp$.
+
+\emph{Proof.}
+Take $\perp$. Replace $T$ by $T^*$. Take $\perp$.
+
+\item
+
+For $T\in\mathcal{L}(V,W)$ and orthonormal bases $\mathcal{A}$ of $V$ and $\mathcal{B}$ of $W$, we have
+$$
+[T^*]_{\mathcal{A},\mathcal{B}}= ([T]_{\mathcal{B},\mathcal{A}})^*,
+$$
+where $A^*$ denotes the \emph{conjugate transpose} of a matrix $A$.
+
+\emph{Proof.}
+Let $C=[T]_{\mathcal{B},\mathcal{A}}$ and $D=[T^*]_{\mathcal{A},\mathcal{B}}$.
+Then $c_{j,k} = \dots = \inner{Te_k}{g_j}$.
+Likewise, $d_{j,k} = \inner{T^* g_k}{e_j}$.
+On the other hand,
+$\inner{T^* g_k}{e_j}=\inner{g_k}{T e_j}=\overline{\inner{T e_j}{g_k}}=\overline{c_{k,j}}$.
+
+\end{itemize}
+
+
+\clearpage
+\section{Self-adjoint and normal operators}
+
+Main reference:
+Axler \S7.A
+
+%\textbf{In this lecture we assume all spaces are finite-dimensional.}
+
+\begin{itemize}
+
+\item
+
+An operator $T\in\mathcal{L}(V)$ is \emph{self-adjoint} if $T^*=T$.
+
+\item
+
+In some sense, taking the adjoint of a linear operator is the analogous of taking the complex conjugate of a number.
+In the same spirit, since a number being real is equivalent to being equal to its conjugate, the property of an operator being self-adjoint has many similarities with the property of a number being real.
+
+\item
+
+If $T\in\mathcal{L}(V)$ is self-adjoint, then all its eigenvalues are real.
+
+\emph{Proof.}
+Show that $\lambda \|v\|^2 = \bar{\lambda} \|v\|^2$.
+
+\item
+
+Let $V$ be a {\bf complex} inner product space and let $T\in\mathcal{L}(V)$ be an operator. $T$ is self-adjoint if and only if $\langle Tv,v\rangle\in\mathbb{R}$ for every $v\in V$.
+
+\emph{Proof.}
+Check that $\inner{Tv}{v}-\overline{\inner{Tv}{v}}=\inner{(T-T^*)v}{v}$ and use following fact.
+
+* If $\langle Sv,v\rangle=0$ for every $v\in V$, then $S={\bf 0}$.
+
+\emph{Proof.}
+For $u, w\in V$, expanding
+$0 = \sum_k i^k \inner{S(u+i^kw)}{u+i^kw} = 4 \inner{Su}{w}$ gives $Su \in V^\perp=\{\0\}$.
+Example:
+Compare $S(x,y)=(-y,x)$ on $\R^2$ and $\C^2$.
+
+\item
+
+Let $V$ be an inner product space (real or complex) and let $T\in\mathcal{L}(V)$ be a {\bf self-adjoint} operator. If $\langle Tv,v\rangle=0$ for every $v\in V$, then $T={\bf 0}$.
+
+\emph{Proof.}
+For $\F=\C$ it is the previous theorem, so we can assume $\F=\R$. Expanding
+$0=\inner{T(u+w)}{u+w}-\inner{T(u-w)}{u-w}$ gives $4\inner{Tu}{w}=0$, hence $Tu \in V^\perp=\{\0\}$.
+
+\item
+
+An operator $T\in\mathcal{L}(V)$ is \emph{normal} if $TT^*=T^*T$.
+
+Examples:
+\\
+$T(x,y)=(-2y,2x)$ on $\F^2$.
+Check that $T^*=(2y,-2x)$, $TT^*=T^*T=(4x,4y)$.\\
+$T(x,y)=(y,y)$.
+Check that $T^*=(0,x+y)$, $TT^*=(x+y,x+y)$, $T^*T=(0,2y)$.
+
+\item
+
+An operator $T\in\mathcal{L}(V)$ is normal if and only if $\|Tv\|=\|T^*v\|$ for every $v\in V$.
+
+\emph{Proof.}
+Write $S=T^*T-TT^*$. We have $S=S^*$, want to show that $S=\0$.
+Show that $\inner{Sv}{v}=\|T^*v\|^2 - \|Tv\|^2$ and use previous theorem.
+
+\item If $T\in\mathcal{L}(V)$ is a normal operator with eigenvector $v\in V$ associated to some eigenvalue $\lambda\in\mathbb{F}$, then $v$ is also an eigenvector of $T^*$ associated to the eigenvalue $\bar{\lambda}$.
+
+\emph{Proof.}
+Show that $T-\lambda I$ is also normal, whence $\|Tv-\lambda v\|=\|T^*v - \bar\lambda v\|$.
+
+\item If $T\in\mathcal{L}(V)$ is a normal operator then eigenvectors associated to distinct eigenvalues are orthogonal.
+
+\emph{Proof.}
+By previous theorem, $Tu=\alpha u$ and $T^*v=\bar\beta v$.
+Show that $(\alpha-\beta)\inner{u}{v}=0$.
+
+\end{itemize}
+
+
+\clearpage
+\section{Spectral Theorem}
+
+Main reference:
+Axler \S7.B
+
+%\textbf{In this lecture we assume all spaces are finite-dimensional.}
+
+\begin{itemize}
+
+\item
+
+\text{Spectral Theorems.}
+Why do we care?
+Diagonal operators?
+Orthogonal bases?
+
+%\item
+%
+%In-class exercise: 
+%Diagonalize $T(x,y)=(2x+y,x+2y)$ on $\R^2$.
+
+\item
+
+%In-class exercise: 
+Can you diagonalize $T(x,y)=(-2y,2x)$ on $\C^2$? What about $\R^2$?
+
+\item
+
+Can you diagonalize $T(x,y)=(2x+y,x+2y)$ on $\C^2$? What about $\R^2$?
+
+\item
+
+\emph{Complex Spectral Theorem:} Let $V$ be a \textbf{complex} inner product space and $T\in\mathcal{L}(V)$ be an operator. $T$ is \textbf{normal} if and only if it is orthonormal diagonalizable.
+
+%Example:
+%$T(x,y)=(-2y,2x)$ being orthogonal diagonalizable on $\C^2$ but not on $\R^2$ is consistent with it being normal but not self-adjoint.
+
+\emph{Proof.}
+$(\Leftarrow)$
+We know that $[T^*]=[T]^*$, so $[T^*]$ is also diagonal with respect to the same orthonormal basis, thus $[T]^*$ and $[T]$ commute, hence $T^*$ and $T$ commute.
+\\
+$(\Rightarrow)$
+By Schur's Theorem, there is orthonormal basis $\mathcal{A}=\{e_1,\dots,e_n\}$ such that $[T]_\A$ is upper-triangular.
+Using $[T^*]=[T]^*$, $\|T e_j \|=\|T^* e_j \|$ and Pythagorean Theorem, show recursively that off-diagonal entires of each row of $[T]$ are zero.
+
+\item
+
+\emph{Real Spectral Theorem.} Let $V$ be a \textbf{real} inner product space and let $T\in\mathcal{L}(V)$ be an operator.
+Then $T$ is \textbf{self-adjoint} if and only if it is orthonormal diagonalizable.
+
+%Example:
+%$T(x,y)=(2x+y,x+2y)$ being orthonormal diagonalizable on $\R^2$ is consistent with it being self-adjoint.
+
+We prove the Real Spectral Theorem with three lemmas.
+
+An \emph{irreducible quadratic factor} is a polynomial of the form $q(t)=t^2 + 2bt + c$ for real numbers $c>b^2$.
+Note that $q(t)>0$ for every $t \in \R$.
+% For $\alpha>0$, $x^2 + \alpha bx + \alpha^2 c$ is still an irreducible factor.
+
+*
+If $T^*=T$ and $c>b^2 \geq 0$, then $S=T^2+2bT+cI$ is invertible.
+
+\emph{Proof.}
+% Check that $x^2 + bx +c > 0$ for all $x$, conclude that $x^2 + bxy + cy^2 > 0$ if $y>0$.
+For $\|v\|=1$, expand using $(T+bI)^*=T+bI$ to show $\inner{Sv}{v}>0$.
+
+*
+If $V\neq\{\0\}$ and $T^*=T$, then $T$ has at least one eigenvalue.
+
+\emph{Proof.}
+Assume $\F=\R$.
+Fix $v\ne\0$.
+Writing $n=\mydim V$, the family $v,Tv,T^2v,\dots,T^nv$ must be linearly dependent, whence $\sum_j 
+a_j T^j v = \0$.
+Consider the non-zero polynomial $p(x)=a_0 + a_1 x + a_2 x^2 + \dots + a_n x^n$, and recall that every polynomial over $\R$ can be factorized as a constant times several irreducible quadratic factors times several factors of the form $x-\lambda_k$ for $\lambda_k \in \R$.
+Since $p(T)v=\0$, at least one of the linear factors $T-\lambda_k I$ is not injective, and therefore $\lambda_k$ is an eigenvalue.
+The case $\F=\C$ is similar but simpler, since polynomials over $\C$ factorize completely.
+
+*
+If $T^*=T$ and $U\subset V$ is an invariant subspace under $T$, then $U^\perp$ is invariant under $T$, $T_{|_U}\in{\mathcal{L}(U)}$ is self-adjoint and $T_{|_{U^\perp}}\in{\mathcal{L}(U^\perp)}$ is self-adjoint.
+
+\emph{Proof.}
+For $T(U^\perp) \subset U^\perp$, check the definition using $T^*=T$.
+For $T_{|_{U}}$ self-adjoint, check the definition.
+For $T_{|_{U^\perp}}$ self-adjoint, switch $U$ and $U^\perp$.
+
+Proof of Real Spectral Theorem:
+$(\Leftarrow)$
+Since $[T]$ is diagonal with respect to an orthonormal basis, we have that $[T^*]=[T]^*=[T]^t=[T]$, hence $T^*=T$.
+\\
+$(\Rightarrow)$
+Use the two lemmas above and induction on the dimension.
+
+\end{itemize}
+
+
+\clearpage
+\section{Positive operators and isometries}
+
+Main reference:
+Axler \S7.C
+
+\begin{itemize}
+
+\item
+
+%Spectral Theorem is about orthonormal diagonalization.
+%But not every linear operator is diagonalizable, let alone orthonormal diagonalizable.
+
+The idea is that every linear map can be ``diagonalized'' by two orthonormal bases.
+Whereas a diagonal operator only does some ``stretching,'' having different bases reflects some ``rotation'' done on the top of that.
+By flipping elements of the second base, we can even restrict the stretching to positive real scalars.
+As we will see later, stretching is represented by a positive operator, and rotation by an isometry.
+
+\item
+
+An operator $T\in\mathcal{L}(V)$ is \emph{positive} if $T^*=T$ and if $\langle Tv,v\rangle \geq 0$ for every $v\in V$.
+
+Examples:
+The identity operator is positive.
+An orthogonal projection $\proj{U}$ is positive.
+If $T^*=T$ and $c > b^2$ are real, then $T^2 + 2 b T + cI$ is positive.
+(7.32)
+
+Remark:
+By the Spectral Theorem, a self-adjoint operator is positive if and only if all eigenvalues are non-negative.
+
+\item
+
+Let $T\in\mathcal{L}(V)$ be an operator. An operator $R\in\mathcal{L}(V)$ is a \emph{square root} of $T$ if $T=R^2$.
+\hfill
+(7.33)
+
+Example:
+$T(x,y,z)=(z,0,0)$ and $R(x,y,z)=(y,z,0)$ on $\C^3$.
+
+\item
+
+If $T$ is a positive operator, then $T$ has a \emph{unique} positive square root, denoted $\sqrt{T}$.
+
+\emph{Proof.}
+Use the Spectral Theorem.
+For existence, take $R$ having eigenvalues $\sqrt{\lambda_k}$ with same orthonormal eigenvectors as $T$.
+For uniqueness, let $v$ be an eigenvector of $T$, so $Tv = \lambda v$.
+Let $\sqrt{\lambda_k}$ denote the eigenvalues of $R$ for an orthonormal basis $(e_1,\dots,e_n)$, show that $\sum_k a_k \lambda_k e_k = \sum_k a_k \lambda e_k$.
+Conclude that $a_k$ with different eigenvalues are zero, hence $Rv=\sqrt{\lambda}v$.
+Since eigenvectors form a basis, this determines $R$.
+\hfill
+(7.36)
+
+\item
+
+An operator $S\in\mathcal{L}(V)$ is an \emph{isometry} if $\|Sv\|=\|v\|$ for every $v\in V$.
+
+\spitem
+
+Let $S\in\mathcal{L}(V)$.
+The following are equivalent:
+\begin{enumerate}
+\item $S$ is an {isometry};
+\item $\inner{Su}{Sv} = \inner{u}{v}$ for every $u,v\in V$;
+\item $Se_1,\dots,Se_m$ is orthonormal for every orthonormal family $e_1,\dots,e_m$;
+\item $Se_1,\dots,Se_n$ is orthonormal for some orthonormal basis $e_1,\dots,e_n$;
+\item $S$ is invertible and $S^{-1}=S^*$;
+\item $S^*$ is an isometry.
+\end{enumerate}
+
+\emph{Proof.}
+First $1 \Rightarrow 2 \Rightarrow 3 \Rightarrow 4 \Rightarrow 5 \Rightarrow 6$.
+Use that $4 \inner{u}{v} = \sum_k i^k \| u+i^k v\|^2$.
+Orthonormality is preserved once inner product is preserved.
+Existence follows from Gram-Schmidt.
+Mapping a basis to a basis, $S$ is invertible and, by linear combinations on a basis it preserves inner product, so $\inner{u}{S^{-1}v}=\inner{Su}{SS^{-1}v}$ for all $u,v$.
+$\inner{S^*v}{S^*v}=\inner{SS^*v}{v}=\|v\|^2$.
+For $6 \Rightarrow 1$, use $1 \Rightarrow 6$ and $T^{**}=T$.
+\hfill
+(7.42)
+
+% \item
+% 
+% Let $V$ be a \textbf{complex} inner product space. Then, an operator $S\in\mathcal{L}(V)$ is an isometry if and only if $S$ is orthonormal diagonalizable and $|\lambda|=1$ for every eigenvalue $\lambda$.
+% 
+% \emph{Proof.}
+
+\end{itemize}
+
+
+\clearpage
+\section{Polar Decomposition \& Singular Value Decomposition}
+
+Main reference:
+Axler \S7.D
+
+Numbers refer to page or otherwise equation/theorem numbering in Axler.
+
+\begin{itemize}
+
+\item
+
+\emph{Polar Decomposition.}
+Let $T$ be an operator on $V$.
+There exist an isometry $S$ and a positive operator $P$ such that $T=SP$.
+This $P$ can be given by $P=\sqrt{T^*T}$.
+
+\emph{Proof.}
+Use $T^*T=P^*P$ to show $\|Pv\|=\|Tv\|$.
+Let $U=\myrange P$ and $W = \myrange T$.
+Define $S_1 \in \cL(U,W)$ by $S_1 P v = T v$.
+Since $S_1$ preserves norm, it is injective.
+It follows from the definition that it is also surjective, so $\mydim W = \mydim U$.
+Define $S_2 \in \cL(U^\perp,W^\perp)$ by $Te_j=g_j$ for some orthonormal bases.
+Define $S = S_1 \proj{U} + S_2 \proj{U^\perp}$.
+Since $S_1$ and $S_2$ preserve norm, by orthogonality so does $S$.
+\hfill
+(7.45)
+
+%Remark:
+%Polar Decomposition implies that, over $\mathbb{C}$, any operator is the product of two diagonalizable operators (this does not say that every operator is diagonalizable).
+
+\item
+
+Let $T\in\mathcal{L}(V)$. The \emph{singular values} of $T$ is the list consisting of the eigenvalues of $\sqrt{T^*T}$, where an eigenvalue $\lambda$ is counted $\mydim \myker (\sqrt{T^*T}-\lambda I)$ times.
+
+Remark:
+Singular values are nonnegative. By the Spectral Theorem there are always $\mydim V$ of them.
+\hfill
+(236)
+
+Example:
+With computations we check that $T(x,y,z,w)=(0,3x,2y,-3w)$ has singular values $(0,2,3,3)$ but only $0$ and $-3$ are eigenvalues.
+\hfill
+(7.49)
+
+\item
+
+\emph{Singular Value Decomposition.}
+Let $T\in\mathcal{L}(V)$.
+There exist orthonormal bases $\mathcal{A}$ and $\mathcal{B}$ such that $[T]_{\mathcal{B},\mathcal{A}}$ has the singular values on the diagonal and zero elsewhere.
+
+\emph{Proof.}
+Express $P=\sqrt{T^*T}$ in terms an orthonormal eigenbasis.
+Using Polar Decomposition, apply $S$ to this expression, getting
+$Tv=s_1\langle v,e_1\rangle Se_1+\dots+s_n\langle v,e_n\rangle S e_n.$
+\hfill
+(7.51)
+
+\end{itemize}
+
+
+\clearpage
+
+\hfil
+\emph{\Large Part III: Operators on complex vector spaces}
+
+\bigskip
+
+\hfill
+We assume that $\F = \R \text{ or }\C$ and $\dim V = n \geq 1$.
+
+\section{Generalized eigenvectors}
+
+Main reference:
+Axler \S8.A
+%\hfill
+%For this lecture, $\F = \R \text{ or }\C$, $\dim V = n \geq 1$
+
+\begin{itemize}
+
+\item
+
+Let $T\in\mathcal{L}(V)$. We have $\{\0\}=\myker T^0\subset \myker T^1\subset \myker T^2\subset \myker T^3 \subset \cdots$
+
+\emph{Proof.}
+Just check the definition.
+
+\item
+
+If $\myker T^m = \myker T^{m+1}$, then $\myker T^m = \myker T^{m+1} = \myker T^{m+2} = \myker T^{m+3} = \cdots$
+
+\emph{Proof.}
+Show that $v \in \myker T^{m+k+1}$ is also in $\myker T^{m+k}$ using $T^k v \in \myker T^{m+1}$.
+\hfill
+(8.3)
+
+\item
+
+We have $\myker T^k= \myker T^n$ for every $k \geq n$.
+
+\emph{Proof.}
+Each time there is strict inclusion, the dimension increases by at least one.
+
+\item
+
+We have $V = \myker T^n \oplus \myrange T^n$.
+
+\emph{Proof.}
+To show $\myker \cap \myrange = \{\0\}$, write $v = T^n u$, and show $u \in \myker T^{2n} = \myker T^n$.
+Finally, dimensions add up by Rank-Nullity Theorem.
+
+After-class exercise:
+Let $T(z_1,z_2,z_3)=(4z_2,0,5z_3)$.
+Check that $\myker T \cap \myrange T \ne \{\0\}$ and $\C^3 \ne \myker T + \myrange T$ but $\C^3 = \myker T^3 \oplus \myrange T^3$ by finding describing these subspaces explicitly.
+\hfill
+(8.5)
+
+\item
+
+A vector $v\in V$ is a \emph{generalized eigenvector} associated to $\lambda$ if $v\neq\0$ and if there exist a nonnegative integer $j$ such that $(T-\lambda I)^jv=\0$.
+
+Remark:
+In this case $\lambda$ must be an eigenvalue, because otherwise $(T-\lambda I)$ being injective would imply that $(T-\lambda I)^j$ is injective.
+
+\item
+
+Ideally, one should be able to decompose $V$ as a direct sum of invariant subspaces where $T$ behaves nicely.
+We would like to have $V = E(\lambda_1, T) \oplus \cdots \oplus E(\lambda_m,T)$ but that is not always possible.
+Introducing generalized eigenvectors is an attempt to give a good description of linear operators, as simple and complete as possible.
+
+\item
+
+The subspace $G(\lambda,T) = \myker (T-\lambda I)^n$ is called the \emph{generalized eigenspace} of $T$ associated to the eigenvalue $\lambda$.
+
+Exercise:
+Let $T(z_1,z_2,z_3)=(4z_2,0,5z_3)$.
+Find the eigenvalues of $T$ and the generalized eigenspaces.
+Check that $\C^3$ is a direct sum of generalized eigenspaces.
+
+\item
+
+Let $v_1,\dots,v_m$ be generalized eigenvectors corresponding to distinct eigenvalues $\lambda_1,\dots,\lambda_m$ of $T\in\mathcal{L}(V)$. Then the vectors $v_1\dots,v_m$ are linearly independent.
+
+\emph{Proof.}
+Take $w=(T-\lambda_1 I)^k v_1$ as a $\lambda_1$-eigenvector.
+So $(T - \lambda I)^n w = (\lambda_1 - \lambda)^n w$.
+Apply $(T-\lambda_1 I)^k \prod_{j>1} (T - \lambda_j I)^n$ to both sides of $\sum_j a_j v_j = \0$ and conclude that $a_1 = 0$.
+To get $a_j = 0$ we repeat the same argument.
+\hfill
+(8.13)
+
+\end{itemize}
+
+
+\clearpage
+\section{Generalized eigenvectors and nilpotent operators}
+
+Main reference:
+Axler \S8.A \& \S8.B
+%\hfill
+%For this lecture, $\F = \R \text{ or }\C$, $\dim V = n \geq 1$
+
+\begin{itemize}
+
+\item
+
+An operator $N\in\mathcal{L}(V)$ is \emph{nilpotent} if $N^n={\bf 0}$.
+
+Examples:
+The derivative on $\mathcal{P}_7(\R)$, or $N(z_1,z_2,z_3,z_4)=(z_2+z_3,z_3,z_4,0)$ on $\C^4$.
+
+\item
+
+Let $N\in\mathcal{L}(V)$ be a nilpotent operator. There exists a basis $\mathcal{B}$ such that $[N]_{\mathcal{B}}$ is upper-triangular with only 0's on the diagonal.
+
+\emph{Proof.}
+Choose basis for $\myker N$, extend it to a basis of $\myker N^2$, and so on.
+\hfill
+(8.19)
+
+\item
+
+Let $T\in\mathcal{L}(V)$ be an operator and let $\lambda$ be an eigenvalue of $T$. The \emph{algebraic multiplicity} of $\lambda$ is defined as $\mydim \myker (T-\lambda I)^n$. The \emph{geometric multiplicity} of $\lambda$ is defined as $\mydim \myker (T-\lambda I)$ and can be smaller than the algebraic multiplicity. 
+
+Exercise:
+For $T(z_1,z_2,z_3)= ( 6z_1 + 3z_2 + 4z_3 , 6z_2 + 2z_3 , 7z_3 )$, find the eigenvalues, generalized eigenspaces, and a basis of $\C^3$ made of generalized eigenvectors.
+
+\bigskip
+\hfil
+\textbf{Below we assume that $\F=\C$.}
+\medskip
+
+\spitem                
+
+%($ \F=\C $).
+Let $\lambda_1,\dots,\lambda_m$ denote the distinct eigenvalues of $T\in\mathcal{L}(V)$.
+Then $$V= G(\lambda_1,T) \oplus \cdots \oplus G(\lambda_m, T).$$
+In particular, there is a basis of generalized eigenvectors, and the sum of algebraic multiplicities of $\lambda_1,\dots,\lambda_m$ equals $n$.
+Moreover, for all $j$, the subspace $G(\lambda_j,T)$ is invariant under $T$ and the restriction of $T-\lambda_j I$ to $G(\lambda_j,T)$ is nilpotent.
+
+\emph{Proof.} We use the observation that $\myker p(T)$ and $\myrange p(T)$ are invariant under $T$ for any complex polynomial $p(z)$, in particular for $p(z)=(z-\lambda_j)^n$.
+Invariance of $G(\lambda_j,T)$ under $T$ follow from this, nilpotence follows from definition of $G(\lambda,T)$.
+For the direct sum, recall that operators on complex spaces have at least one $\lambda_1$, write $V = G(\lambda_1, T) \oplus U$ with $U = \myrange (T-\lambda_1 I)^n$ invariant under $T$.
+Let $S=T_{|_U} \in \cL(U)$.
+The $\lambda_1$-eigenvectors are in $G(\lambda_1,T)$, hence not in $U$.
+By induction on $n$, $U = G(\lambda_2,S) \oplus \cdots \oplus G(\lambda_m,S)$.
+Since $G(\lambda,S)\subset G(\lambda,T)$, $G(\lambda_1,T)+ \cdots + G(\lambda_m,T) = V$.
+Direct sum follows from linear independence of generalized eigenvectors.
+\hfill
+(8.21)
+
+\item
+
+%($ \F=\C $).
+Let $\lambda_1,\dots,\lambda_m$ denote the distinct eigenvalues of $T\in\mathcal{L}(V)$ and $d_1,\dots,d_m$ their algebraic multiplicities.
+There exists a basis $\mathcal{B}$ of $V$ such that $[T]_{\mathcal{B}}$ is block diagonal with blocks $A_1,\dots,A_m$ such that $A_j$, $j\in\{1,\dots,m\}$, is a $d_j\times d_j$ upper-triangular matrix with $\lambda_j$ on the diagonal.
+
+\emph{Proof.}
+Defining $N_j \in \cL(G(\lambda_j,T))$ by $N_j v = (T - \lambda_j I) v$, we have $N_j$ nilpotent, so there is a basis $\mathcal{B}_j$ of $G(\lambda_j,T)$ such that $[N_j]_{\mathcal{B}_j}$ is upper-triangular with zeros on the diagonal, adding back $\lambda_j I$ gives the upper-triangular matrix with $\lambda_j$ on the diagonal.
+\hfill
+(8.29)
+
+\end{itemize}
+
+
+\clearpage
+\section{Characteristic and minimal polynomials}
+
+Main reference:
+Axler \S8.C
+%\hfill
+%For this lecture, $\F = \R \text{ or }\C$, $\dim V = n \geq 1$
+
+\begin{itemize}
+
+\item
+
+A {\it monic polynomial} is a polynomial whose leading coefficient is $1$.
+
+\item
+
+There exists a unique monic polynomial $p \in \cP(\F)$ of smallest degree such that $p(T)={\bf 0}$. The polynomial $p$ is called the {\it minimal polynomial} of $T$.
+
+\emph{Proof.}
+Consider the largest $m$ such that $I,T,T^2,\dots,T^m$ is linearly independent (such $m$ exists since $\cL(V)$ is finite-dimensional).
+Then $I,T,T^2,\dots,T^m$ is a basis for its span, which in turn contains $T^{m+1}$ by definition of $m$.
+Therefore, there is a unique monic polynomial $p(z) = z^{m+1} + a_{m} z^{m} + \dots + a_1 z + a_0$ of degree $m+1$ such that $p(T) = \0$.
+Moreover, if $q$ is a polynomial of smaller degree such that $q(T)=\0$, by linear independence of $I,T,T^2,\dots,T^m$ we have $q=\0$, so $q$ cannot be monic.
+\hfill
+(8.40)
+
+\item
+
+Let $p$ be the minimal polynomial of $T$ and let $q\in\mathcal{P}(\mathbb{F})$ be a polynomial. We have that $q(T)={\bf 0}$ if and only if $p$ divides $q$, i.e. $q=p\times s$ for some polynomial $s$.
+
+\emph{Proof.}
+The more difficult direction uses polynomial division.
+\hfill
+(8.46)
+
+\item
+
+Let $V$ be a finite-dimensional vector space and let $T\in\mathcal{L}(V)$. The zeros of the minimal polynomial of $T$ are exactly the eigenvalues of $T$.
+
+\emph{Proof.}
+If $p(\lambda)=0$, we have $(T-\lambda I)q(T) v = \0$ for every $v$, and since $q(T) \ne \0$, $\lambda$ is an eigenvalue.
+Conversely, if $\lambda$ is an eigenvalue then for an eigenvector we get $\0 = p(T)v = p(\lambda) v$, hence $p(\lambda)=0$.
+\hfill
+(8.49)
+
+\bigskip
+\hfil
+\textbf{Below we assume that $\F=\C$.}
+\medskip
+
+\item
+
+Let $\lambda_1,\dots,\lambda_m$ denote the distinct eigenvalues of $T\in\mathcal{L}(V)$ and $d_1,\dots,d_m$ their algebraic multiplicities.
+The \emph{characteristic polynomial} of $T$ is defined by
+\[
+g(z) = (z-\lambda_1)^{d_1} \cdots (z-\lambda_m)^{d_m}.
+\]
+Remark: $g(z)$ has degree $n$ and its zeros are the eigenvalues.
+
+\item
+
+\emph{Cayley-Hamilton Theorem}: $g(T)={\bf 0}$.
+
+\emph{Proof.} Every $v$ is a combination of vectors $v_j \in \ker (T-\lambda_j I)^{d_j}$, and since the operators $(T-\lambda_j I)^{d_j}$ commute, $g(T) v_j = \0$.
+\hfill
+(8.37)
+
+\item
+
+The characteristic polynomial is a multiple of the minimal polynomial.
+
+\emph{Proof.}
+%Every polynomial that annihilates $T$ is a multiple of the minimal polynomial.
+Combine Cayley-Hamilton and the property above.
+\hfill
+(8.48)
+
+\end{itemize}
+
+
+\clearpage
+\section{Jordan form}
+
+Main reference:
+Axler \S8.D
+\hfill
+For this lecture, $\F = \C$
+
+\begin{itemize}
+
+\item
+
+Suppose $N$ is nilpotent.
+Then $V$ has a basis which is of the form
+$$
+v_1,N v_1, N^2 v_1, \dots, N^{d_1} v_1 ,
+v_2,N v_2, \dots, N^{d_2} v_2 ,
+\dots ,
+v_m,N v_m, N^2 v_m, \dots, N^{d_m} v_m,
+$$
+and is such that $N^{d_j+1}v_j = \0$ for $j=1,\dots,m$.
+
+Remark: The only eigenvalue of $N$ is $0$, and $m$ is just enumerating different families. Each family $j$ starts with some vector $v_j$ and ends when $NNN\cdots NN v_j = \0$.
+
+\emph{Proof.}
+We will show how to find such a basis.
+Let $U_k = \myrange N^k$.
+A basis of a subspace $U \subset V$ with the above properties will be called a \emph{good} basis for $U$.
+
+First, $U_n = \{\0\}$ and the empty set is a good basis for $U_n$.
+
+Let $\B_{k+1} = (
+v_1',N v_1', \dots, N^{d_1'} v_1' ,
+\dots ,
+v_{m'}',N v_{m'}', \dots, N^{d_m'} v_{m'}')
+$
+be a good basis for $U_{k+1}$.
+We will construct a good basis for $U_k$.
+Since $U_{k+1} = \myrange (N_{|_{U_k}})$, we can find a solution $v_k$ to $N v_k = v_k'$, for $k=1,\dots,m'$.
+Let $d_j = d_j' + 1$ for $j=1,\dots,m'$.
+Take the collection
+$\tilde{\B}_{k} = (
+v_1,N v_1, \dots, N^{d_1} v_1 ,
+\dots ,
+v_{m'},N v_{m'}, \dots, N^{d_m} v_{m'})
+$
+obtained by inserting $v_1,\dots,v_{m'}$ before each subfamily of $\B_{k+1}$.
+
+To show that $\tilde{\B}_{k}$ is linearly independent, we consider a null linear combination, apply $N$ and use linear independence of $\B_{k+1}$ to show that the all the coefficients except the last one of each family are zero.
+For the last coefficients of each family, use again linear independence of $\B_{k+1}$.
+Complete $\tilde{B}_k$ to a basis of $U_k$ by adding $w_{m'+1},\dots,w_m$.
+
+Since $N w_{m'+j} \in U_{k+1}$, it is a linear combination of $\B_{k+1}$, which means a linear combination of $N \tilde{\B}_k$ which means $N x_j$ for some $x \in \myspan \tilde{\B}_k$.
+Take $v_{m'+j} = w_{m'+j} - x_j$ so $N v_{m'+j} = \0$.
+Take the collection $\B_k$ obtained by adding $v_{m'+1},\dots,v_{m}$ to $\tilde{\B}_k$.
+Then $\B_k$ spans $U_k$, so it is a basis, and moreover it is a good basis.
+\hfill
+(8.55)
+
+\item
+
+A basis $\mathcal{B}$ is a {\it Jordan basis} for $T$ if $[T]_{\mathcal{B}}$ is block diagonal with each block $A_i$ such that its diagonal consists entirely of $\lambda_i$'s, where $\lambda_i$ is an eigenvalue of $T$, and the line above the diagonal consists entirely of $1$'s.
+
+Remark:
+If $N$ is nilpotent, then a good basis as in the previous proof, written backwards, is a Jordan basis for $N$.
+
+\item
+
+Let $V$ be a complex finite-dimensional vector space. For any operator $T\in\mathcal{L}(V)$, there exists a Jordan basis for $T$.
+
+\emph{Proof.}
+Recall that $V= G(\lambda_1,T) \oplus \cdots \oplus G(\lambda_m, T)$, where $G(\lambda_j,T)$ is invariant under $T$ and $N_j = (T-\lambda_j I)_{|_{G(\lambda_j,T)}}$ is nilpotent.
+Find a Jordan basis for each $N_j$.
+These bases together provide a Jordan basis for $T$.
+\hfill
+(8.60)
+
+%\item
+%
+%How to find a Jordan basis? See file ``Jordan.pdf''
+
+\end{itemize}
+
+
+\clearpage
+\section{Computing a Jordan basis}
+
+Main references:
+\textsf{Jordan-compute.pdf} and \textsf{Jordan-thread.pdf}
+\hfill
+For this lecture, $\F = \C$
+
+\begin{itemize}
+
+\spitem
+
+To get a Jordan basis, we need the eigenvalues.
+Then work with $N=T-\lambda I$ for each $\lambda$ separately.
+In fact, we can work with different $\lambda$ in parallel in case we don't know the dimensions of each $G(\lambda,T)$, so we know when to stop.
+In order to start, we may need to find either some eigenvectors or generalized eigenvectors.
+
+\item
+
+A \emph{thread} is a chain of non-zero vectors $v,Nv,N^2v,\dots,N^kv$.
+Typically, $ N^{k+1}v =\0 $ in which case we say that it is a \emph{closed thread}.
+
+\emph{Remark.}
+This is not a standard terminology.
+
+\item
+
+We represent a thread by $v_0 \mapsto v_1 \mapsto v_2 \mapsto \dots \mapsto v_k \mapsto \0$.
+
+\item
+
+A Jordan basis for a nilpotent operator can always be written as a collection of closed threads.
+Conversely, if a collection of closed threads has $n$ vectors and they are linearly independent, these vectors form a Jordan basis.
+Moreover, it is enough to check linear independence of the last vector of the threads.
+
+\spitem
+
+To find a Jordan basis we must work with rational numbers written as fractions.
+Numerical software cannot be used, because even the existence of ``repeated eigenvalues'' is a property that breaks down in the presence of rounding error.
+More precisely, we often need to apply row reduction to non-invertible matrices which become invertible (but horrible) in the presence of a small rounding error.
+
+\item
+
+The Quick and Dirty Method starts with some vector $u$ and tries to find long threads $v_0 \mapsto v_1 \mapsto v_2 \mapsto \dots \mapsto v_k \mapsto \0$ where $v_j=u$ for some $j$. To enlarge the thread forward just apply $N$, to enlarge it backward we need to solve an equation. The method is not guaranteed but we can always try to get $n$ vectors and test whether $ Q^{-1} A Q $ is in Jordan form.
+
+\spitem
+
+The Thorough Method (a.k.a.\ Guaranteed Method) is based on the proof given in the previous lecture.
+It is probably the most economic if we wanted to find a Jordan basis that has a large number of threads with different lengths (which we don't want), but it is very rigid and really a pain in the neck.
+
+\item
+
+The Simpler Method is more playful and flexible. We can start with an \textsl{ad hoc} collection of threads, reduce the collection to get linear independence, and add more chains gradually if needed to span the whole space (or subspace).
+
+\spitem
+
+These names for the methods are not standard terminology either.
+
+\end{itemize}
+
+
+\clearpage
+
+\hfil
+\emph{\Large Part IV: Operators on real vector spaces}
+
+\medskip
+
+\hfill
+For this part,
+$\F = \R$, $\dim V = n \geq 1$.
+
+\section{Complexification I}
+
+Main reference:
+Axler \S9.A
+%\hfill
+%For this lecture, $\F = \R$, $\dim V = n \geq 1$
+
+\begin{itemize}
+
+\item
+
+We have already given the best possible description to operators on complex spaces.
+The idea now is to import that knowledge and use it to help us study operators on real vector spaces.
+
+%\item
+%
+%How to construct $\C$ from $\R$?
+%
+%Short answer:
+%Take $\C = \R + i\R$ and identify $i^2$ with $1$.
+%
+%Precise answer: Define $\boldsymbol{1}=(1,0)$ and $\boldsymbol{i}=(0,1)$ on $\R \times \R$.
+%Define the product by $z \times (u+w) = (z \times u) + (z \times w)$ with
+%$\boldsymbol{1} \times \boldsymbol{1} = \boldsymbol{1}$,
+%$\boldsymbol{1} \times \boldsymbol{i} = \boldsymbol{i} \times \boldsymbol{1} = \boldsymbol{i}$,
+%and
+%$\boldsymbol{i} \times \boldsymbol{i} = -\boldsymbol{1}$.
+%
+%\item
+%
+%We have the space $\R^3$ with sum of vectors and multiplication by real scalars.
+%
+%How to construct the space $\C^3$ with $\F = \C$?
+%
+%Short answer:
+%Take $\C^3 = \R^3 + i \R^3$ and define the operations.
+%\\
+%- Sum of complex vectors: $(u_1 + i v_1) + (u_2 + i v_2) = (u_1 + u_2) +i (v_1 + v_2)$
+%\\
+%- Multiplication by complex scalars: $(a + ib)(u + i v) = (au - bv) + i (bu + av)$
+%
+%Precise answer:
+%Define $V = \R^3 \times \R^3$ with the usual addition operation, and multiplication by complex scalars defined by $(a+ib) \times (u,v) = (au-bv,bu+av)$.
+
+\item
+
+The \emph{complexification} $V_{\mathbb{C}}$ of $V$ is the complex vector space consisting of ordered pairs $(u,v)\in V_{\mathbb{C}}=V\times V$ with the addition defined naturally and the (complex) scalar multiplication defined by
+\[
+(a+ib)(u,v)=(au-bv,bu+av).
+\]
+If we use the notation $(u,v)=u+iv$, then the scalar multiplication follows the usual multiplication rules for complex numbers.
+
+Short description: $V_\C = V + iV$ with sum of two vectors and multiplication of a vector by a complex scalar multiplication defined in the obvious way.
+
+\item
+
+If $v_1,\dots,v_n$ is a basis of $V$, then it is also a basis of $V_{\mathbb{C}}$.
+So $\mydim_\R V = \mydim_\C V_\C$.
+
+\item
+
+Definition.
+Let $T\in\mathcal{L}(V)$.
+The \emph{complexification} $T_{\mathbb{C}} \in \cL(V_\C)$ of $T$ is defined by $T_{\mathbb{C}}(u+iv)=Tu+iTv$.
+
+Remark: Not every $S \in \cL(V_\C)$ corresponds to $Tu + iTv$ for some $T \in \cL(V)$.
+
+\item
+
+Let $\mathcal{B}$ be a basis of $V$.
+Then $[T]_{\mathcal{B}}=[T_{\mathbb{C}}]_{\mathcal{B}}$.
+
+\spitem
+
+The minimal polynomial of $T$ is equal to the minimal polynomial of $T_{\mathbb{C}}$.
+
+\emph{Proof.}
+First note that $(T_\C)^k (u + i v) = T^k u + i T^k v$ for every $u,v \in V$ and $k \in \N$, whence $g(T_\C)u=g(T)u$ for real polynomial $g$ and $u \in V$.
+
+Let $p$ be the minimal polynomial of $T$, and let $v_1,\dots,v_n$ be a basis for $V$.
+Then it is also a basis for $V_\C$, and since $p(T_\C) v_j = p(T) v_j = \0$ for all $j$, we have $p(T_\C) = \0$.
+
+Now suppose $q = f + i g$ is a complex polynomial with smaller degree such that $q(T_\C)=\0$.
+Then $q(T_\C)z=\0$ for all $z \in V_\C$, and in particular $q(T_\C)u=\0$ for all $u \in V$.
+But $q(T_\C)u = f(T)u + i g(T)u$, hence $f(T)=\0$ and $g(T)=\0$.
+By minimality of $p$, both $f$ and $g$ are the zero polynomial, and so is $q$.
+\hfill
+(here)
+
+\spitem
+
+% Next time push it to the next lecture.
+
+If $ \inner{\cdot}{\cdot} $ is an inner product on $V$ then
+$ \inner{u+iv}{x+iy}_\C = \inner ux + \inner vy + i \inner vx -i \inner uy $
+defines a complex inner product on $ V_\C $.
+
+\emph{Proof.}
+Long computations show that it satisfies the 4-5 axioms.
+\hfill
+(Exercise 9.B.3)
+
+\end{itemize}
+
+
+%\end{document}
+
+
+\clearpage
+\section{Complexification II}
+
+Main reference:
+Axler \S9.A
+%\hfill
+%For this lecture, $\F = \R$, $\dim V = n \geq 1$, and $T \in \cL(V)$.
+
+For convenience, fix a basis for $V$ and work with matrix representation $A=[T]\in \R^{n \times n}$.
+
+%Denote matrix and vector conjugates by $\bar B = (\bar b_{jk})_{jk} \in \C^{n \times n}$ and $\bar x = (\bar x_j)_j \in \C^{n \times 1}$.
+%\\
+%Remark: The map $x \mapsto \bar x$ is not linear for $\F = \C$.
+
+\begin{itemize}
+
+\item
+
+Let $\lambda\in\mathbb{R}$.
+Then $\lambda$ is an eigenvalue of $T$ if and only if it is an eigenvalue of $T_{\mathbb{C}}$.
+
+\emph{Proof.}
+Suppose $\lambda$ is an eigenvalue for $T$.
+Then there is $u \in V \setminus \{\0\}$ such that $T u = \lambda u$.
+On the other hand, $T_\C u = T u = \lambda u$ so $\lambda$ is also an eigenvalue of $T_\C$.
+
+Let $\lambda$ be an eigenvalue for $T_\C$.
+Then $T_\C(u+iv) = \lambda (u+iv) = (\lambda u) + i (\lambda v)$ for some $z=u+iv \in V_\C \setminus \{\0\}$.
+On the other hand, $T_\C(u+iv) = Tu + i Tv$, so $Tu = \lambda u$ and $T v = \lambda v$.
+Since $u$ and $v$ cannot be both zero, $\lambda$ is an eigenvalue.
+\hfill
+(9.11)
+
+\spitem
+
+For any $\lambda\in\mathbb{C}$, $j\in\mathbb{N}$ and $u,v\in V$,
+\[
+(T_{\mathbb{C}}-\lambda I)^j(u+iv)={\bf 0}\Leftrightarrow (T_{\mathbb{C}}-\overline{\lambda} I)^j(u-iv)={\bf 0}.
+\]
+
+\emph{Proof.}
+$(A - \bar\lambda I)^j \bar x = (\bar A - \bar\lambda \bar I)^j \bar x = \overline{(A - \lambda I)}^j \bar x = \overline{(A - \lambda I)^j x}$.
+\hfill
+(here)
+
+\item
+
+Let $\lambda\in\mathbb{C}$. Then $\lambda$ is an eigenvalue of $T_{\mathbb{C}}$ if and only if $\overline{\lambda}$ is an eigenvalue of $T_{\mathbb{C}}$.
+
+\emph{Proof.}
+Take $j=1$.
+
+\spitem
+
+For $T_\C$, the algebraic multiplicity of $\lambda$ equals the algebraic multiplicity of $\overline{\lambda}$.
+
+\emph{Proof.}
+If $x_1,\dots,x_d$ is a basis for $G(\lambda,A)$, then $\bar x_1, \dots, \bar x_d$ is a basis for $G(\bar\lambda,A)$.
+
+\item
+
+Every operator on an odd-dimensional real vector space has at least one eigenvalue.
+
+\emph{Proof.}
+The non-real eigenvalues of $T_\C$ come in pairs with equal multiplicity.
+\hfill
+(9.19)
+
+\spitem
+
+The (geometric and algebraic) multiplicities of $\lambda\in\R$ for $ T $ are the same for $ T_\C $.
+
+\emph{Proof:}
+The number of free variables in the echelon form of $ A-\lambda I $ and $ (A-\lambda I)^n $.
+
+%For $\lambda\in\R$, the multiplicities of $\lambda$ is the same for $ T $ and $ T_\C $.
+%
+%\emph{Proof.}
+%It is the number of free variables in the echelon form of $ (A-\lambda I)^n $.
+
+\item
+
+The characteristic polynomial of $T_{\mathbb{C}}$ has real coefficients.
+
+\emph{Proof.}
+$(z-\lambda)^m (z- \bar \lambda)^m = (z^2 - 2 \Re(\lambda)z + |\lambda|^2)^m$ has real coefficients.
+\hfill
+(9.20)
+
+\spitem
+
+The \emph{characteristic polynomial} of $T$ is defined as the characteristic polynomial of $T_{\mathbb{C}}$.
+Its degree is $\mydim V$ and its real roots are the eigenvalues of $T$.
+
+\item
+
+\emph{Cayley-Hamilton Theorem.}
+$p(T)=\0$.
+
+\emph{Proof.}
+By the complex Cayley-Hamilton Theorem,
+$[p(T)] = p([T]) = p([T_\C])=\0$.
+
+\item
+
+The minimal polynomial divides the characteristic polynomial.
+
+\emph{Proof.}
+The minimal polynomial divides any polynomial that annihilates $T$.
+
+\end{itemize}
+
+
+\clearpage
+\section{Normal operators on real inner product spaces}
+
+Main reference:
+Axler \S9.B
+%\hfill
+%For this lecture, $\F = \R$, $\dim V = n \geq 1$, and $T \in \cL(V)$.
+
+\begin{itemize}
+
+\item
+
+\textbf{Theorem.}
+If $T \in \cL(V)$ is normal, then there exists an orthonormal basis $\mathcal{B}$ such that $[T]_{\mathcal{B}}$ is block diagonal with
+each block either $1 \times 1$ with a real eigenvalue or $2 \times 2$ of the form
+\(
+\abba
+%[ a, -b ; b, a ]_{2 \times 2}
+\)
+where $b>0$ and $\lambda = a + ib$ an eigenvalue of $T_\C$.
+
+Lemma~1.\
+Every operator has an invariant subspace of dimension $1$ or $2$.
+
+\emph{Proof.}
+We know that $T_\C$ has at least one eigenvalue $a+ib$.
+So there exist $u,v \in V$ such that $u+iv \in V_\C \setminus \{\0\}$ is an eigenvector.
+Hence, $T_\C(u+iv) = (a+ib) (u+iv) = (au - bv) + i(av + bu)$.
+On the other hand, $T_\C(u+iv) = Tu + i Tv$.
+Thus, $Tu = (au - bv)$ and $Tv = (av + bu)$.
+Therefore, $\myspan(u,v)$ is invariant and has dimension 1 or 2.
+\hfill
+(9.8)
+
+Lemma~2.\
+If $U$ is a 2-dimensional real inner product space, and $T\in\mathcal{L}(U)$ is normal but not self-adjoint, then there exists an orthonormal basis $\mathcal{B}$ of $U$ such that
+\(
+[T]_{\mathcal{B}} =
+\abba
+%\left[ \begin{array}{rr} a & -b \\ b & a\end{array}\right]
+\)
+with $a,b\in\mathbb{R}$, $b>0$.
+
+\emph{Proof.}
+%A system of non-linear equations shows that
+Pick any o.n.\ basis and check that
+$[T]$ must have this form with $\pm b$.
+\hfill
+(9.27)
+
+Lemma~3.\
+If $T\in\mathcal{L}(V)$ is a normal operator and $U$ is a subspace invariant under $T$, then
+$U^\perp$ is invariant under $T$, moreover $T_{|_U}$ and $T_{|_{U^\perp}}$ are normal operators.
+
+\emph{Proof.}
+For invariance of $ U^{\perp} $, extend an orthonormal basis for $U$ and write $ [T]=[A,B;\0,C] $.
+To show that $ B=\0 $, we use $ \sum_{j=1}^m \|Te_j\|^2 = \sum_{j=1}^m \|T^*e_j\|^2 $ and repeat the same trick as in the Complex Spectral Theorem.
+Invariance of $ U $ and $ U^\perp $ under $ T^* $ follows from $ [T^*] = [A^*, \0 ; \0, C^*] $.
+Normality of $T_{|_U}$ and $T_{|_{U^\perp}}$ follows from normality of $ A $ and $C$, which in turn follow from normality of $ [T] $.
+\hfill
+(9.30)
+
+%\emph{Proof.}
+
+\emph{Proof of the theorem.}
+Work by induction on $n = \mydim V$.
+
+For $n=1$ the description follows trivially, so suppose $n \geq 2$ and that the theorem holds for spaces of dimension smaller than $n$.
+
+Let $U$ be an invariant subspace of dimension $1$, if such subspace exists.
+If not, let $U$ be an invariant subspace of dimension $2$ (it exists by Lemma~1).
+In the former case, take $v \in U$ with $\|v\|=1$ and let $\B = \{v\}$.
+In the latter case, we know that $T_{|_U}$ is normal (by Lemma~3) but not self-adjoint (otherwise $T$ would have eigenvalues by the Real Spectral Theorem and we would not be in the latter case), hence by Lemma~2 there is a basis $\B$ of $U$ for which $[T_{|_U}]$ is a $2\times 2$ matrix of the above form.
+
+On the other hand, by Lemma~3, $U^\perp$ is invariant and $T_{|_{U^\perp}}$ is normal.
+By the induction hypothesis, there is an orthonormal basis $\B'$ for $U^\perp$ for which $[T_{|_{U^\perp}}]$ has the desired form.
+Then for the orthonormal basis $\A = \B' \cup \B$ of $V$ we have $[T]_{\A}$ in the desired form, proving the theorem.
+\hfill
+(9.34)
+
+\end{itemize}
+
+
+\clearpage
+\section{Isometries and 2x2 block diagonalization}
+
+Main reference: these notes.
+
+\begin{itemize}
+
+\item
+
+If $S \in \cL(V)$ is an isometry, then  there exists an orthonormal basis $\mathcal{B}$ such that $[T]_{\mathcal{B}}$ is block diagonal with
+each block either $[ \pm 1]_{1 \times 1}$ or of the form
+\( [ \cos \theta  , -\sin \theta  ; \sin \theta , \cos \theta ]_{2 \times 2} \)
+with $\theta \in (0,\pi)$.
+
+\emph{Proof.} Use the previous theorem and the assumption that $S$ is an isometry.
+\hfill
+(9.36)
+
+\item
+
+If the real vectors $ u_1,\dots,u_n $ form a basis for $ V_\C $, then they form a basis for $ V. $
+
+\emph{Proof.}
+If $ \sum_j \alpha_j u_j = \0 $ in $ V $, then $ \sum_j \alpha_j u_j = \0 $ in $ V_\C $, implying $ \alpha_j=0. $
+
+%Check the definition of L.I.
+
+\item
+
+If $ 2m $ vectors $ u_1 \pm i v_1,\dots,u_m \pm i v_m $ are L.I., then  
+%in $ V_\C $, then the $ 2m $ real vectors 
+$ u_1,v_1,\dots,u_m,v_m $ are L.I. in $ V_\C. $
+
+\emph{Proof.}
+These vectors span the same subspace of $ V_\C $, hence they are L.I. in $ V_\C $.
+
+%Transform the collection and use the above lemma.
+%Consider the dimension of the span
+
+\item
+
+If the $ m $ complex vectors $ u_1+iv_1,\dots,u_m+iv_m $ are L.I. in $ V_\C $, then the real family $ u_1,v_1,\dots,u_m,v_m $ has at least $ m $ vectors which are L.I. in $ V_\C $.
+
+\emph{Proof.}
+The span of $ u_1,v_1,\dots,u_m,v_m $ contains the span of $ u_1+iv_1,\dots,u_m+iv_m $, which has complex dimension $ m $. Hence, at least $ m $ of them are L.I. in $ V_\C $.
+
+%Enlarge and transform the collection, then use the lemma.
+%Consider the dimension of the span
+
+\item
+
+If $ u+iv $ is an eigenvector of $ T_\C $ with eigenvalue $ a+ib $ with $ b>0 $, then $ \myspan\{u,v\} $ is two-dimensional and invariant under $ T $, and
+$ [T_{|_{\myspan\{u,v\}}}]_{\{v,u\}} = \abba $.
+%$ [T_{|_{\myspan\{u,v\}}}]_{\{v,u\}} = [a, -b ; b, a]$.
+
+\emph{Proof.}
+Since $ u-iv $ is an eigenvector for $ a-ib $, they are linearly independent and $ \myspan\{u\pm iv\} = \myspan\{u,v\} $ is two-dimensional.
+Now observe 
+that
+$ Tu + iTv = T_\C(u+iv) = (a+ib)(u+iv) = (au-bv) + i (bu+av) $,
+whence $ Tu=au-bv $ and $ Tv=bu+av $.
+Hence $ \myspan\{u,v\} $ is invariant and
+$ [T_{|_{\myspan\{u,v\}}}]_{\{v,u\}} = \abba $.
+%$ [T_{|_{\myspan\{u,v\}}}]_{\{u,v\}} = [a, b ; -b, a]$.
+
+\item
+
+Suppose $ T_\C $ is diagonalizable.
+Denote the eigenvalues of $ T_\C $ listed with multiplicity by
+$a_1+ib_1,\dots,a_m+ib_m,a_1-ib_1,\dots,a_m-ib_m,a_{m+1},\dots,a_n$ where $ a_{m+1} \leq \dots \leq a_n $ and $ b_j > 0 $.
+Then there is a basis $ \B $ for $ V $ such that $ [T]_\B $ is block diagonal, with $ m $ blocks of the form
+$ \tiny \begin{bmatrix} a_j \ {-b_j} \\ b_j \ \ \ a_j \end{bmatrix} $
+%$[a_j, -b_j ; b_j, a_j]_{2 \times 2}$
+and $ n-2m $ blocks of the form $ [a_j]_{1 \times 1} $.
+
+How to get $ \B $?
+Let $ z_j = u_j + iv_j $ denote the elements of the original eigenbasis.
+Replace $ z_{m+j} $ by $ u_j - iv_j $ for $ j=1,\dots,m $.
+For each string of identical eigenvalues $ a_k,\dots,a_{k+d} $, choose $ d+1 $ linearly independent vectors $ x_k,\dots,x_{k+d} $ from $ u_k,v_k,\dots,u_{k+d},v_{k+d}, $ and replace them in the list.
+The new collection has $ n $ eigenvectors (why?) and spans all the eigenspaces (why?), hence it spans $ V_\C $, so it is an eigenbasis.
+And $ [T]_\B $ has the claimed form
+if $ \B = v_1,u_1,\dots,v_m,u_m,x_{2m+1},x_n $.
+
+\emph{Remark.}
+When $ T $ is normal, the orthonormal basis of eigenvalues provided by the Complex Spectral Theorem will provide an orthogonal basis whose existence we proved in the previous lecture.
+Gram-Schmidt might be needed for the real part.
+
+\emph{Remark.}
+If $ \A $ is a Jordan basis for $ T_\C $, a similar procedure will give a basis $ \B $ such that $ [T]_\B $ has blocks in the diagonal as above, some $ 1 $'s above the real eigenvalues, and some
+$ \tiny \begin{bmatrix} 1 \ 0 \\ 0 \ 1 \end{bmatrix} $
+blocks above the 
+$ \abba $
+blocks.
+
+\end{itemize}
+
+
+%\end{document}
+
+
+\clearpage
+
+\hfil
+\emph{\Large Part V: Trace and determinant}
+
+\bigskip
+
+\hfill
+For this part,
+$\F=\R \text{ or } \C$, and $\mydim V = n \geq 1$.
+%\\
+%\hspace*{\fill}
+For convenience, $T_\C$
+\\
+\hspace*{\fill}
+and $V_\C$
+mean $T$ and $V$ if $\F=\C$, or
+%\\
+%\hspace*{\fill}
+their
+complexification if $\F=\R$.
+%Same for $V_\C$.
+
+\section{Trace}
+
+Main reference:
+Axler \S10.A
+
+\begin{itemize}
+
+\item
+
+We define the \emph{trace of an operator} $T \in \cL(V)$, denoted $\mytrace T$, as the sum of all $n$ eigenvalues of $T_\C$.
+We define the \emph{trace of a matrix} $A = (a_{jk})_{jk} \in \C^{n \times n}$ by
+\(
+\mytrace A = \sum_{k=1}^n a_{kk}
+,
+\)
+which is the sum of its $n$ diagonal entries.
+
+\item
+
+If $ p_T(z) = \sum_j a_j z^j $ is the characteristic polynomial of $ T $, then $ \mytrace T = -a_{n-1} $.
+
+\item
+
+\emph{Theorem.} For every basis $\B$,
+\(
+\mytrace [T]_\B = \mytrace T
+.
+\)
+In particular, $\mytrace [T]_\B$ does not depend on the choice of basis.
+
+\item
+
+To prove the previous theorem, we recall the following facts:
+
+* There is a basis $\B$ of $V_\C$ such that $[T_\C]_\B$ is triangular superior.
+
+* For every basis $\B$ of $V_\C$, if $[T_\C]_\B$ is triangular superior then its diagonal elements coincide with the $n$ eigenvalues of $T_\C$.
+
+And we use the following property of matrix trace:
+
+* If $A$ is invertible, then $\mytrace(A B A^{-1}) = \mytrace(B)$.
+
+The last property implies that $\mytrace [T]_\B$ does not depend on the basis $\B$.
+Hence, it is enough to show that the definitions of trace of operator and trace of matrix coincide for \emph{some} basis $\B$.
+The first property ensures the existence of a convenient basis, which together with the second property shows that this basis gives the desired equality, proving the theorem.
+
+\item
+
+Proof that $\mytrace(A B A^{-1}) = \mytrace(B)$.
+
+This follows from another property: $\mytrace(AB) = \mytrace(BA)$, given by
+\[
+\mytrace AB
+= \sum_j (AB)_{jj}
+= \sum_j \sum_k a_{jk} b_{kj}
+= \sum_k \sum_j b_{kj} a_{jk}
+= \sum_k (BA)_{kk}
+= \mytrace BA.
+\]
+
+\item
+
+Interesting property:
+Although there is no relationship between the eigenvalues of $S+T$ with sums of eigenvalues of $S$ and of $T$, when added together we have that the sum of all eigenvalues of $S+T$ equals the sum of all eigenvalues of $S$ and $T$.
+
+\item
+
+Interesting application:
+There are no operators $S$ and $T$ such that $ST - TS = I$.
+
+\end{itemize}
+
+
+\clearpage
+\section{Determinant}
+
+Main reference:
+Axler \S10.B
+
+%$\F=\R \text{ or } \C$, and $\mydim V = n$.
+%
+%$T_\C$ means $T$ if $\F=\C$ or its complexification if $\F=\R$.
+%Same for $V_\C$.
+
+\begin{itemize}
+
+\item
+
+We define the \emph{determinant of an operator} $T \in \cL(V)$, denoted $\mydet T$, as the product of all $n$ eigenvalues of $T_\C$.
+It equals $ (-1)^n a_0 $ in the characteristic polynomial.
+
+\item
+
+The operator $T$ is invertible if and only if $\mydet T \ne 0$.
+Also,
+$p_T(z) = \mydet( zI - T )$.
+
+
+\item
+
+We define the \emph{determinant of a matrix} $A = (a_{jk})_{jk} \in \C^{n \times n}$ by
+\[
+\mydet A = \sum_{\sigma} \mysgn(\sigma) \prod_{j=1}^n a_{\sigma(j),j}
+,
+\]
+where the sum is over all the $n!$ permutations $\sigma$ of $ \{1,\dots,n\} $, and
+\[
+\mysgn(\sigma) = (-1)^{\#\{(j,k) \,:\, j<k \text{ and } \sigma(j) > \sigma(k) \}}
+.
+\]
+
+%\emph{Proof.}
+%$T$ invertible $\Leftrightarrow 0 \text{ is not an eigenvalue} \Leftrightarrow \mydet T \ne 0$.
+
+\item
+
+$\mydet(AB)=(\mydet A)(\mydet B)$
+
+%\emph{Proof.} omitted
+
+\item
+
+For every basis $\B$ of $ V $,
+we have
+$\mydet [T]_\B = \mydet T$.
+
+\emph{Proof.}
+Since $\mydet I = 1$, by the previous property $\mydet [T]_\B$ does not depend on $\B$, so it suffices to show the identity for \emph{some} basis of $ V_\C $.
+Take a basis $\B$ of $T_\C$ for which $[T_\C]_{\B}$ is upper-triangular, so the $n$ elements in the diagonal are the $n$ eigenvalues of $T_\C$.
+Finally, notice that the determinant of an upper-triangular matrix is the product of the elements in the diagonal, because other permutations always pick an entry below it.
+
+\spitem
+
+For $\Omega \subset \R^n$ open and bounded,
+$\mathsf{vol}(T(\Omega))=|\mydet T| \times \mathsf{vol}(\Omega)$.
+
+The volume is defined as
+$$\mathsf{vol}(\Omega) = \inf_\A \sum_k \mathsf{vol}(A_k).$$
+The infimum is taken over all sequences of boxes $\A = (A_1,A_2,\dots)$ whose faces are orthogonal to the axes and whose union contains $\Omega$.
+The volume of a box $(A_k)$ is defined as the product of its $n$ dimensions (width, depth, height, etc.).
+
+The proof uses the following facts:
+\begin{itemize}
+\item
+A diagonal operator $D$ stretches volume by a factor $|\mydet D|$.
+\hfill
+(exercise)
+\item
+Isometries preserve volume.
+\hfill
+(accepted without proof)
+\item
+An isometry $S$ has $|\mydet S|=1$.
+\hfill
+(exercise)
+\item
+$\mydet(RT)=(\mydet R)(\mydet T)$.
+\hfill
+(exercise)
+\item
+Singular Value Decomposition: $T = S_1 S_2 D S_3$.
+\hfill
+(write $P = S_2 D S_3$)
+\end{itemize}
+
+\emph{Proof.}
+$
+\mathsf{vol}(T(\Omega))=
+\mathsf{vol}(S_1 S_2 D S_3(\Omega))=
+\mathsf{vol}(D S_3(\Omega))=
+|\mydet D| \times \mathsf{vol}(S_3(\Omega))=
+|\mydet D| \times \mathsf{vol}(\Omega).
+$
+On the other hand,
+$|\mydet T| = |\mydet D|$, concluding the proof.
+
+\end{itemize}
+
+%\clearpage
+
+%Slides Lecture 21
+
+%Slides Lecture 22
+
+%Hints Recitation 10
+
+%Record Lecture 21
+
+%Record Lecture 22
+
+%Upload Lecture 22
+
+%AfterClass 21
+
+%Recitation 11
+
+%Recitation 12
+
+
+\end{document}
+
+

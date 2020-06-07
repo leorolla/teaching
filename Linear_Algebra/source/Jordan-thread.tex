@@ -1,0 +1,691 @@
+\documentclass[12pt]{article}
+
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts} 
+\usepackage{hyperref}
+\usepackage{framed}
+\usepackage{color}
+\usepackage{amssymb}
+
+\usepackage[normalem]{ulem}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+\hypersetup{colorlinks=true,urlcolor=blue,linkcolor=black,citecolor=black}
+
+\hyphenpenalty 6000
+\tolerance 4000
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{remark}{Remark}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem*{ack}{Acknowledgement}
+
+\renewcommand{\epsilon}{\varepsilon}
+
+\newcommand{\abs}[1]{\left\vert #1\right\vert}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\inner}[2]{\langle #1, #2 \rangle}
+\newcommand{\proj}[1]{P_{\!\!{}_{#1}}}
+
+\newcommand{\dd}{{\mathrm{d}}}
+\newcommand{\e}{{\mathrm{e}}}
+\newcommand{\re}{{\mathrm{re}}}
+\newcommand{\0}{\mathbf{0}}
+
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\T}{\vec{T}} 
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\PR}{\mathbb{P}}
+\newcommand{\Pb}{\overline{\mathbb{P}}}
+
+\DeclareMathOperator{\mydeg}{\mathsf{deg}}
+\DeclareMathOperator{\myspan}{\mathsf{span}}
+\DeclareMathOperator{\myrange}{\mathsf{range}}
+\DeclareMathOperator{\mynull}{\mathsf{ker}}
+\DeclareMathOperator{\myker}{\mathsf{ker}}
+\DeclareMathOperator{\mydim}{\mathsf{dim}}
+\DeclareMathOperator{\myrank}{\mathsf{rank}}
+\DeclareMathOperator{\mytrace}{\mathsf{trace}}
+\DeclareMathOperator{\mydet}{\mathsf{det}}
+\DeclareMathOperator{\mysgn}{\mathsf{sgn}}
+\DeclareMathOperator{\mydiag}{\mathsf{diag}}
+
+\DeclareMathOperator{\mydot}{\boldsymbol{\cdot}}
+
+
+\renewcommand{\det}{use mydet}
+
+\newcommand{\va}{\vec{a}}
+\newcommand{\vb}{\vec{b}}
+\newcommand{\vc}{\vec{c}}
+\newcommand{\ve}{\vec{e}}
+\newcommand{\vx}{\vec{x}}
+\newcommand{\vy}{\vec{y}}
+\newcommand{\vr}{\vec{r}}
+\newcommand{\vu}{\vec{u}}
+\newcommand{\vv}{\vec{v}}
+\newcommand{\vw}{\vec{w}}
+
+\newcommand{\abba}{{\tiny \begin{bmatrix} a \ {-\!\!\;b} \\ b \ \ \ a \end{bmatrix}}}
+
+\pagestyle{empty}
+
+\parindent 0pt
+\parskip .4em
+
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+
+\theoremstyle{definition}
+\newtheorem{example}{Example}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\usepackage{embedall}
+
+
+\begin{document}
+
+\title{Finding a Jordan basis for a nilpotent operator}
+\author{Leonardo T. Rolla}
+\maketitle
+
+{\let\thefootnote\relax
+\footnotetext{\copyright \the\year\ Leonardo T. Rolla
+\href{http://creativecommons.org/licenses/by-sa/3.0/}
+{\includegraphics[height=1.0em]{by-sa.pdf}}. This typeset file has the source code embedded in it. If you re-use part of this code, you are kindly requested --if possible-- to convey the source code along with or embedded in the typeset file, and to keep this request.}}
+
+\section{The algorithm}
+
+We prove the following proposition:
+
+\begin{center}
+\emph{For finite-dimensional $G$ and nilpotent $ N\in\cL(G) $ there is a Jordan basis.}
+\end{center}
+
+%\emph{For finite-dimensional $G$ and nilpotent $N \in \cL(G)$, there is a Jordan basis.}
+%\\
+
+The proof is explicit and provides an algorithm to actually find a Jordan basis.
+We define the notion of \emph{thread} as a chain of vectors like this:
+\[
+u \mapsto v \mapsto w \mapsto \dots \mapsto z
+\mapsto
+\text{ \bf ?}
+.
+\]
+Here ``$ \mapsto $'' means the image under $N$.
+The above example is an \emph{open thread}.
+If we know that $Nz=\0$, we can have a \emph{closed thread}
+\[
+u \mapsto v \mapsto w \mapsto \dots \mapsto z
+\mapsto
+\0
+.
+\]
+In both cases, the \emph{tip} of the thread is $z$ and the \emph{base} is $u$.
+	The \emph{length} of a thread is the number of non-zero vectors.
+
+The object we will be dealing with all the time is a \emph{collection of threads}.
+The \emph{size} of a collection is the sum of the lengths of the threads.
+
+We introduce two operations on collections of threads: \emph{stretch} and \emph{reduce}.
+
+We can \emph{stretch} a collection of threads if at least one of the threads is still open. The operation consists in applying $N$ to the tip of open threads and appending the result at the end. This causes the open threads to either increase in length or become closed.
+
+We can \emph{reduce} a collection of threads if the tips are linearly dependent. To do that, we sort the collection from longest to shortest, find which ones are linear combinations of previous ones, and subtract the corresponding linear combination at their base.
+The vectors to be used in this linear combination are those with the same distance form the tip as the base of the concerned thread. The result of this subtraction will propagate throughout the thread, and at some point the thread will become zero, either at the tip or maybe before. This causes the size of the collection to decrease.
+
+This process must stop.
+Indeed, each time we stretch, we enlarge the longest thread or we close a thread, and the longest thread cannot be longer than $\mydim G$; moreover, between two stretches we can only perform finitely many reductions.
+When the process stops, we have a collection of closed threads whose tips are linearly independent.
+We claim that, in this case, the whole collection of vectors is linearly independent.
+
+We now prove the above claim.
+Consider an arbitrary finite collection of closed threads whose tips are linearly independent.
+Denote such a collection by
+\[
+\begin{gathered}
+v^1_{d_1} \mapsto v^1_{d_1-1} \mapsto \dots \mapsto v^1_2 \mapsto v^1_1 \mapsto v^1_0 \mapsto \0
+\\
+v^2_{d_2} \mapsto v^2_{d_2-1} \mapsto \dots \mapsto v^2_2 \mapsto v^2_1 \mapsto v^2_0 \mapsto \0
+\\
+\vdots
+\\
+v^m_{d_m} \mapsto v^m_{d_m-1} \mapsto \dots \mapsto v^m_2 \mapsto v^m_1 \mapsto v^m_0 \mapsto \0
+\end{gathered}
+\]
+with $d = d_1 \geq d_2 \geq \dots \geq d_m \geq 1$.
+Suppose there is a linear combination
+$$\sum_{j=1}^m \sum_{k=0}^{d_m} \alpha_{j,k} v^j_k = \0.$$
+Applying $N^{d}$ to this identity gives
+$$\0 = \sum_{j} \alpha_{j,d} N^{d} v^j_k = \sum_j \alpha_{j,d} v^j_0.$$
+Since $v^1_0,\dots,v^m_0$ are linearly independent, we have $\alpha_{j,d} = 0$ for all relevant $j$.
+Now we apply $N^{d-1}$ to the same identity and use that $\alpha_{j,d} = 0$ to get
+$$\0 = \sum_{j} \alpha_{j,d-1} N^{d-1} v^j_k = \sum_j \alpha_{j,d-1} v^j_0.$$
+Again, by linear independence of $v^1_0,\dots,v^m_0$, we have $\alpha_{j,d-1} = 0$ for all relevant $j$.
+Proceeding this way, we end up concluding that all the coefficients are zero.
+This concludes the proof of the claim.
+
+We now finish the proof of the proposition.
+Start with a collection of threads whose vectors span $G$.
+For instance, let $v_1,\dots,v_n$ be a basis for $G$ and consider the collection
+\[
+v_1 \mapsto \text{ \bf ?}
+,\ \ \
+v_2 \mapsto \text{ \bf ?}
+,\ \ \
+\dots \ \ \
+,\ \ \
+v_n \mapsto \text{ \bf ?}
+,\ \ \
+\]
+of very short open threads.
+This collection spans $G$.
+
+Now notice that the operation of reduction only adds multiples of some vectors in the collection to some other vectors, so it does not change the space spanned by the collection as a whole.
+Moreover, the operation of stretching only incorporates more vectors into the collection.
+
+Therefore, the collection we get in the end is a basis which forms closed threads, which is just the definition of Jordan basis rephrased.
+
+This concludes the proof.
+
+As a remark, if for some reason we start with a collection which is not spanning, but get $\mydim G$ vectors in the end, then it is anyway a Jordan basis.
+
+\section{Example}
+
+Let $G=\F^4$.
+Define $N \in \cL(G)$ with respect to the canonical basis by
+\[
+[N] = \left[\begin{matrix}1 & 2 & 0 & 5\\6 & -5 & 17 & -38\\-3 & 0 & -6 & 9\\-2 & 1 & -5 & 10\end{matrix}\right]
+.
+\]
+Note that $N^3=\0$.
+
+Start with short threads
+$\A_1,\A_2,\A_3,\A_4$:
+\[
+\left[\begin{matrix}1 \\ 1 \\ 0 \\ 0\end{matrix}\right]
+\mapsto
+\text{ \bf ?}
+, \ \ \
+\left[\begin{matrix}0 \\ 1 \\ 1 \\ 0\end{matrix}\right]
+\mapsto
+\text{ \bf ?}
+, \ \ \
+\left[\begin{matrix}0 \\ 0 \\ 1 \\ 1\end{matrix}\right]
+\mapsto
+\text{ \bf ?}
+, \ \ \
+\left[\begin{matrix}0 \\ 1 \\ 0 \\ 1\end{matrix}\right]
+\mapsto
+\text{ \bf ?}
+.
+\]
+Note that these four vectors span $G$.
+
+The tips of the threads are linearly independent, so we cannot apply reduction.
+We stretch the collection, getting new
+threads
+$\A_1,\A_2,\A_3,\A_4$:
+\[
+\begin{gathered}
+\left[\begin{matrix}1 \\ 1 \\ 0 \\ 0\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}3 \\ 1 \\ -3 \\ -1\end{matrix}\right]
+\mapsto
+\text{ \bf ?}
+,\
+\left[\begin{matrix}0 \\ 1 \\ 1 \\ 0\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}2 \\ 12 \\ -6 \\ -4\end{matrix}\right]
+\mapsto
+\text{ \bf ?}
+\\
+\left[\begin{matrix}0 \\ 0 \\ 1 \\ 1\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}5 \\ -21 \\ 3 \\ 5\end{matrix}\right]
+\mapsto
+\text{ \bf ?}
+,\
+\left[\begin{matrix}0 \\ 1 \\ 0 \\ 1\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}7 \\ -43 \\ 9 \\ 11\end{matrix}\right]
+\mapsto
+\text{ \bf ?}
+\end{gathered}
+\]
+
+We could stretch again, but in order to keep the collection small and avoid unnecessary work, let us try to reduce it instead.
+
+Looking at the tips only, by row reduction:
+\[
+[v_1, v_2, v_3, v_4] =
+\left[\begin{matrix}3 & 2 & 5 & 7\\1 & 12 & -21 & -43\\-3 & -6 & 3 & 9\\-1 & -4 & 5 & 11\end{matrix}\right]
+\sim
+\left[\begin{matrix}1 & 0 & 3 & 5\\0 & 1 & -2 & -4\\0 & 0 & 0 & 0\\0 & 0 & 0 & 0\end{matrix}\right]
+,
+\]
+so $v_1$ and $v_2$ are LI, whereas $v_3 = 3v_1 - 2v_2$ and $v_4=5v_1 - 4v_2$.
+
+Now we subtract the corresponding multiples from the whole threads, getting:
+\[
+\left[\begin{matrix}1 \\ 1 \\ 0 \\ 0\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}3 \\ 1 \\ -3 \\ -1\end{matrix}\right]
+\mapsto
+\text{ \bf ?}
+,\ \ \
+\left[\begin{matrix}0 \\ 1 \\ 1 \\ 0\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}2 \\ 12 \\ -6 \\ -4\end{matrix}\right]
+\mapsto
+\text{ \bf ?}
+,\ \ \
+\left[\begin{matrix}-3\\-1\\3\\1\end{matrix}\right]
+\mapsto
+\0
+,\ \ \
+\left[\begin{matrix}-5\\0\\4\\1\end{matrix}\right]
+\mapsto
+\0
+.
+\]
+
+Let us try to reduce again.
+Looking at the tips only, by row reduction:
+\[
+[v_1, v_2, v_3, v_4] =
+\left[\begin{matrix}3 & 2 & -3 & -5\\1 & 12 & -1 & 0\\-3 & -6 & 3 & 4\\-1 & -4 & 1 & 1\end{matrix}\right]
+\sim
+\left[\begin{matrix}1 & 0 & -1 & 0\\0 & 1 & 0 & 0\\0 & 0 & 0 & 1\\0 & 0 & 0 & 0\end{matrix}\right]
+,
+\]
+so $v_1,v_2,v_4$ are LI, whereas $v_3 = -v_1$.
+We want to subtract $(-1)\A_1$ from $\A_3$.
+Since $\A_3$ only has one vector, we only use the last vector of $\A_1$.
+
+After sorting by size, we get:
+\[
+\left[\begin{matrix}1 \\ 1 \\ 0 \\ 0\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}3 \\ 1 \\ -3 \\ -1\end{matrix}\right]
+\mapsto
+\text{ \bf ?}
+,\ \ \
+\left[\begin{matrix}0 \\ 1 \\ 1 \\ 0\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}2 \\ 12 \\ -6 \\ -4\end{matrix}\right]
+\mapsto
+\text{ \bf ?}
+,\ \ \
+\left[\begin{matrix}-5\\0\\4\\1\end{matrix}\right]
+\mapsto
+\0
+,\ \ \
+\0
+\mapsto
+\0
+.
+\]
+
+The tips of the threads are LI, so we can no longer reduce.
+
+So we stretch the collection and sort by size:
+\[
+\left[\begin{matrix}0 \\ 1 \\ 1 \\ 0\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}2 \\ 12 \\ -6 \\ -4\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}6\\2\\-6\\-2\end{matrix}\right]
+\mapsto
+\text{ \bf ?}
+,\ \ \
+\left[\begin{matrix}1 \\ 1 \\ 0 \\ 0\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}3 \\ 1 \\ -3 \\ -1\end{matrix}\right]
+\mapsto
+\0
+,\ \ \
+\left[\begin{matrix}-5\\0\\4\\1\end{matrix}\right]
+\mapsto
+\0
+.
+\]
+
+Let us try to reduce again.
+Looking at the tips only, by row reduction:
+\[
+[v_1, v_2, v_3] =
+\left[\begin{matrix}6 & 3 & -5\\2 & 1 & 0\\-6 & -3 & 4\\-2 & -1 & 1\end{matrix}\right]
+\sim
+\left[\begin{matrix}1 & \frac{1}{2} & 0\\0 & 0 & 1\\0 & 0 & 0\\0 & 0 & 0\end{matrix}\right]
+\]
+so $v_1,v_3$ are LI and $v_2 = \frac{1}{2} v_1$.
+
+As $\A_2$ has 2 vectors, we subtract $\frac{1}{2}$ times the 2 last vectors of $\A_1$
+from the two last vectors $\A_2$.
+
+This gives
+\[
+\left[\begin{matrix}0\\1\\1\\0\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}2\\12\\-6\\-4\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}6\\2\\-6\\-2\end{matrix}\right]
+\mapsto
+\0
+, \ \ \
+\left[\begin{matrix}0\\-5\\3\\2\end{matrix}\right]
+\mapsto
+\0
+, \ \ \
+\left[\begin{matrix}-5\\0\\4\\1\end{matrix}\right]
+\mapsto
+\0
+.
+\]
+
+Let us try to reduce again.
+Looking at the tips only, by row reduction:
+\[
+[v_1, v_2,v_3] =
+\left[\begin{matrix}6 & 0 & -5\\2 & -5 & 0\\-6 & 3 & 4\\-2 & 2 & 1\end{matrix}\right]
+\sim
+\left[\begin{matrix}1 & 0 & - \frac{5}{6}\\0 & 1 & - \frac{1}{3}\\0 & 0 & 0\\0 & 0 & 0\end{matrix}\right]
+.
+\]
+Subtracting the corresponding linear combination from the third thread will make it vanish, giving:
+\[
+\left[\begin{matrix}0\\1\\1\\0\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}2\\12\\-6\\-4\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}6\\2\\-6\\-2\end{matrix}\right]
+\mapsto
+\0
+, \ \ \
+\left[\begin{matrix}0\\-5\\3\\2\end{matrix}\right]
+\mapsto
+\0
+.
+\]
+
+As we saw in the previous proof, since we started with a spanning collection, the above threads also span $G$.
+
+So we can tell that the above 4 vectors are spanning, hence a basis. Since they form closed threads, they form a Jordan basis.
+
+So we did find a Jordan basis!
+
+We already know the basis $ \B $ and Jordan form $ [N]_\B $.
+Let's double-check:
+\[
+Q=
+\left[\begin{matrix}6 & 2 & 0 & 0\\2 & 12 & 1 & -5\\-6 & -6 & 1 & 3\\-2 & -4 & 0 & 2\end{matrix}\right]
+\
+\Longrightarrow
+\
+Q^{-1} [N] Q = 
+\left[\begin{array}{rrr|r} 0 & 1 & 0 & 0\\0 & 0 & 1 & 0\\0 & 0 & 0 & 0 \\ \hline 0 & 0 & 0 & 0\end{array}\right]
+.
+\]
+
+\section{Stretching first}
+
+In the previous example we reduced the threads whenever possible.
+
+Maybe stretching first results in fewer computations, especially row reductions.
+
+Stretching all the way until the end, and sorting by size:
+\[
+\left[\begin{matrix}0\\1\\1\\0\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}2\\12\\-6\\-4\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}6\\2\\-6\\-2\end{matrix}\right]
+\mapsto
+\0
+, \ \ \
+\left[\begin{matrix}0\\0\\1\\1\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}5\\-21\\3\\5\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}-12\\-4\\12\\4\end{matrix}\right]
+\mapsto
+\0
+,
+\]
+\[
+\left[\begin{matrix}0\\1\\0\\1\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}7\\-43\\9\\11\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}-24\\-8\\24\\8\end{matrix}\right]
+\mapsto
+\0
+, \ \ \
+\left[\begin{matrix}1\\1\\0\\0\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}3\\1\\-3\\-1\end{matrix}\right]
+\mapsto
+\0
+.
+\]
+
+Looking at the tips only, by row reduction:
+\[
+[v_1, v_2, v_3, v_4] =
+\left[\begin{matrix}6 & -12 & -24 & 3\\2 & -4 & -8 & 1\\-6 & 12 & 24 & -3\\-2 & 4 & 8 & -1\end{matrix}\right]
+\sim
+\left[\begin{matrix}1 & -2 & -4 & \frac{1}{2}\\0 & 0 & 0 & 0\\0 & 0 & 0 & 0\\0 & 0 & 0 & 0\end{matrix}\right]
+\]
+so $v_2 = -2v_1$, $v_3 = -4v_1$, and $v_4 = \frac{1}{2} v_1$.
+
+Now we subtract the corresponding multiples from the threads, getting:
+\[
+\begin{gathered}
+\left[\begin{matrix}0\\1\\1\\0\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}2\\12\\-6\\-4\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}6\\2\\-6\\-2\end{matrix}\right]
+\mapsto
+\0
+, \ \ \
+\left[\begin{matrix}0\\2\\3\\1\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}9\\3\\-9\\-3\end{matrix}\right]
+\mapsto
+\0
+,
+\\
+\left[\begin{matrix}0\\5\\4\\1\end{matrix}\right]
+\left[\begin{matrix}15\\5\\-15\\-5\end{matrix}\right]
+\mapsto
+\0
+, \ \ \
+\left[\begin{matrix}0\\-5\\3\\2\end{matrix}\right]
+\mapsto
+\0
+.
+\end{gathered}
+\]
+
+Looking at the tips only, by row reduction:
+\[
+[v_1, v_2, v_3, v_4] =
+\left[\begin{matrix}6 & 9 & 15 & 0\\2 & 3 & 5 & -5\\-6 & -9 & -15 & 3\\-2 & -3 & -5 & 2\end{matrix}\right]
+\sim
+\left[\begin{matrix}1 & \frac{3}{2} & \frac{5}{2} & 0\\0 & 0 & 0 & 1\\0 & 0 & 0 & 0\\0 & 0 & 0 & 0\end{matrix}\right]
+,
+\]
+so $v_1$ and $v_4$ are LI, whereas $v_2 = \frac{3}{2} v_1$ and $v_3 \frac{5}{2} v_1$.
+
+Now we subtract the corresponding multiples from the threads, getting:
+\[
+\left[\begin{matrix}0\\1\\1\\0\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}2\\12\\-6\\-4\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}6\\2\\-6\\-2\end{matrix}\right]
+\mapsto
+\0
+, \ \ \
+\left[\begin{matrix}-3\\-16\\12\\7\end{matrix}\right]
+\mapsto
+\0
+, \ \ \
+\left[\begin{matrix}-5\\-25\\19\\11\end{matrix}\right]
+\mapsto
+\0
+, \ \ \
+\left[\begin{matrix}0\\-5\\3\\2\end{matrix}\right]
+\mapsto
+\0
+.
+\]
+
+Looking at the tips only, by row reduction:
+\[
+[v_1, v_2, v_3, v_4] =
+\left[\begin{matrix}6 & -3 & -5 & 0\\2 & -16 & -25 & -5\\-6 & 12 & 19 & 3\\-2 & 7 & 11 & 2\end{matrix}\right]
+\sim
+\left[\begin{matrix}1 & 0 & - \frac{1}{18} & \frac{1}{6}\\0 & 1 & \frac{14}{9} & \frac{1}{3}\\0 & 0 & 0 & 0\\0 & 0 & 0 & 0\end{matrix}\right]
+,
+\]
+so $v_1$ and $v_2$ are LI, whereas $v_3 = -\frac{1}{18} v_1 + \frac{14}{9} v_2$ and $v_4 = \frac{1}{6} v_1 + \frac{1}{3} v_2$.
+
+Now we subtract the corresponding multiples from the threads, getting:
+\[
+\left[\begin{matrix}0\\1\\1\\0\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}2\\12\\-6\\-4\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}6\\2\\-6\\-2\end{matrix}\right]
+\mapsto
+\0
+, \ \ \
+\left[\begin{matrix}-3\\-16\\12\\7\end{matrix}\right]
+\mapsto
+\0
+, \ \ \
+\0
+\mapsto
+\0
+, \ \ \
+\0
+\mapsto
+\0
+.
+\]
+
+We found a Jordan basis!
+
+We already know the basis $ \B $ and Jordan form $ [N]_\B $.
+Let's double-check:
+\[
+Q=
+\left[\begin{matrix}6 & 2 & 0 & -3\\2 & 12 & 1 & -16\\-6 & -6 & 1 & 12\\-2 & -4 & 0 & 7\end{matrix}\right]
+\
+\Longrightarrow
+\
+Q^{-1} [N] Q = 
+\left[\begin{array}{rrr|r} 0 & 1 & 0 & 0\\0 & 0 & 1 & 0\\0 & 0 & 0 & 0 \\ \hline 0 & 0 & 0 & 0\end{array}\right]
+.
+\]
+
+
+\section{Using fewer threads}
+
+Pick only one vector from the basis, say $(1,1,0,0)$.
+Stretch its thread:
+\[
+\left[\begin{matrix}1\\1\\0\\0\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}3\\1\\-3\\-1\end{matrix}\right]
+\mapsto
+\0
+.
+\]
+
+This is too short.
+Let's incorporate another vector, say  $(0,1,1,0)$,
+and stretch:
+\[
+\left[\begin{matrix}0\\1\\1\\0\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}2\\12\\-6\\-4\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}6\\2\\-6\\-2\end{matrix}\right]
+\mapsto
+\0
+, \ \ \
+\left[\begin{matrix}1\\1\\0\\0\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}3\\1\\-3\\-1\end{matrix}\right]
+\mapsto
+\0
+.
+\]
+
+Doing row reduction (yes, that's overkilling) with the tips only:
+\[
+\left[\begin{matrix}6 & 3\\2 & 1\\-6 & -3\\-2 & -1\end{matrix}\right]
+\sim
+\left[\begin{matrix}1 & \frac{1}{2}\\0 & 0\\0 & 0\\0 & 0\end{matrix}\right]
+.
+\]
+
+Subtracting $\frac{1}{2}$ of the first thread from the second:
+\[
+\left[\begin{matrix}0\\1\\1\\0\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}2\\12\\-6\\-4\end{matrix}\right]
+\mapsto
+\left[\begin{matrix}6\\2\\-6\\-2\end{matrix}\right]
+\mapsto
+\0
+, \ \ \
+\left[\begin{matrix}0\\-5\\3\\2\end{matrix}\right]
+\mapsto
+\0
+.
+\]
+The tips are LI, the threads are closed, and there are four vectors.
+So the procedure is finished.
+
+We already know the basis $ \B $ and Jordan form $ [N]_\B $.
+Let's double-check:
+\[
+Q=
+\left[\begin{matrix}6 & 2 & 0 & 0\\2 & 12 & 1 & -5\\-6 & -6 & 1 & 3\\-2 & -4 & 0 & 2\end{matrix}\right]
+\
+\Longrightarrow
+\
+Q^{-1} [N] Q = 
+\left[\begin{array}{rrr|r} 0 & 1 & 0 & 0\\0 & 0 & 1 & 0\\0 & 0 & 0 & 0 \\ \hline 0 & 0 & 0 & 0\end{array}\right]
+.
+\]
+
+\end{document}

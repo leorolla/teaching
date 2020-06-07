@@ -1,0 +1,2469 @@
+\documentclass[11pt]{article}
+
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts} 
+\usepackage{hyperref}
+\usepackage{framed}
+\usepackage{color}
+\usepackage{amssymb}
+
+\usepackage[a4paper]{geometry}
+
+\usepackage[normalem]{ulem}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+\hypersetup{colorlinks=true,urlcolor=blue,linkcolor=black,citecolor=black}
+
+\hyphenpenalty 6000
+\tolerance 4000
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{remark}{Remark}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem*{ack}{Acknowledgement}
+
+\renewcommand{\epsilon}{\varepsilon}
+
+\newcommand{\abs}[1]{\left\vert #1\right\vert}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\inner}[2]{\langle #1, #2 \rangle}
+\newcommand{\proj}[1]{P_{\!\!{}_{#1}\,}}
+
+\newcommand{\dd}{{\mathrm{d}}}
+\newcommand{\e}{{\mathrm{e}}}
+\newcommand{\re}{{\mathrm{re}}}
+\newcommand{\0}{\mathbf{0}}
+
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\T}{\vec{T}} 
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\PR}{\mathbb{P}}
+\newcommand{\Pb}{\overline{\mathbb{P}}}
+
+\DeclareMathOperator{\mydeg}{\mathsf{deg}}
+\DeclareMathOperator{\myspan}{\mathsf{span}}
+\DeclareMathOperator{\myrange}{\mathsf{range}}
+\DeclareMathOperator{\mynull}{\mathsf{ker}}
+\DeclareMathOperator{\myker}{\mathsf{ker}}
+\DeclareMathOperator{\mydim}{\mathsf{dim}}
+\DeclareMathOperator{\myrank}{\mathsf{rank}}
+\DeclareMathOperator{\mytrace}{\mathsf{trace}}
+\DeclareMathOperator{\mydet}{\mathsf{det}}
+\DeclareMathOperator{\mysgn}{\mathsf{sgn}}
+\DeclareMathOperator{\mydiag}{\mathsf{diag}}
+
+\DeclareMathOperator{\mydot}{\boldsymbol{\cdot}}
+
+\renewcommand{\det}{use mydet}
+
+\newcommand{\va}{\vec{a}}
+\newcommand{\vb}{\vec{b}}
+\newcommand{\vc}{\vec{c}}
+\newcommand{\ve}{\vec{e}}
+\newcommand{\vx}{\vec{x}}
+\newcommand{\vy}{\vec{y}}
+\newcommand{\vr}{\vec{r}}
+\newcommand{\vu}{\vec{u}}
+\newcommand{\vv}{\vec{v}}
+\newcommand{\vw}{\vec{w}}
+
+\pagestyle{empty}
+
+\parindent 0pt
+\parskip .4em
+
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+
+\usepackage{graphicx}
+\usepackage{hyperref}
+\newcommand{\spitem}{\item[$\circ$]}
+
+\usepackage{embedall}
+
+
+\begin{document}
+
+
+{\let\thefootnote\relax
+\footnotetext{\copyright 2019-\the\year\ Leonardo T. Rolla
+\href{http://creativecommons.org/licenses/by-sa/3.0/}
+{\includegraphics[height=1.0em]{by-sa.pdf}}. This typeset file has the source code embedded in it. If you re-use part of this code, you are kindly requested --if possible-- to convey the source code along with or embedded in the typeset file, and to keep this request.}}
+
+
+\section*{NYU-SH Honors Linear Algebra I -- Lectures Summary}
+
+
+\section{First class}
+
+Main reference:
+Axler \S1.A
+or
+Treil \S1.1
+(the book titles are in the Syllabus)
+
+Supplementary reading:
+Lay \S4.1
+
+
+\begin{itemize}
+
+\item
+
+Usually ``linearity'' refers to operations involving the addition of objects of the same type and multiplication of these objects by numbers.
+
+\item
+
+\emph{Linear Algebra} studies the mathematical structure of objects, sets and functions, as far as such structure is determined (or affected) by these operations.
+
+\item
+
+Vectors $\vx$ on the plane are given by a pair of numbers $\vx = (x_1,x_2) \in \R \times \R = \R^2$.
+
+\item
+
+Vectors $\vx$ on the 3-dimensional space are given by a triple $\vx \in \R^3$.
+
+\item
+
+We can consider vectors on $n$-dimensional space as $n$-tuples $\vx \in \R^n$.
+
+\item
+
+Adding two vectors $\vx$ and $\vy$ from $\R^n$, we get another vector $\vw = \vx + \vy \in \R^n$.
+
+\item
+
+Multiplying a vector $\vx \in \R^n$ by a number $\alpha \in \R$, we get a vector $\vw = \alpha \vx \in \R^n$.
+
+\item
+
+\emph{Numbers} do not need to be real.
+We will consider both cases when the set $\F$ of numbers is given by $\F = \R$ or $\F = \C$.
+When $\F=\C$, we need the space to be $\C^n$ instead of $\R^n$, otherwise the previous property breaks down.
+
+\item
+
+A \emph{complex number} $z \in \C$ is a number of the form $z = x+iy$ where $x,y\in \R$.
+In $\C$ we have usual algebraic properties of multiplication and addition, plus the property that $i^2=-1$, so $(1+2i)(3+4i)=3+4i+6i+8i^2=-5+10i$.
+
+\item
+
+Why $\C$?
+Cutting a long story short:
+\begin{itemize}
+\item Want to count: $\N$. Can add and multiply.
+\item Want to subtract: $\N \leadsto \Z$
+\item Want to divide: $\Z \leadsto \Q$
+\item Want intermediate value theorem: $\Q \leadsto \R$
+\item Want polynomials to have roots: $\R \leadsto \C$
+\end{itemize}
+Even if one is ultimately interested in studying real quantities, using complex numbers may be more suitable because polynomials always have roots.
+
+\end{itemize}
+
+
+\clearpage
+\section{Vector spaces}
+
+Main reference:
+Treil \S1.1
+\&
+Axler \S1.A\
+
+Supplementary reading:
+Axler \S1.B,
+Lay \S4.1
+and
+Hefferon \S 2.I.1 \& \S2.Fields
+
+\begin{itemize}
+
+\item
+
+A \emph{field} $\F$ is a set with addition and multiplication operations satisfying:
+commutativity,
+associativity,
+additive identity $0$,
+multiplicative identity $1$,
+additive inverse $-\alpha$,
+multiplicative inverse $\frac{1}{\alpha}$,
+distributive property.
+
+\item
+
+Elements of $\F$ are called \emph{numbers} or \emph{scalars}.
+We will consider $\F=\R$ or $\C$.
+
+\item
+
+A \emph{vector space over the field $\F$} is a set $V$ together with the operations of addition and 
+scalar multiplication (that is, for every $\vu,\vv \in V$ and $\alpha\in\F$, one has $\vu+\vv \in V$ and $\alpha \vu \in V$) satisfying:
+commutativity,
+associativity,
+additive identity $\0$,
+additive inverse $-\vv$,
+multiplicative identity,
+multiplicative associativity,
+distributive property for vector sum,
+distributive property for scalar sum.
+
+\item
+
+The additive identity $\0$ is unique, the additive inverse $-\vv$ is unique for each $\vv$.
+
+\emph{Proof.}
+Expand $\0 + \0'$ and $\vw+\vv+\vw'$ using the above properties.
+
+\item
+
+Elements of a vector space are called \emph{vectors} or \emph{points}.
+
+A vector space over $\R$ is called a \emph{real vector space}
+
+A vector space over $\mathbb{C}$ is called a \emph{complex vector space}
+
+\item
+
+Examples of  vector spaces: $\mathbb{F}^n$, the set $\cP(\F)$ of polynomials with real (or complex) coefficients, the set $\cP_n(\F)$ of polynomials of degree at most $n$.
+
+\item
+
+Another vector space is the set $\F^{m \times n}$ of $m \times n$ matrices $A=(a_{jk})_{j,k}$ written as
+\[
+A = \left[
+\begin{array}{cccc}
+a_{11} & a_{12} & \cdots & a_{1n} \\
+a_{21} & a_{22} & \cdots & a_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{m1} & a_{m2} & \cdots & a_{mn}
+\end{array}
+\right]_{m \times n}
+\]
+
+\item
+
+The transpose of a matrix is defined by $A^T = (a_{kj})_{j,k} \in \F^{n \times m}$.
+
+\end{itemize}
+
+\textbf{Notation.}
+Treil denotes elements of $\F^n$ as column vectors, that is, matrices in $\F^{n \times 1}$:
+\[
+\vx = \left[
+\begin{array}{c}
+x_1 \\ x_2 \\ \vdots \\ x_n
+\end{array}
+\right]_{n \times 1}
+\quad
+\text{ or }
+\quad
+\vx = [x_1, x_2, \dots, x_n]^T
+.
+\]
+We will write $\vx = (x_1, x_2 , \dots , x_n) \in \F^n$, knowing that it denotes a column vector.
+
+
+
+\clearpage
+\section{Linear combinations and bases}
+
+Main reference:
+Treil \S1.2
+
+\textbf{Terminology.}
+In these lecture notes, ``proof'' means just the main idea of the proof.
+The complete proof is the one written on the whiteboard or in the textbook.
+
+\begin{itemize}
+
+\item
+
+A \emph{linear combination} of vectors $\vv_1,\dots,\vv_n$ is a sum of multiples of these vectors, resulting in some $\vu = \alpha_1 \vv_1 + \dots + \alpha_n \vv_n$ for some $\alpha_1,\dots,\alpha_n\in \mathbb{F}$.
+
+\item
+
+A family of vectors $\vv_1,\dots,\vv_n$ is \emph{a basis of $V$} if every vector $\vu \in V$ has a \textbf{unique} representation as a linear combination of $\vv_1,\dots,\vv_n$.
+
+\item
+
+Examples without proof:
+$(1,0),(0,1)$ is a basis of $\R^2$; $(1,1),(0,1)$ is a basis of $\R^2$; $(1,1),(2,2)$ is not a basis of $\R^2$; $(1,0),(0,1),(2,2)$ is not a basis of $\R^2$;
+$\ve_1,\dots,\ve_n$ is \emph{the canonical basis} of $\F^n$;
+$1,t,t^2,t^3$ is a basis of $\cP_3(\F)$.
+
+\item
+
+Being a basis means that, for each $\vu \in V$, the equation $\alpha_1 \vv_1 + \dots + \alpha_n \vv_n = \vu$ has a unique solution $(\alpha_1,\dots,\alpha_n)$.
+These numbers 
+$\alpha_1,\dots,\alpha_n$ are called \emph{the coordinates of $\vu$ in the basis $\vv_1,\dots,\vv_n$.}
+
+\item
+
+A family of vectors $\vv_1,\dots,\vv_p$ is a \emph{spanning family}, or \emph{generating system}, or \emph{complete system}, if every vector of $V$ can be written as a linear combination of $\vv_1,\dots,\vv_p$.
+
+Examples without proof:
+% \\
+$(1,0),(0,1)$ or $(1,1),(0,1)$ or $(1,1),(2,2)$ as well as $(1,0),(0,1),(2,2)$ are all spanning families of $\R^2$.
+
+\item
+
+The \emph{trivial} linear combination of $\vv_1,\dots,\vv_n$ is the linear combination $0 \vv_1 + \dots + 0 \vv_n$.
+
+\item
+
+A family of vectors is called \emph{linearly independent} if the only linear combination equal to $\0 \in V$ is the trivial linear combination.
+A family of vectors which is not linearly independent is called \emph{linearly dependent}.
+$\emptyset$ is linearly independent.
+
+\item
+
+A family of vectors is a basis iff it is both spanning and linearly independent.
+
+\emph{Proof.}
+% One direction follows from definition.
+For the more difficult direction, show that two linear combinations giving the same result must be the same by showing that the difference is trivial.
+
+\spitem
+
+%A family is LI iff one of the vectors is a linear combination of the previous ones:
+
+A family of vectors $\vv_1, \dots, \vv_n$ is linearly dependent iff there exists $k\in\{1,\dots,n\}$ and $\alpha_1,\dots,\alpha_{k-1}\in\mathbb{F}$ such that $\vv_k=\0 + \alpha_1 \vv_1 + \dots + \alpha_{k-1} \vv_{k-1}$.
+
+\emph{Proof.}
+Divide by the last non-zero coefficient in a non-trivial linear combination.
+
+% A family of vectors $\vv_1, \dots, \vv_n$ is linearly dependent iff there exists $k\in\{1,\dots,n\}$ and $\alpha_1,\dots,\alpha_{k-1},\alpha_{k+1},\dots, \alpha_n \in\mathbb{F}$ such that $\vv_k=\alpha_1 \vv_1 + \dots + \alpha_{k-1} \vv_{k-1} + \alpha_{k+1} \vv_{k+1} + \dots + \alpha_n \vv_n$.
+% 
+% That is, the family is LI iff one of the vectors is a linear combination of the others.
+
+% (Note that if $k=1$, the above equality says that $v_1$ is equal to an empty sum, which is defined as $\0$.)
+% Consider the smallest $k$ for which $\vv_1,\dots,\vv_k$ is linearly dependent.
+% REMARK: The above is a bit too hard for a second week
+% NEW REMARK: The proof in Axler is simpler
+
+\item
+
+Every finite spanning family contains a basis.
+
+\emph{Proof.}
+Remove redundant vectors one by one until you get a basis.
+
+% Let $U = \{ v_1,\dots,v_m \}$ be a generating family.
+% We want to show that it contains a basis.
+% There are two cases: (a) $U$ is linearly independent, (b) $U$ is linearly dependent.
+% In case (a), $U$ is a basis and it contains itself.
+% In case (b), some $v_k$ is given by a linear combination of $v_1,\dots,v_{k-1}$.
+% Now every $u \in V$ is given by a linear combination of $U$, which in turn can be expressed as a linear combination of $U \setminus \{v_k\}$, by replacing the term which contains $v_k$ by a linear combination of $v_1,\dots,v_{k-1}$.
+% So $U \setminus \{v_k\}$ is also a generating family.
+% We can now repeat this process until we have removed enough many vectors from $U$ so that it is no longer linearly dependent. At that point it will still be a generating family, and hence a basis.
+
+\end{itemize}
+
+
+\clearpage
+\section{Linear transformations and matrix-vector multiplication}
+
+Main reference:
+Treil \S1.3  \& \S1.4
+
+\begin{itemize}
+
+\item
+
+A \emph{linear map}, or \emph{linear transformation}, is a function from a vector space $V$ to a vector space $W$ which satisfies the properties of additivity and homogeneity.
+ 
+\item
+
+Examples without proof:
+rotations on $\R^2$, reflections on $\R^2$, transposition of matrices, $T(x_1,x_2,x_3)=(x_1-x_3,4ix_2)$ from $\C^3$ to $\C^2$.
+
+% Some of them don't know:
+% differentiation of polynomials,
+
+\item
+
+Linear functions on $\F^1$: multiplication by a number.
+What about $\F^n$?
+
+\item
+
+For a linear map $T:\F^n \to \F^m$, define the vectors $\va_1 = T \ve_1,\dots,\va_n = T \ve_n \in \F^m$.
+Then $\va_1,\dots,\va_n$ determines $T$.
+Indeed, given $\vx\in \F^n$, by linearity we have
+\[
+T\vx = x_1 \va_1 + \dots + x_n \va_n = \sum_{k=1}^n x_k \va_k.
+\]
+Hence, the matrix \[ A = \big[\, \va_1 , \dots , \va_n \, \big]_{m \times n} \] contains all the information about $T$.
+We denote this matrix $A$ by $[T]$.
+
+\item
+
+\emph{Multiplication of matrix by column.}
+Given $A \in \F^{m \times n}$ and $\vx \in\mathbb{F}^n$, we define the product $\vy = A \vx \in \F^m$ by
+\[
+y_j = a_{j,1} x_1 + \dots + a_{j,n} x_n = \sum_{k=1}^n a_{j,k} x_k.
+\]
+Writing $A = \big[ \va_1 , \dots , \va_n \big]_{m\times n}$, this gives the same result as
+\[
+\vy = x_1 \va_1 + \dots + x_n \va_n = \sum_{k=1}^n x_k \va_k
+.
+\]
+So with this definition we have $T\vx = A\vx$.
+
+\item
+
+To describe a linear transformation $T:\F^n \to \F^m$ we can consider any basis, it does not need to be $\ve_1,\dots,\ve_n$.
+More generally, a linear transformation $T:V \to W$ is completely determined by the values that it takes on any given spanning family.
+
+\item
+
+Let $\cL(V,W)$ denote the sets of all linear transformations defined on $V$ and taking values on $W$. Then $\cL(V,W)$ is itself a vector space!
+
+\emph{Proof.}
+Exercise.
+
+\end{itemize}
+
+
+\clearpage
+\section{Composition and matrix multiplication}
+
+Main reference:
+Treil \S1.5
+
+\begin{itemize}
+
+\item
+
+Suppose $A \in \F^{m \times n}$ and $B \in \F^{n \times r}$, and let $\vb_1, \dots, \vb_r \in \F^n$ be the columns of $B$.
+Then the product $AB \in \F^{m \times r}$ is the matrix whose columns are $A\vb_1, \dots, A\vb_r$.
+
+\item
+
+Writing $C = AB$, we have \[ c_{j,k} = (j\text{-th row of }A)(k\text{-th column of }B) = \sum_{l=1}^{n}a_{j,l}b_{l,k}. \]
+
+\item
+
+It is defined when the rows of $A$ have the same length as the columns of $B$.
+
+\item
+
+For $T_1 \in \cL(\F^n,\F^m)$ and $T_2 \in \cL(\F^r,\F^n)$, then $[T_1 \circ T_2]=[T_1][T_2]$.
+
+\emph{Proof.}
+The $k$-th column equals
+$T(\ve_k) = T_1(T_2(\ve_k))=T_1(B\ve_k)=T_1(\vb_k)=A\vb_k$
+
+\item
+
+Example: reflection against the line $x_1=3x_2$ on $\R^2$. Then $T=R_\gamma T_0 R_{-\gamma}$ is a composition of rotations and a reflection against the line $x_2=0$.
+After some work, we get $T(x_1,x_2)=(0.8x_1+0.6x_2, 0.6x_1-0.8x_2)$.
+
+\item
+
+Properties: associativity, distributivity, commutativity with scalars.
+
+\item
+
+No commutative property: in general $AB\neq BA$.
+
+Remark.
+If we pick square matrices ``at random,'' chances are they don't commute.
+
+\item
+
+$(AB)^T = B^T\! A^T$ if one of the products is defined.
+
+\item
+
+Identity operator: $I_V \in \cL(V) = \cL(V,V)$ defined by $I_V \vv = \vv$.
+
+Identity matrix: $I = I_n \in \F^{n \times n}$ with $1$ on diagonal and $0$ elsewhere.
+
+\end{itemize}
+
+
+\clearpage
+\section{Invertible matrices and isomorphisms}
+\label{sec:invertible}
+
+Main reference:
+Treil \S1.6
+
+\begin{itemize}
+
+\item
+
+We say that $T \in \cL(V,W)$ is \emph{left invertible} if there exists $S \in \cL(W,V)$ such that $ST=I_V$.
+In this case $S$ is called \emph{a left inverse} of $T$.
+
+We say that $T \in \cL(V,W)$ is \emph{right invertible} if there exists $R \in \cL(W,V)$ such that $TR=I_W$.
+In this case $R$ is called \emph{a right inverse} of $T$.
+
+Remark.
+The left and right inverses need not be unique.
+Matrix $\binom{1}{1}$ has many left inverses and no right inverse,
+$[1 \ 1]$
+has many right inverses and no left inverse.
+
+\item
+
+We say that $T$ is \emph{invertible} if it is both left invertible and right invertible.
+In this case, the left and right inverses are unique and are the same, denoted $T^{-1}$.
+
+\emph{Proof.}
+Expand $STR$.
+
+\item
+
+Examples:
+Identity $I^{-1}=I$, rotation $(R_\gamma)^{-1}=R_{-\gamma}$.
+
+\item
+
+$T \in \cL(V,W)$ is invertible iff for each $\vy\in W$ the equation $T\vx = \vy$ has a unique solution $\vx \in V$.
+So $T$ is invertible as a linear map if it is bijective as a function.
+
+\emph{Proof.}
+In one direction, apply $T^{-1}$ to the equation to see that $\vx = T^{-1} \vy$ is the only solution.
+Conversely, let $f(\vy)$ denote the unique solution, so that $f \circ T = I_V$ and $T \circ f = I_W$, and check that $f$ is linear.
+
+\item
+
+A matrix is \emph{(left, right) invertible} if the corresponding linear transformation is (left, right) invertible, and $A^{-1}$ is called \emph{the inverse} of $A$.
+
+\item
+
+If $A$ and $B$ are invertible and $AB$ is defined, then $(AB)^{-1} = B^{-1} A^{-1}$.
+\\
+If $A$ is invertible, then $(A^T)^{-1} = (A^{-1})^T$ and $(A^{-1})^{-1}=A$.
+
+\emph{Proof.}
+Check that the product from the left and the right give the identity.
+
+\item
+
+An invertible linear transformation $T \in \cL(V,W)$ is called an \emph{isomorphism}.
+If $T$ is an isomorphism, then so is $T^{-1}$.
+Two vector spaces $V$ and $W$ are called \emph{isomorphic}, denoted by $V \cong W$, if there exists an isomorphism between them.
+
+Remark.
+This means that these spaces have exactly the same properties, as far as their linear structure is concerned.
+
+\item
+
+Let $T \in \cL(V,W)$ be an isomorphism.
+Then $\vv_1,\vv_2,\dots,\vv_n$ is a basis for $V$ iff $T\vv_1,T\vv_2,\dots,T\vv_n$ is a basis for $W$.
+
+\emph{Proof.}
+Check that the properties of being LI and spanning are preserved by $T$.
+
+\item
+
+Let $\vv_1,\vv_2,\dots,\vv_n$ be a basis for $V$.
+Then $T \in \cL(V,W)$ is invertible iff $T\vv_1,T\vv_2,\dots,T\vv_n$ is a basis for $W$.
+
+\emph{Proof.}
+Define $R \in \cL(W,V)$ by $R \vw_k = \vv_k$.
+Check that $RT = I_V$ and $TR = I_W$.
+
+\item
+Corollary: A matrix is invertible iff its columns form a basis.
+
+\end{itemize}
+
+
+\clearpage
+\section{Row reduction and echelon forms}
+
+Main reference:
+Treil \S2.1 \& \S2.2.
+\
+Supplementary reading:
+Hefferon \S 1.I.1 \& \S1.I.2
+
+\begin{itemize}
+
+\item
+
+A system of linear equations, or \emph{linear system} can be seen as:
+\\ --
+A collection of $m$ linear equations with $n$ unknown variables.
+\\ --
+A \emph{matrix-vector equation} $A x  = b $.
+\\ --
+A \emph{vector equation} $x_1 \va_1 + \dots + x_n \va_n = b $.
+
+Here $A \in \F^{m \times n}$ is the \emph{coefficient matrix} and $b \in \F^{m \times 1}$ is the \emph{right-hand side}.
+
+\item
+
+Linear system is encoded by the \emph{augmented matrix} $[A \big| b ]$.
+
+\item
+
+There are three types of \emph{row operations}:
+\\ --
+Row exchange: interchange two rows
+\\ --
+Scaling: multiply a row by a non-zero scalar
+\\ --
+Row replacement: add a multiple of a row to another row
+
+These operations do not change the set of solutions, because they can be reversed.
+
+\item
+
+Row reduction:
+\begin{enumerate}
+\item find the left most non-zero column;
+\item make sure its topmost entry is non-zero (apply row exchange if needed), this entry is then called a \emph{pivot}; maybe apply scaling so that the pivot equals $1$;
+\item apply row replacement to zero out all entries below the pivot;
+\item now leave this row alone, and apply the procedure to the remaining submatrix.
+\end{enumerate}
+
+Example:
+\vspace{-1em}
+\[
+\left(\begin{array}{rrr|r}
+0 & -4 & -8 & 4 \\
+1 &  2 &  3 & 1 \\
+2 &  1 &  2 & 1 \\
+\end{array}\right).
+\]
+
+\item
+Echelon form (triangular is a particular case):
+\begin{enumerate}
+\item
+Non-zero rows are above zero rows, their first non-zero element is called \emph{pivot}
+\item 
+Position of each row's pivot is to the right of previous rows' pivots
+\end{enumerate}
+Reduced echelon form:
+\begin{enumerate}
+\setcounter{enumi}{2}
+\item
+The value of pivot entries is $1$, entries above the pivots are also zero
+\\
+(below pivots are already zero by the two previous items)
+\end{enumerate}
+\text{Examples: }
+\vspace{-1em}
+\[
+\left(\begin{array}{rrrrrr|r}
+\mathbf{1} & 0 & 8 & \0 & \0 & 0 & 9 \\
+\0 & \0 & \0 & \mathbf{1} & \0 & 3 & 6 \\
+\0 & \0 & \0 & \0 & \mathbf{1} & 1 & 3 \\
+\end{array}\right)
+\text{ and }
+\left(\begin{array}{rr|r}
+\mathbf{1} & 3 & \0 \\
+\0 & \0 & \mathbf{1} \\
+\0 & \0 & \0  \\
+\end{array}\right)
+.
+\]
+
+\item
+
+Row reduction yields an echelon form.
+To get a reduced echelon form we apply the backward phase, from right to left.
+General solution may have \emph{free variables}.
+
+\end{itemize}
+
+
+\clearpage
+\section{Echelon form and bases}
+
+Main reference:
+Treil \S2.3
+
+The notions of row operation, echelon form and pivot help us not only solve a given linear system, but this process actually reveals fundamental properties of bases, linearly independent families, spanning families, and invertible matrices.
+
+\textbf{Notation.} Henceforth we write $u$ instead of $\vu$, but we still write $\vv_j$ to avoid confusion.
+
+\begin{itemize}
+
+\item
+
+$Ax  = b $ is inconsistent iff the echelon form of $[A|b]$ has a pivot in the last column.
+
+The echelon form of $A$, denoted $A_\e$, has a pivot in every column if and only if, for every $b  \in \F^m$, the equation $Ax  = b $ is either inconsistent or has a unique solution.
+
+$A_\e$ has pivots in every row iff
+$Ax  = b $ has solutions for every $b$.
+
+$A_\e$ has pivots in every row and column iff
+there is a unique solution for every $b$.
+
+Each row and column of an echelon form have at most one pivot.
+
+\emph{Proof.}
+Immediate.
+Equivalent to not having free variables.
+Direct implication follows immediately from the first observation; conversely, if $A_\e$ does not have a pivot in every row, the last row is zero, taking $b_\e = (0,\dots,0,1) \in \F^m$ makes $[A_\e|b_\e]$ inconsistent, and reversing the row operations give $[A|b]$ inconsistent.
+Follows immediately from previous two observations.
+Follows from definition of echelon.
+
+\item
+
+For a family $\vv_1,\dots,\vv_m \in \F^n$, writing $A=[\vv_1,\dots,\vv_m]_{n \times m}$:
+\\ --
+The family is LI iff $A_\e$ has a pivot in every column.
+\\ --
+The family is spanning iff $A_\e$ has a pivot in every row.
+\\ --
+The family is a basis iff $A_\e$ has a pivot in every row and every column.
+
+\emph{Proof.}
+The definitions of LI and spanning match the previous observations.
+
+\item
+
+A family with more than $n$ vectors in $\F^n$ cannot be LI.
+
+\emph{Proof.}
+Denote the family $\vv_1,\dots,\vv_m$ with $m>n$ (if it is infinite, reduce it).
+There are at most $n$ pivots in $[\vv_1,\dots,\vv_m]_\e$, so there cannot be one at each column.
+
+\item
+
+Any two bases of $V$ have the same number of elements.
+
+\emph{Proof.}
+Can assume one of them, $\A = \vv_1,\dots,\vv_n$ is finite.
+It is enough to show that the other one $\B$, cannot have more than $n$ elements.
+Let $T\in\cL(V,\F^n)$ be defined by $T\vv_j = \ve_j$.
+Then $T$ is an isomorphism, hence $(T\vu)_{\vu \in \B}$ is linearly independent.
+The claim then follows from the previous proposition.
+
+\item
+
+Every basis of $\F^n$ has $n$ elements.
+
+\item
+
+A spanning family in $\F^n$ must have at least $n$ elements.
+
+\emph{Proof.}
+If it is infinite, it has a lot more. If it is finite, it contains a basis.
+\end{itemize}
+
+
+\clearpage
+\section{Echelon form and invertibility}
+
+Main reference:
+Treil \S2.3 \& \S2.4
+
+\textbf{Notation.}
+A `` $\circ$ '' indicates a point that it is not quite following the textbook.
+
+\begin{itemize}
+\item
+
+A matrix $A$ is invertible iff $A_\e$ has a pivot in every row and every column.
+
+\emph{Proof.}
+Both are equivalent to $Ax=b$ having unique solution for every $b \in \F^m$.
+\\
+Proof~2.
+Both are equivalent to $\va_1,\dots,\va_n$ being a basis.
+
+\item
+
+Only square matrices can be invertible.
+
+\emph{Proof.}
+Let $n$ be the number of pivots. Then $A_\e$ must have $n$ rows and $n$ columns.
+
+\item
+
+A square matrix is left invertible iff it is right invertible.
+
+\emph{Proof.}
+If $A$ is right invertible,
+$Ax=b$ has solution for every $b$,
+thus $A_\e$ has a pivot at every row,
+hence $A_\e$ has a pivot at every column and therefore $A$ is invertible.
+If $A$ is left invertible,
+$\0$ is the only solution to $Ax=\0$, 
+thus $A_\e$ has a pivot at every column,
+hence $A_\e$ has a pivot at every row and therefore $A$ is invertible.
+
+% $A$ is right invertible
+% $\Leftrightarrow$ NEEDS TO JUSTIFY
+% $Ax=b$ has solution for every $b$
+% $\Leftrightarrow$
+% $A_\e$ has pivot at every row
+% $\Leftrightarrow$
+% $A_\e$ has pivot at every column
+% $\Leftrightarrow$
+% $\0$ is the only solution to $Ax=\0$,
+% $\Leftrightarrow$ NEEDS TO JUSTIFY
+% $A$ is left invertible.
+
+% For square matrix, either one of these imply that the matrix is invertible.
+
+\item
+
+For square matrices, it is enough that $AB = I$ \textbf{or} $BA = I$ to have $B = A^{-1}$.
+
+\emph{Proof.}
+It is a corollary of the previous proposition.
+
+\spitem
+
+A family $\vv_1,\dots,\vv_n\in\F^n$ is LI iff it is spanning.
+
+\emph{Proof.}
+LI and spanning are equivalent to the matrix $[\vv_1,\dots,\vv_n]_{n \times n}$ having a row at every column or every row, which are in turn equivalent to each other.
+
+\spitem
+
+For a family with $n$ vectors, it is enough to check LI \textbf{or} spanning to have a basis.
+
+\emph{Proof.}
+It is a corollary of the previous proposition.
+
+\item
+
+Row operations on an $m \times n$ matrix $A$ are equivalent to multiplying $A$ from the left by an an \emph{elementary matrix} $E$.
+Elementary matrices are invertible.
+
+\item
+
+To find the inverse of a square matrix $A$ we can apply row reduction to $[A|I]$.
+
+If $A_\e$ has fewer than $n$ pivots, we know that $A$ is not invertible, and we can stop.
+
+If it has $n$ pivots, the pivots are on the diagonal, and applying the backward phase of row reduction we get the reduced echelon form which is $[I|A^{-1}]$.
+
+\emph{Proof.}
+Row reduction and backward phase consist in applying $B=E_k \cdots E_2 E_1$ to $[A|I]$, giving $B[A|I]=[BA|BI]=[I|B]$, and since $BA=I$ we have $B=A^{-1}$.
+
+\item
+
+Any invertible matrix can be represented as a product of elementary matrices.
+
+\end{itemize}
+
+
+\clearpage
+\section{Subspaces and dimension}
+
+Main reference:
+Treil
+\S1.8
+\& 
+\S2.5
+
+\begin{itemize}
+
+\item
+
+A subset $W \subseteq V$ is called a \emph{subspace} of $V$ if $W$ is itself a vector space, with the same operations as inherited from $V$.
+
+\item
+
+A subset $W \subseteq V$ is a subspace of $V$ iff it satisfies:
+\begin{enumerate}
+\item
+$\0 \in W$.
+\item
+$W$ is closed under addition, i.e., for every $u,v \in W$, we have $u+v \in W$.
+\item
+$W$ is closed under scalar multiplication: $\alpha u \in W$ for every $u \in W$ and $\alpha \in \F$.
+\end{enumerate}
+
+\emph{Proof.}
+All the properties are satisfied because $W$ inherits the operations from $V$.
+
+% Existence of $\0$ follows from $W \ne \emptyset$ and $0 u = \0$.
+
+
+\spitem
+
+Examples:
+Trivial subspaces: $\{\0\}$ and $V$.
+The set of all linear combinations of a family $\A=\vu_1,\dots,\vu_k$, denoted $\myspan(\vu_1,\dots,\vu_k)$.
+The set of all solutions to $Ax=0$.
+The \emph{range} of $T\in\cL(V,W)$, denoted $\myrange T = \{Tv:v\in V\} \subseteq W$.
+The \emph{null space} or \emph{kernel} of $T$, is given by $\myker T = \{v\in V:Tv=\0\}\subseteq V$.
+
+Useful properties:
+$\myspan (\myspan \A) = \myspan \A$,
+$\myker (TR) \supseteq \myker R$,
+$\myrange (TR) \subseteq \myrange T$.
+\\
+
+\item
+The \emph{dimension} $\mydim V$ of a vector space $V$ is the number of vectors in a basis (note that $\mydim\{\0\}=0$ because $\emptyset$ is a basis).
+We say that $V$ is \emph{finite-dimensional} if it has a finite basis, otherwise it is \emph{infinite-dimensional}.
+
+Examples: $\F^n$ and $\cP_n(\R)$ are finite-dimensional, $\cP(\R)$ and the space of all continuous functions defined on $[0,1]$ are infinite-dimensional.
+
+\spitem
+
+Suppose $n = \mydim V < \infty$.
+A family $\A$ with $n$ vectors is LI iff it is spanning.
+If it has fewer vectors, it cannot be spanning.
+If it has more vectors, it cannot be LI.
+
+For a family with $n$ vectors, it is enough to check LI \textbf{or} spanning to have a basis.
+
+\emph{Proof.}
+Take an isomorphism $T\in\cL(V,\F^n)$ and use the result for $\F^n$.
+%We have already proved these properties if $V=\F^n$, so the claims follow by t
+
+\spitem
+
+Suppose $\mydim V < \infty$.
+If $\A \subseteq \cC \subseteq V$ and $\A$ is linearly independent, then there exists a finite basis $\B$ for $\myspan \cC$ such that $\A \subseteq \B \subseteq \cC$.
+
+\emph{Proof.}
+Exercise.
+
+\spitem
+
+Suppose $\mydim V < \infty$.
+If $\A$ is a LI family, there is a basis $\B$ that contains $\A$.
+\\
+If $\cC$ is a spanning family, there is a basis $\B$ contained in $\cC$.
+
+\emph{Proof.}
+Take $\cC=V$.
+Take $\A=\emptyset$.
+%Add vectors which are outside the $\myspan$ until it becomes a spanning family. This process has to stop because a LI family cannot have more than $n$ vectors.
+
+\item
+Suppose $\mydim V < \infty$.
+If $W$ is a subspace of $V$, then $\mydim W \leq \mydim V$.
+Moreover, $\mydim W = \mydim V$ only if $W=V$.
+
+\emph{Proof.}
+%Like in the previous proof, we can construct a basis for
+Take a basis for $W$, extend to a basis of $V$, if same number then $W=V$.
+
+\end{itemize}
+
+
+\clearpage
+\section{Fundamental subspaces and rank theorems}
+\label{sec:rank}
+
+Main reference:
+Treil
+\S2.6
+\& 
+\S2.7.
+\
+Supplementary reading:
+Hefferon \S 2.III.3
+
+\textbf{Logic.}
+Often in our sentences, we are implicitly saying that a certain statement is true \emph{for all} $V$, \emph{for all} $v$, etc.
+In order to negate such sentences, one needs to show that the claim is false \emph{for some} $v$, etc.
+It is also implicit that $V$ is a vector space.
+When we say that $U$ and $W$ are subspaces, it is implicit that they are subsets of \emph{the same} space $V$.
+When we say ``if vectors $x$ and $y$ ... then ...,'' usually it means in the same space.
+
+\begin{itemize}
+
+\item
+
+%General = Particular + Homogeneous:
+%\\
+If $Ax=b$ has a solution $v$,
+then the set of solutions is given by $\{v+u: Au=\0\}$.
+
+\emph{Proof.}
+If $x$ in this set, $Ax=Av+Au=b+\0=b$, so $x$ is a solution.
+Conversely, if $Ax=b$, take $u = x-v$, so $Au=Ax-Av=b-b=\0$, and $x$ is in this set.
+
+\end{itemize}
+
+Suppose we are given a parametrized family $\A$ of solutions as one fixed vector plus the span of a few other vectors. How can we tell whether $\A$ contains \textbf{all} solutions to $Ax=b$?
+
+% We can check directly whether vectors in $\A$ are solutions to $Ax=b$.
+% Even if we solve the system by row reduction, how can we tell if the family of solutions that we get is the same as $\A$?
+
+\begin{itemize}
+
+\item
+
+We associate to a given matrix $A\in\F^{m \times n}$ four \emph{fundamental subspaces}:
+\begin{itemize}
+\item
+\emph{Null space} or \emph{kernel}:
+$\myker A = \{v \in \F^n: Av=\0\} \subseteq \F^n$.
+\item
+\emph{Column space} or \emph{range}:
+$\myrange A = \myspan(\va_1,\dots,\va_n) = \{Ax : x\in \F^n\} \subseteq \F^m$.
+\item
+\emph{Row space}, given by $\myrange(A^T) \subseteq \F^n$.
+\item
+\emph{Left null space}, given by $\myker(A^T) \subseteq \F^m$.
+\end{itemize}
+
+\item
+
+How to find bases the range, row space and kernel?
+
+First, use row reduction to find an echelon form $A_\e$.
+\\
+We say that column $k$ is a \emph{pivot column} if it contains a pivot of $A_\e$.
+\begin{enumerate}
+\item
+The pivot columns of \emph{the original matrix $A$} form a basis for $\myrange A$.
+\item
+The non-zero rows of $A_\e$ form a basis for $\myrange A^T$.
+\item
+Expressing solutions of $A_\re \, x = \0$ in vector form gives a basis for $\myker A$, each vector in the basis corresponding to one free variable.
+\end{enumerate}
+
+\item
+
+We define \emph{the rank of $A$} as $\myrank A = \mydim \myrange A$.
+
+\item
+
+\textbf{Rank Theorem:}
+For $A \in \F^{m \times n}$,
+$\myrank A = \myrank A^T$.
+
+\emph{Proof.}
+From previous procedures, both correspond to the number of pivots in $A_\e$.
+
+\item
+
+\textbf{Rank-Nullity Theorem:}
+For $A \in \F^{m \times n}$,
+$\myrank A + \mydim \myker A = n$.
+\\
+%For finite-dimensional $V$ and
+\hspace*{\fill}
+If $\mydim V<\infty$ and $T\in\cL(V,W)$, then
+$\mydim\myrange T + \mydim \myker T = \mydim V$.
+
+\emph{Proof.}
+From previous procedures, $\myrank A$ equals the number of pivots in $A_{\e}$ and $\mydim \myker A$ equals the number of columns without pivots. These add up to $n$.
+For a linear map $T\in\cL(V,W)$, consider isomorphisms to subspaces of $\F^n$.
+
+\end{itemize}
+
+
+\clearpage
+\section{Finding bases and completing bases}
+
+Main reference:
+Treil
+\S2.7
+
+\begin{itemize}
+
+\item
+
+How to find bases the range, row space and kernel?
+\begin{enumerate}
+\item
+The pivot columns of $A$ (those where $A_\e$ has a pivot) form a basis for $\myrange A$.
+\item
+The non-zero rows of $A_\e$ form a basis for $\myrange A^T$.
+\item
+Expressing the solutions of $A_\re \, x = \0$ in vector form gives a basis for $\myker A$, each vector in the basis corresponding to one free variable.
+\end{enumerate}
+
+%Why do the above procedures work?
+
+\emph{Proof.} We need a few preliminary lemmas.
+
+Exercise: $\myker A$ determines which columns are spanned by which other columns.
+
+Exercise: If $S$ is invertible, then $\myker (ST) = \myker T$ and $\myrange (RS) = \myrange R$.
+
+\begin{enumerate}
+\item
+Pivot columns of $A_\re$ are LI and span the other columns.
+Since $A_\re = EA$ with $E$ invertible, after applying $E^{-1}$ the corresponding columns are still LI and still span the other columns,
+hence they are a basis for the column space.
+\item
+First, check that non-zero rows of $A_\e$ are linearly independent, so they form a basis for $\myrange A_\e^T$.
+Second, note that $A_\e^T = A^T E^T$ with $E$ is invertible, and by the second exercise $\myrange A_\e^T = \myrange A^T$.
+\item
+These vectors span the null space $\myker A$ by construction.
+Since the $k$-th coordinate of the general solution always equals the free variable $x_k$, the only linear combination that produces $\0$ is the trivial one, so they are also LI.
+\end{enumerate}
+
+\spitem
+
+For two subspaces $U$ and $W$ of $V$, the \emph{sum of $U$ and $W$} is the subspace
+\[
+U+W=\{u+w:\ u\in U, \ w\in W\} \subseteq V.
+\]
+
+\spitem
+
+$\myspan(\vx_1,\dots,\vx_j) + \myspan(\vy_1,\dots,\vy_r) = \myspan(\vx_1,\dots,\vx_j,\vy_1,\dots,\vy_r)$.
+
+\emph{Proof.}
+Exercise.
+
+\spitem
+
+How can we complete a LI family in $\F^n$ to get a basis? Write them as rows, find the pivot columns, and add canonical rows ${\ve}_k$ corresponding to the free variables.
+
+\emph{Proof.}
+Let $A$ be the matrix $[\vv_1, \dots, \vv_j]^T$ and $A_\e=[\vu_1,\dots,\vu_j]^T$ be its echelon form.
+Let $B$ be the square matrix $[\vu_1,\dots, \vu_j, \ve_{k_1}, \dots, \ve_{k_r}]^T$.
+With only row exchanges we get $B_\e$ with $n$ pivots, so $\myrank B = n$ and thus $\myrange B^T = \F^n$.
+On the other hand,
+\begin{align*}
+\myrange B^T
+& = \myspan(\vu_1,\dots, \vu_j, \ve_{k_1}, \dots, \ve_{k_r}) \\
+& = \myrange {A_\e}^T + \myspan(\ve_{k_1}, \dots, \ve_{k_r}) \\
+& = \myrange A^T + \myspan(\ve_{k_1}, \dots, \ve_{k_r}) \\
+& = \myspan(\vv_1,\dots, \vv_j,\ve_{k_1}, \dots, \ve_{k_r}).
+\end{align*}
+Since this family is spanning and contains $j+r=n$ vectors, it is a basis.
+
+%\emph{Proof.}
+%Let $A$ be the matrix $[\vv_1, \dots, \vv_j]^T$ and $C=A_\e=[\vw_1,\dots,\vw_j]^T$ be its echelon form.
+%Let $B$ be the square matrix $[\vv_1, \dots, \vv_j, \ve_{k_1}, \dots, \ve_{k_r}]^T$ and $D$ be the square matrix $[\vw_1,\dots, \vw_j, \ve_{k_1}, \dots, \ve_{k_r}]^T$.
+%We want to show that $B$ is invertible, which is equivalent to $\myker B = \{\0\}$.
+%Reordering the rows of $D$ we get $n$ pivots, so $D$ is invertible, that is, $\myker D = \{\0\}$.
+%Since $C = EA$, $\myker C = \myker A$.
+%Now $\myker D$ is given by the set of vectors
+%$x$ such that $Cx=\0$ and $x_{k_1}=\cdots=x_{k_r}=0$.
+%But this is the same as the set of vectors
+%$x$ such that $Ax=\0$ and $x_{k_1}=\cdots=x_{k_r}=0$, which in turn equals $\myker B$.
+%Therefore, $\myker B=\{\0\}$, so $B^T$ is invertible and the resulting family \(\vv_1, \dots, \vv_j, \ve_{k_1}, \dots, \ve_{k_r}\) is indeed a basis for $\F^n$.
+
+\end{itemize}
+
+
+\clearpage
+\section{Coordinate and change of basis}
+
+Main reference:
+Treil
+\S2.8
+
+\begin{itemize}
+
+\item
+
+Let $\A=\va_1,\dots,\va_n$ be a basis of a vector space $V$. For a vector $v\in V$ such that $v=x_1\va_1+\dots+x_n\va_n$, the \emph{coordinate vector} of $v$ in the basis $\A$ is defined as
+\[
+[v]_{\A}=(x_1,\dots,x_n) \in \F^n
+%\left(\begin{array}{c}x_1\\ \vdots \\ x_n\end{array}\right).
+\]
+and the numbers $x_1,\dots,x_n$ are \emph{the coordinates of $v$ relative to the basis $\A$}.
+
+\item
+
+The map $v \mapsto [v]_\A$ is an isomorphism between $V$ and $\F^n$.
+
+\item
+
+For a linear map $T\in\mathcal{L}(V,W)$ and bases $\A=\va_1,\dots,\va_n$ of $V$ and $\B=\vb_1,\dots,\vb_m$ of $W$, the matrix of $T$ with input basis $\A$ and output basis $\B$, denoted $[T]_{\B\A}\in \F^{m \times n}$ is the matrix whose $k$-th column is $[T\va_k]_{\B}$.
+With this definition,
+\[
+[Tv]_{\B}=[T]_{\B\A} \, [v]_{\A}
+\]
+for every $v\in V$, and $[T]_{\B\A}$ is the only matrix with this property.
+
+\spitem
+
+A basis is a basis regardless of how vectors are ordered.
+\\
+But, for the purpose of writing $[v]_\B$ and $[T]_{\B\A}$, the order does matter.
+
+\item
+
+If $S\in\mathcal{L}(U,V)$ and $\mathcal{C}$ is a basis of $U$, then 
+\[
+[TS]_{\B\mathcal{C}}=[T]_{\B\A}[S]_{\A\mathcal{C}}.
+\]
+
+\emph{Proof.}
+$[(TS)u]_\B = [T(Su)]_\B = [T]_{\B\A} \, [Su]_\A = [T]_{\B\A} \, [S]_{\A\cC} \, [u]_\cC.$
+
+\item
+
+The change of coordinate matrix from a basis $\A=\va_1,\dots,\va_n$ of $V$ to another basis $\B=\vb_1,\dots,\vb_n$ of $V$ is the matrix of $I_V$ with input basis $\A$ and output basis $\B$:
+\[
+[v]_{\B}=[I_V]_{\B\A}[v]_{\A}.
+\]
+Moreover, the change of basis from $\B$ to $\A$ is the matrix $[I_V]_{\A\B}=\left([I_V]_{\B\A}\right)^{-1}$.
+
+\item
+
+If $\cS=\ve_1,\dots,\ve_n$ denote the canonical basis of $\F^n$, and let $\A=\va_1,\dots,\va_n$ denote another basis.
+Then $[I_V]_{\cS\A} = A = [\, \va_1 , \va_2 , \dots , \va_n ]_{n \times n}$ and $[I_V]_{\A\cS} = A^{-1}$.
+
+Examples:
+$\A = (1,2),(2,1)$. $\A = 1,1+t$ and $\B = 1+2t,1-2t$.
+
+\item
+
+The change of basis for the matrix of a linear map $T\in\mathcal{L}(V,W)$, with $\A$, $\A'$ bases of $V$ and $\B$, $\B'$ bases of $W$, is given by:
+\[
+[T]_{\B'\A'}=[I_W]_{\B'\B}[T]_{\B\A}[I_V]_{\A\A'}.
+\]
+
+In case $T \in \cL (V)$, we have
+\[
+[T]_\B = [I_V]_{\B\A} [T]_\A [I_V]_{\A\B}.
+\]
+
+\item
+
+Two matrices $A$ and $B\in \F^{n \times n}$ are \emph{similar} is there exists an invertible matrix $Q \in \F^{n \times n}$ such that $A=Q^{-1}BQ$.
+This splits $\F^{n \times n}$ into \emph{classes}.
+
+\end{itemize}
+
+
+\clearpage
+\section{Determinant: axiomatic definition}
+
+Main reference:
+Treil
+\S\S3.1--3.3, \textbf{with row instead of column!}
+
+\begin{itemize}
+
+\item
+
+We want to define the \emph{determinant} of a \textbf{square} matrix as a quantity, function of its \textbf{rows} $\va_j$, which in some sense measures the ``volume'' induced by vectors $\va_j$, and which is meaningful for Linear Algebra. This function should satisfy:
+
+\hspace*{2em}
+(0)
+--
+Invariance under row replacement
+\\
+\hspace*{2em}
+(1)
+--
+Linearity in each row
+\\
+\hspace*{2em}
+(3)
+--
+Normalization
+
+\item
+
+Assuming~(1), Property~(0) is equivalent to the following:
+
+\hspace*{2em}
+(2)
+--
+Antisymmetry under row exchange
+
+\emph{Proof.}
+For $(0) \Rightarrow (2)$,
+add $\va_j$ to $\va_k$, then $-\va_k$ to $\va_j$, then $\va_j$ to $\va_k$, and use~(1).
+For $(2) \Rightarrow (0)$,
+suppose $C$ is obtained by taking $\vc_j = \va_j + \alpha \va_k$. Using~(1), $\mydet C = \mydet A + \alpha \mydet B$, where rows $j$ and $k$ of $B$ are identical. Using~(2), $\mydet B = 0$.
+
+\item
+
+We say that $\mydet:\F^n\to\F$ is \emph{a determinant} if it satisfies Properties~(1)-(2)-(3).
+
+For now, let us assume existence of such a function.
+We will see that, using only these properties, we can compute $\mydet A$.
+%So, if a determinant exists, it is unique.
+So we can call it \emph{the determinant}.
+
+\item
+
+How do row operations affect $\mydet$?
+From Properties~(0)-(1)-(2),
+
+--
+Row replacement: does not change $\mydet$.
+\\
+--
+Scaling: multiply $\mydet$ by $\alpha$.
+\\
+--
+Row exchange: multiply $\mydet$ by $-1$.
+
+\item
+
+A matrix $B \in \F^{n \times n}$ is \emph{upper triangular} if all entries below the main diagonal are zero.
+If $B$ is upper triangular, we have $\mydet B = b_{1,1}b_{1,2} \cdots b_{n,n}$.
+
+\emph{Proof.}
+If $B$ has zero on the diagonal, then $B_\e$ has a zero row and $\mydet B = 0$ by~(1).
+If not, then row replacements make $B$ diagonal, and scaling makes it identity.
+\item
+
+Row reduction consists of row operations which yield an upper triangular matrix.
+So we can indeed compute $\mydet A$ assuming only (1)-(2)-(3)!
+
+\item
+
+$\mydet A = 0$ iff $A$ is not invertible.
+
+\emph{Proof.}
+Row operations do not change whether or not a matrix's determinant is zero.
+If $A$ is invertible, row operations yield the identity.
+If $A$ is not invertible, row operations yield a zero row.
+
+\item
+
+$\mydet A = 0$ iff one of the rows is a linear combination of the others.
+
+\emph{Proof.}
+Equivalent to $A$ is not being invertible.
+
+\item
+
+By linearity in each row, $\mydet(\alpha A) = \alpha^n \mydet A$.
+
+\item
+We still haven't proved existence of the determinant.
+
+\end{itemize}
+
+
+\clearpage
+\section{Determinant: factorization and permutation formula}
+
+Main reference:
+Treil
+\S3.3 with row instead of column, and \S3.4
+
+\begin{itemize}
+
+\item
+
+$\mydet(AB)=(\mydet A)(\mydet B)$
+and
+$\mydet (A^T) = \mydet A$.
+
+\emph{Proof.}
+Lemma: If $E$ is an elementary matrix, then $\mydet(EB)=(\mydet E)(\mydet B)$.
+Indeed, performing row operations is equivalent to multiplying from the left by elementary matrices, whose determinant coincides with the factor affecting the determinant of $B$.
+To prove the above identities, we can assume $A$ is invertible (otherwise $AB$ and $A^T$ are not invertible, and we get $0=0$), so $A=E_N\cdots E_2E_1$.
+By the lemma, $\mydet(AB)=(\mydet E_N)\cdots(\mydet E_2)(\mydet E_1)(\mydet B)=(\mydet A)(\mydet B)$.
+Moreover, $A^T = E_1^T E_2^T \cdots E_N^T$, so it is enough to prove the second identity for elementary matrices, i.e., $\mydet (E^T) = \mydet E$, which can be checked case by case.
+
+%\emph{Remark.}
+%All the properties involving rows are now valid for columns.
+
+\item
+
+The determinant of $A=(a_{j,k})_{j,k} \in \F^{n \times n}$ exists and is given by
+\[
+\mydet A = \sum_{\sigma} a_{\sigma(1),1}a_{\sigma(2),2} \cdots a_{\sigma(n),n} \mysgn(\sigma).
+\]
+The above sum is over all \emph{permutations} $\sigma$ of $\{1,2,\dots,n\}$.
+Finally, $\mysgn \sigma$ is defined as $\pm 1$ according to the parity of how many \emph{disorders} are present in $\sigma$, i.e.
+\[
+\mysgn (\sigma)=(-1)^{\#\{(j,k):\ 1\leq j<k\leq n,\ \sigma(j)>\sigma(k)\}}.
+\]
+
+\emph{Derivation.}
+First, if $A$ has exactly one $1$ in each column, one $1$ in each row, and $0$ elsewhere, then $A$ is a \emph{permutation of the identity}, i.e., $A=[\ve_{\sigma(1)},\dots,\ve_{\sigma(n)}]$ for some permutation $\sigma$.
+In this case, the product $a_{\sigma(1),1}a_{\sigma(2),2} \cdots a_{\sigma(n),n}$ equals $1$ for this permutation $\sigma$ and $0$ for all others, and the above formula states that $\mydet A = \mysgn \sigma$.
+This is consistent with properties of $\mydet$, as can be seen by applying neighbor column permutations to $I_n$ while using Property~(2'), and using Property~(3) for $I_n$ itself.
+Now consider the general case, $A \in \F^{n\times n}$.
+Write $A = [\va_1, \dots, \va_n]$, so $\va_k = [a_{1,k},\dots,a_{n,k}]^T = \sum_j a_{j,k} \ve_j$.
+Using Property~(1') of $\mydet$ for $\va_1$,
+\[
+\mydet A = \sum_{j_1} a_{j_1,1} \mydet [\ve_{j_1},\va_2,\dots,\va_n]
+.
+\]
+Repeating the same argument for $\va_2,\dots,\va_n$,
+\[
+\mydet A = \sum_{j_1} \sum_{j_2} \cdots \sum_{j_n} a_{j_1,1} a_{j_2,2} \cdots a_{j_n,n} \mydet [\ve_{j_1},\ve_{j_2},\dots,\ve_{j_n}]
+.
+\]
+The above sum has $n^n$ terms, but most of them are zero for having repeated columns.
+The nonzero terms are exactly when the $j_k$'s are all different, i.e., when for some permutation $\sigma$, $j_k=\sigma(k)$ for all $k$.
+For this term, $\mydet(\ve_{\sigma(1)},\dots,\ve_{\sigma(k)})=\mysgn(\sigma)$.
+So, a function satisfying (1)-(2)-(3) must agree with the above formula.
+
+\emph{Proof.}
+(1) the above summand has exactly one term from each column.
+(2) column exchange results from an odd number of neighbor column permutations.
+(3) when $A=I$, only the neutral permutation gives a non-zero summand.
+
+\end{itemize}
+
+
+\clearpage
+\section{Determinant: volume and cofactor expansion}
+
+Main reference:
+Treil
+\S3.5
+
+\begin{itemize}
+
+\spitem
+
+Given $T\in\cL(\R^n)$, for $\Omega \subset \R^n$ open and bounded,
+$\mathsf{vol}(T(\Omega))=|\mydet T| \times \mathsf{vol}(\Omega)$.
+
+\emph{Proof.} Seen in HLA-2, using Isometries and Singular Value Decomposition.
+
+\item
+
+\emph{Cofactor expansion}.
+For $A=(a_{jk})_{j,k} \in \F^{n \times n}$ and for $j,k\in\{1,\dots,n\}$, let $A_{j,k} \in \F^{(n-1)\times(n-1)}$ be the submatrix obtained by erasing row $j$ and column $k$ from $A$.
+We can expand the determinant of $A$ with respect to any given row $j$:
+\[
+\mydet A=\sum_{k=1}^n (-1)^{j+k}a_{j,k}\mydet A_{j,k}.
+\]
+We can also expand the determinant of $A$ with respect to any given column $j$:
+\[
+\mydet A=\sum_{k=1}^n (-1)^{j+k}a_{k,j}\mydet A_{k,j}.
+\]
+
+\emph{Remark.}
+This method has theoretical importance, and can be helpful when computing examples of size $2$ and $3$, or for a matrix with many zeros.
+
+\emph{Explanation.}
+The expansion for column $j$ can be seen as splitting the permutation formula according to the value of $\sigma(j)$.
+This gives invertible functions from $\{1,\dots,n\}\setminus\{j\}$ to $\{1,\dots,n\}\setminus\{k\}$, which in turn can be identified with permutations of $\{1,\dots,n-1\}$ with the $\mysgn$ changed accordingly.
+
+%\emph{Explanation~2.}
+%One can check by induction on $n$ that the row expansion is linear in each column, antisymmetric under neighbor column transposition, and normalized.
+
+%\emph{Proof.}
+%%Complete proof: 
+%Postponed.
+
+\item
+
+The coefficients $c_{j,k}=(-1)^{j+k}\mydet A_{j,k}$ are called \emph{cofactors} of $A$.
+
+\spitem
+
+Writing $C = [\vc_1,\dots,\vc_n]$ and $A=[\va_1,\dots,\va_n]$, we have $\vc_j \mydot \va_j = \sum_k c_{k,j} a_{k,j} = \mydet A$.
+In general, for any vector $\vy$ we have $\vc_j \mydot \vy = \mydet [\va_1,\dots,\va_{j-1},\vy,\va_{j+1},\dots,\va_n]$.
+
+\item
+
+Let $A\in\F^{n \times n}$ be invertible and have cofactor matrix $C$. Then
+%i.e.\ $C=(C_{jk})_{1\le j,k\le n}$. We have that
+\[
+A^{-1}=\frac{1}{\mydet A}C^T.
+\]
+
+\emph{Remark.}
+Same as before.
+
+\emph{Proof.}
+Let $D = C^T\! A$.
+Then $d_{j,k} = \vc_j \mydot \va_k = \mydet [\va_1,\dots,\va_{j-1},\va_k,\va_{j+1},\dots,\va_n]$.
+When $k=j$, this gives $\mydet A$.
+When $k \ne j$, this is the determinant of a matrix with two repeated columns, which is zero.
+So $C^T\! A = (\mydet A) I$.
+
+\item
+
+Cramer's rule: If $A$ is invertible, then the solution to $Ax=b$ is given by
+\[
+x_k=\frac{\mydet B_k}{\mydet A},
+\]
+where $B_k$ is the matrix obtained when we replace the $k$-th column of $A$ by $b$.
+
+\emph{Proof.}
+Writing $x = A^{-1}b = \frac{1}{\mydet A} C^T b = \frac{1}{\mydet A} \vv$, we have $v_k = \vc_k \mydot b = \mydet B_k$.
+
+%\item
+%
+%Let $A\in\F^{n,m}$. Let $k\in\{1,\dots,n\wedge m\}$ and consider a matrix $\tilde{A}$ obtained from $A$ by \emph{keeping} $k$ columns and $k$ rows. The quantity $\mydet \tilde{A}$ is called a minor of order $k$.
+%
+%\item
+%
+%Let $A\in\F^{n,m}$. rank$A$ is equal to the maximal $k$ such that there exists a non-zero minor of order $k$.
+%
+%\item
+%
+%Let $A(x)$ be a polynomial matrix. The function rank$A(x)$ is constant everywhere except at finitely many points, where its value is smaller.
+
+\end{itemize}
+
+
+\clearpage
+\section{Eigenvalues and eigenvectors}
+
+Main reference:
+Treil
+\S4.1.
+\
+Review on polynomials:
+Axler \S4
+
+\begin{itemize}
+
+\item
+
+Let $A \in \F^{n \times n}$.
+A scalar $\lambda\in \mathbb{F}$ is an \emph{eigenvalue} if there exists $v\in \F^n \setminus\{\0 \}$ such that $Av=\lambda v$, and $v$ is called an \emph{eigenvector} of $A$ associated with eigenvalue $\lambda$.
+
+\item
+
+The subspace $\myker(A-\lambda I)$ is called the \emph{eigenspace} associated to $\lambda$.
+\\
+The set of all the eigenvalues of $A$ is called the \emph{spectrum} of $A$.
+
+\item
+
+$p_A(\lambda)=\mydet(A-\lambda I)$ has degree $n$ and is called the \emph{characteristic polynomial} of $A$.
+
+A number $\lambda \in \F$ is an eigenvalue of $A$ iff $p_A(\lambda)=0$.
+
+\emph{Remark.}
+Not very practical unless $n$ is small or $A$ has many zeros.
+
+\item
+
+Similar matrices have the same characteristic polynomial.
+
+\emph{Proof.}
+Exercise.
+
+\item
+
+The \emph{algebraic multiplicity} of an eigenvalue is its multiplicity as a root of $p_A \in \cP(\C)$.
+
+\item
+
+The $n$ eigenvalues of an upper triangular matrix $A \in \C^{n \times n}$, listed with algebraic multiplicity, are exactly the diagonal entries $a_{1,1},a_{2,2},\dots,a_{n,n}$.
+
+\emph{Proof.}
+Exercise.
+
+\end{itemize}
+
+Below we consider $\F = \C$.
+In some situations it may be useful to treat real numbers, vectors and matrices as particular cases of complex numbers, vectors and matrices.
+
+%$\R$ and $\R^n$ as subsets of $\C$ and $\C^n$.
+
+%From now on we assume $\F = \C$, and think of $\R$ and $\R^n$ as subsets of $\C$ and $\C^n$.
+%\\
+%Considerations for the case when $A$, $\lambda$ or $v$ happen to be real will be made explicitly.
+
+\begin{itemize}
+
+\item
+
+\emph{Fundamental Theorem of Algebra.}
+Non-constant complex polynomials have roots.
+
+We call $z_0$ a \emph{root} of $p$ if $p(z_0)=0$.
+The \emph{multiplicity} of a root $z_0$ is the highest power of $(z-z_0)$ that divides $p(z)$.
+Any complex polynomial of degree $n$ can written as $p(z)=c(z-z_1)\cdots(z-z_n)$, where $z_1,\dots,z_n$ are its roots, counting multiplicity.
+
+\item
+
+%$\lambda_1,\dots,\lambda_n$ are the eigenvalues counted with multiplicity
+
+%The multiplicity of $\lambda$ as a root of $p_A$ is called 
+%the eigenvalue $\lambda$.
+
+Every $A \in \C^{n \times n}$ has $n$ eigenvalues $\lambda_1,\dots,\lambda_n$, counted with algebraic multiplicity.
+
+\emph{Proof.}
+Follows from the factorization of complex polynomials of degree $n$.
+
+%, and
+%$p_A(\lambda) = (\lambda_1-\lambda)\cdots(\lambda_n-\lambda)$.
+
+\item
+
+In this case,
+$\mydet A = \lambda_1 \cdots \lambda_n$
+and
+$\mytrace A = \lambda_1 + \cdots + \lambda_n$.
+
+\emph{Proof.}
+Let us analyze the coefficients of $p_A(z)=b_n z^n + b_{n-1} z^{n-1} + \cdots + b_1 z + b_0$.
+\\
+We first expand the product $p_A(z) = c(z-\lambda_1)\cdots(z-\lambda_n)$, which gives $b_n = c$, $b_{n-1} = -c (\lambda_1 + \cdots + \lambda_n)$, and $b_0 = c \, (-\lambda_1)\cdots(-\lambda_n)$.
+\\
+Expanding the permutation formula for $\mydet(A - z I)$, only the diagonal permutation has terms involving $z^n$ or $z^{n-1}$.
+Other permutations miss at least two positions in the diagonal.
+So $b_{n-1}$ and $b_n$ come from $(a_{1,1}-z)\cdots(a_{n,n}-z)$, giving $b_n = (-1)^n$ and $b_{n-1}=(-1)^{n-1}(a_{1,1} + a_{2,2} + \cdots + a_{n,n})$.
+Moreover, $b_0 = p_A(0) = \mydet A$.
+
+\end{itemize}
+
+
+\clearpage
+\section{Diagonalization}
+\label{sec:diagonalization}
+
+Main reference:
+Treil
+\S4.2, skipping 4.2.4.
+We do not always treat $\R$ as a subset of $\C$.
+
+\begin{itemize}
+
+\spitem
+
+For $T \in \cL(\F^n)$, it would be very convenient to have a basis $\B$ for which $[T]_\B$ is a diagonal matrix.
+Denoting $[T]_\cS = A$, this means $Q^{-1} A Q = D$, or $A=QDQ^{-1}$.
+
+\emph{Remark.}
+In this case,
+$A^N = Q D^N Q^{-1}$,
+$p(A) = Q p(D) Q^{-1}$,
+$e^{tA} = Q e^{tD} Q^{-1}$, etc.
+
+\spitem
+
+We say that $A \in \F^{n \times n}$ is \emph{diagonalizable (over $\F$)} if $A = QDQ^{-1}$ for some $Q \in \F^{n \times n}$ invertible and $D$ diagonal.
+In this case we say that \emph{$Q$ diagonalizes $A$}.
+
+\spitem
+
+Let $A \in \F^{n \times n}$, $B = [\vv_1,\dots,\vv_r] \in \F^{n \times r}$, and $D = \mydiag(\lambda_1,\dots,\lambda_r) \in \F^{r \times r}$.
+\\
+Then
+$AB = BD$
+if and only if
+$A\vv_j = \lambda_j \vv_j$ for $j=1,\dots,r$.
+
+\emph{Proof.}
+Check what the columns of $AB$ and $BD$ are.
+
+\item
+
+A matrix $A \in \F^{n \times n}$ is diagonalizable iff there is a basis of $\F^n$ made of eigenvectors.
+
+\emph{Proof.}
+Write $Q = [\vv_1,\dots,\vv_n]_{n \times n}$.
+
+\item
+
+If $\vv_1,\dots,\vv_r \in \F^n$ are eigenvectors of $A \in \F^{n \times n}$ corresponding to distinct eigenvalues, then $\vv_1,\dots,\vv_r$ are linearly independent.
+
+\emph{Proof.}
+Apply $ A - \lambda_r I $ to a null linear combination and use induction on $r$.
+
+\item
+
+If $A \in \F^{n \times n}$ has $n$ distinct eigenvalues $\lambda_1,\dots,\lambda_n \in \F$, then $A$ is diagonalizable.
+
+\emph{Proof.}
+Take $n$ corresponding eigenvectors, they are LI, so they form a basis.
+
+\item
+
+The \emph{geometric multiplicity} of an eigenvalue $\lambda$ is given by $\mydim \myker (A-\lambda I)$.
+
+\item
+
+The geometric multiplicity of $\lambda$ cannot exceed its algebraic multiplicity.
+
+\emph{Proof.}
+Exercise.
+
+\spitem
+
+Let $\lambda_1,\dots,\lambda_r \in \F$ denote the distinct eigenvalues of $A \in \F^{n \times n}$.
+Then $A$ is diagonalizable over $\F$ if and only if the sum of algebraic multiplicities $m_1,\dots,m_r$ equals $n$ and they equal the geometric multiplicities $g_1,\dots,g_r$.
+%$m_1 + \dots + m_r = n$ and $\mydim\myker (A - \lambda_j I) = m_j$ for $j=1,\dots,r$.
+
+% Can make the proof shorter by applying $(A - \lambda_2 I)\dots(A - \lambda_r I)$ to the linear combination
+
+\emph{Proof.}
+$(\Rightarrow)$
+% A proof using similarity A = QDQ' was too sophisticated for the students.
+A LI family of eigenvectors has at most $\sum_j g_j \leqslant \sum_j m_j \leqslant n$ vectors, and a basis has $n$ vectors.
+$(\Leftarrow)$
+For each $j=1,\dots,r$, take $\vv_{j,1},\vv_{j,2},\dots,\vv_{j,m_j}$ as a basis for $\myker (A - \lambda_j I)$.
+Let $\B = \vv_{1,1},\vv_{1,2},\dots,\vv_{1,m_1},\dots,\vv_{r,1},\vv_{r,2},\dots,\vv_{r,m_r}$.
+Note that each vector in $\B$ is an eigenvector of $A$, since $A \vv_{j,k} = \lambda_j \vv_{j,k}$.
+Suppose $\sum_{j=1}^r \sum_{k=1}^{m_j} \alpha_{j,k} \vv_{j,k} = \0$ for some collection of scalars $(\alpha_{j,k})_{(j,k)}$.
+Take $\vu_j = \sum_{k=1}^{m_j} \alpha_{j,k} \vv_{j,k}$.
+Then $\vu_j$ is either $\0$ or a $\lambda_j$-eigenvector.
+Sine $\sum_j \vu_j = \0$ and eigenvectors with distinct eigenvalues are LI, we have $\vu_j = \0$ for every $j$.
+Since $\vv_{j,1},\vv_{j,2},\dots,\vv_{j,m_j}$ are LI, we have $\alpha_{j,k}=0$ for $k=1,\dots,m_j$.
+Therefore, $\B$ is LI.
+
+\spitem
+
+A square matrix with real entries is diagonalizable over $\R$ if and only if it is diagonalizable over $\C$ and all the eigenvalues are real.
+
+\emph{Proof.}
+The geometric multiplicity of a real eigenvalue is the same over $\R$ or $\C$.
+
+%\emph{Remark.}
+%If the eigenvalue $\lambda$ and the entries of $A$ are real, then the real dimension of the corresponding eigenspace as a subspace of $\R^n$ is the same as the complex dimension of the corresponding eigenspace as a subspace of $\C^n$.
+
+\end{itemize}
+
+
+\clearpage
+\section{Orthogonality and projection}
+
+Main reference:
+Lay
+\S\S6.1--6.3.
+%Here $\F = \R$.
+Most proofs of this topic will be skipped.
+
+\textbf{Notation.}
+Henceforth we write $u_j$ instead of $\vu_j$ and no longer refer to coordinates.
+
+\begin{itemize}
+
+\item
+
+
+%For vectors $$ w
+%The \emph{dot product} of $(u_1,\dots,u_n)$ and $(v_1,\dots,v_n) \in \R^n$ is $u \mydot v = \sum_j u_j v_j = u^T v$.
+
+For vectors $u,v \in \R^n$ we define the \emph{dot product} by $u \mydot v = u^T v$.
+
+\item
+
+For $u,v,w \in \R^n$ and $\alpha \in \R$, we have :
+\\
+$u \mydot v = v \mydot u$, 
+$(u+v) \mydot w = u \mydot w + v \mydot w$, $(\alpha u) \mydot v = \alpha (u \mydot v)$, and $u \mydot u > 0$ if $u \ne \0$.
+
+\item
+
+The \emph{length} (or \emph{norm}) of $v$ is given by $\|v\|=\sqrt{v \mydot v} \geq 0$.
+
+We call $v$ a \emph{unit vector} if $\|v\|=1$.
+
+\item
+
+We say that $u$ is \emph{orthogonal} to $v$, denoted $u \perp v$, if $u \mydot v = 0$.
+
+\item
+
+Two vectors $u$ and $v$ are orthogonal if and only if $\|u+v\|^2 = \|u\|^2 + \|v\|^2$.
+
+\item
+
+We say that $u$ is orthogonal to $\B$ if $u \perp w$ for all $w \in \B$.
+The \emph{orthogonal complement} of $\B$ and is denoted by $\B^\perp = \{ u \in \R^n : u \text{ is orthogonal to } \B\}$.
+
+\item
+
+Let $\B$ be a family of vectors and $W = \myspan(\B)$.
+Then $W^\perp = \B^\perp$.
+
+\item
+
+A family $\B$ of vectors is called an \emph{orthogonal family} if $u \perp v$ for all $u \ne v$ in $\B$.
+\\
+If moreover all the vectors in $\B$ are unit vectors, we call $\B$ an \emph{orthonormal family}.
+
+\item
+
+%Let $Q = [u_1,\dots,u_r]_{n \times r}$.
+The columns of $Q \in \R^{n \times k}$ are orthonormal iff $Q^T Q = I_{k \times k}$.
+In this case,
+$(Qu) \mydot (Qv) = u \mydot v$ for all $u,v \in \R^k$.
+In particular, $\|Qv\| = \|v\|$ for all $v \in \R^k$.
+
+%\item
+%An \emph{orthogonal basis} for a subspace $U \subseteq \R^n$ is a basis for $U$ that is also an orthogonal family.
+%We define \emph{orthonormal basis} similarly.
+
+\item
+
+Any orthogonal family $\{u_1,\dots,u_r\}$ of nonzero vectors is linearly independent.
+Moreover, if $y \in \myspan(u_1,\dots,u_r)$, then
+$y = \sum_j \frac{y \mydot u_j}{u_j \mydot u_j}  u_j$.
+
+\emph{Proof.}
+Write $y = \sum_j \alpha_j u_j$ and compute $y \mydot u_k$ to determine $\alpha_k$.
+
+\item
+
+\emph{Orthogonal decomposition and best approximation.}
+Let $U \subseteq \R^n$ be a subspace and $u_1,\dots,u_r$ an orthogonal basis for $U$.
+For each $y \in \R^n$ there are unique $\hat{y} \in U$ and $w \in U^\perp$ such that $y = \hat{y}+w$.
+The vector $\hat{y}$ is called the \emph{projection of $y$ onto $U$}, it is given by
+$\hat{y} = \proj{U} y = \sum_j \frac{y \mydot u_j}{u_j \mydot u_j}  u_j$ and has the property that $\|z-y\| > \|\hat{y} - y\|$ for any other $z \in U$.
+If the basis is orthonormal, then $\hat{y}=Q Q^T y$, where $Q = [u_1,...,u_r]$.
+
+\emph{Proof.}
+Define $\hat{y}$ and $w$ by the formulas. Check that $\hat{y} \in U$ and $w \in U^\perp$.
+%Check that $\hat{y}-\tilde{y} \in U \cap U^\perp = \{\0\}$.
+Note that $\|y-z\|^2 = \|y-\hat{y}\|^2 + \|\hat{y}-z\|^2$, which used twice also gives uniqueness.
+Last, the $j$-th entry of $Q^T y \in \R^{r\times 1}$ equals $y \mydot u_j$, hence $Q(Q^Ty) = \sum_j (y \mydot u_j)u_j$.
+
+\item
+
+\emph{Cauchy-Schwarz Inequality.}
+For every $u,v\in \R^n$, we have $|u \mydot v| \leq \|u\|\cdot\| v\|$.
+%\\
+%Equality holds if and only if $v={\bf 0}$ or $u=\lambda v$ for some $\lambda \geq 0$.
+
+\emph{Proof.}
+If $v \ne \0$,
+write
+$u = \frac{u \mydot v}{v \mydot v}v + w$,
+so
+$\|u\|^2 = (\frac{u \mydot v}{v \mydot v}\|v\|)^2 + \|w\|^2 \geq (\frac{u \mydot v}{\|v\|})^2$.
+
+%Check that $\|u\| \geqslant \|\hat{u}\|$ for the projection onto $\myspan (v)$.
+
+% [Some examples omitted until we learn integrals.]
+
+\item
+
+\emph{Triangle Inequality.}
+For every $u,v\in \R^n$, we have $\|u+v\| \leq \|u\| + \|v\|$.
+%\\
+%Equality holds if and only if $v=\0$ or $u=\lambda v$ for some $\lambda \geq 0$.
+
+\emph{Proof.}
+Expand $\|u+v\|^2$ and use Cauchy-Schwarz Inequality.
+
+\end{itemize}
+
+
+\clearpage
+\section{Factorizations and least squares}
+
+Main reference:
+Lay \S2.5, file PLU.pdf, Lay \S\S6.4--6.5
+
+\begin{itemize}
+
+\item
+
+The
+\emph{PLU factorization}
+consists in row reduction with bookkeeping, combined with \emph{partial pivoting} (choose the largest candidate for pivot).
+Start with $P = I, L = I, U=A$, so $PA = LU$.
+At each step, update the factors while keeping the factorization valid:
+$(QP)A = (QLQ)(QU)$
+for row exchange and
+$PA = (LE^{-1})(EU)$
+for row replacement.
+This way, $P$ is always a permutation, $L$ is always lower triangular, and $U$ becomes upper triangular at the end.
+Example:
+\[
+\begin{bmatrix}
+  0	&  0	&  1 \\
+  1	&  0	&  0 \\
+  0	&  1	&  0 \\
+\end{bmatrix}
+\begin{bmatrix}
+-2	& -2	& -1 \\
+ 1	& -1	&  6 \\
+-4	&  1	& -2 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+  1	&  0	&  0 \\
+\frac{1}{2}& 1	&  0 \\
+-\frac{1}{4}& \frac{3}{10}& 1 \\
+\end{bmatrix}
+\begin{bmatrix}
+-4& 1& -2 \\
+0& -\frac{5}{2}& 0 \\
+0& 0& \frac{11}{2} \\
+\end{bmatrix}
+.
+\]
+
+%$\sigma_{(3,1,2)}[2, 2, 1; 1, 1, 6; 4, 1, 2] = [1, 0, 0; \frac{1}{2}, 1, 0; -\frac{1}{4}, \frac{3}{10}, 1][4 -1 2; 0, 5/2, 0; 0, 0, -11/2]$
+
+\item
+
+Let $v_1,\dots,v_m$ be LI and $W_j = \myspan(v_1,\dots,v_j)$.
+The \emph{Gram-Schmidt} procedure gives orthogonal vectors $u_1,\dots,u_k$ such that $\myspan(u_1,\dots,u_j)=W_j$, as follows:
+\begin{align*}
+u_1 = v_1, \quad u_{j+1} = v_{j+1} - \proj{W_j} v_{j+1}.
+\end{align*}
+
+\item
+
+To get an orthonormal family we can take $w_j = \frac{1}{\|u_j\|} u_j$.
+
+\item
+
+The
+\emph{QR factorization}
+consists in writing $A \in \R^{n \times k}$ as $A=QR$ where $Q \in \R^{n \times k}$ has orthonormal columns and $R \in \R^{k \times k}$ is upper triangular.
+$Q$ can be found by applying Gram-Schmidt to the columns of $A$, and $R = Q^T\! A$.
+Example:
+\[
+\begin{bmatrix}
+ 1	& -1	&  4 \\
+ 1	&  4	& -2 \\
+ 1	&  4	&  2 \\
+ 1	& -1	&  0 \\
+\end{bmatrix}
+=
+%\frac{1}{2}
+\begin{bmatrix}
+ 1/2	& -1/2	&  1/2 \\
+ 1/2	&  1/2	& -1/2 \\
+ 1/2	&  1/2	&  1/2 \\
+ 1/2	& -1/2	& -1/2 \\
+\end{bmatrix}
+\begin{bmatrix}
+ 2	&  3	&  2 \\
+ 0	&  5 	& -2 \\
+ 0	&  0	&  4 \\
+\end{bmatrix}
+.
+\]
+
+\item
+
+Given $A \in \R^{m \times n}$ and $b \in \R^m$, a \emph{least-squares solution} to the equation $Ax=b$ is a vector $\hat{x} \in \R^n$ that minimizes $\|Ax-b\|$.
+
+\item
+
+Least-squares solutions exist and are given by \emph{normal equations} $A^T\! A \hat{x} = A^T b$.
+
+\emph{Proof.}
+Since the set of possible values of $Ax$ is exactly the subspace $\myrange A$, the distance $\|Ax-b\|$ will be minimized when $A\hat{x}$ equals the orthogonal projection of $b$ onto $\myrange A$.
+This is equivalent to $(A\hat{x}-b) \perp a_j$ for each column $a_j$.
+
+\item
+
+The minimizer $\hat{x}$ is unique when $A^T \! A$ is invertible.
+In this case, $ R \hat{x} = Q^T b $.
+
+Example:
+with same $A$ as above and $b=(20,20,20,0)$ we have $ \| A\hat{x} - b\| = 10 $.
+
+\end{itemize}
+
+
+\clearpage
+\section{Real spectral theorem and sketching simple conics}
+
+Main reference:
+Lay \S7.1, \S7.2
+
+\begin{itemize}
+
+\item
+
+For symmetric $A \in \R^{n \times n}$, eigenvectors of different eigenvalues are orthogonal.
+
+\emph{Proof.}
+Follows from $(A v_1) \mydot v_2 = v_1 \mydot (A v_2)$.
+
+\item
+
+We say that $A \in \R^{n \times n}$ is \emph{orthogonally diagonalizable} is there is an orthogonal matrix $P \in \R^{n \times n}$ such that $A = PDP^T$.
+
+\item
+
+\emph{Real Spectral Theorem.}
+$A \in \R^{n \times n}$ is orthogonally diagonalizable iff $A$ is symmetric.
+
+\emph{Proof.}
+We postpone the proof that symmetric matrices are always diagonalizable.
+Assuming this fact, by Gram-Schmidt we can find an orthogonal basis to each eigenspace, and the reunion of the bases of all eigenspaces is orthogonal by the previous proposition, so a symmetric matrix is orthogonally diagonalizable.
+The converse is immediate: $ A^T = (P^T)^T D^T P^T = PDP^T = A $.
+
+\item
+
+\emph{Spectral Decomposition.}
+Let $P=[u_1,\dots,u_n]$ be an orthogonal matrix that diagonalizes $A$.
+Then $A$ can be decomposed as a sum of rank-1 matrices:
+\[
+A = \sum_{j=1}^n \lambda_j [u_j u_j^T]_{n \times n}
+\]
+\emph{Remark.}
+The matrix $ u_j u_j^T $ projects vectors orthogonally onto $\myspan(u_j)$.
+
+\emph{Proof.}
+This is the column-row expansion of the product $(PD)P^T$.
+
+\spitem
+
+A \emph{quadratic form} on $\R^n$ is a polynomial of $n$ variables having only terms of degree two. It can represented in a unique way as $x \mydot A x$ for symmetric $A \in \R^{n \times n}$.
+
+\item
+
+If we make an orthogonal \emph{change of variables} $x = Py$, where $y$ represents the coordinates of $x$ with respect to the columns of $P$, the quadratic form becomes $y \mydot (P^T\! AP)y$. By the Spectral Theorem, it is possible to choose $P$ so that $ (P^T\! AP) $ is diagonal, so the quadratic form has no cross-product terms.
+
+\item
+
+Example:
+Sketch the graph of $5x_1^2 - 4 x_1x_2 + 5x_2^2 = 48$.
+
+Diagonalizing
+$ [ 5, -2 ; -2, 5 ] $,
+we get
+$P = [u_1, u_2]$ with
+$u_1 = (\frac{1}{\sqrt{2}},\frac{1}{\sqrt{2}})$,
+$u_2 = (\frac{-1}{\sqrt{2}},\frac{1}{\sqrt{2}})$
+and
+$D=\mydiag(3,7)$,
+so this is an ellipse with $a=4$ and $ b=\sqrt{48/7} $.
+
+\item
+
+Example:
+Sketch the graph of $x_1^2 - 8 x_1x_2 - 5x_2^2 = 16$.
+
+Diagonalizing
+$ [1, -4 ; -4, -5 ] $,
+we get
+$P = [u_1, u_2]$ with
+$u_1 = (\frac{2}{\sqrt{5}},\frac{-1}{\sqrt{5}})$,
+$u_2 = (\frac{1}{\sqrt{5}},\frac{2}{\sqrt{5}})$
+and
+$D=\mydiag(3,-7)$,
+so this is a hyperbola with $a=\frac{4\sqrt{3}}{3}$ and $b=\frac{4\sqrt{7}}{7}$.
+
+\end{itemize}
+
+
+\clearpage
+\section{Spaces and subspaces revisited}
+
+Main reference:
+Axler \S1.C, \S2.A, \S2.B, \S2.C
+
+The last lectures were all about matrices and the spaces $\R^n$, $\C^n$ or $\F^n$.
+We now switch back to abstract vector spaces $V$ over $\F = \R \text{ or } \C$, and consider subspaces $U,W$, etc.
+
+\begin{itemize}
+
+%\item
+%
+%The \emph{degree} of a polynomial is the maximal exponent with non-zero coefficient.
+%The degree of the zero polynomial is $-\infty$.
+%
+%\emph{Remark.}
+%This is the sensible definition, it gives $\mydeg(pq)=\mydeg p + \mydeg q$, etc.
+
+%\spitem
+%
+%If $v_1, \dots, v_n$ is LD, there exists $k\in\{1,\dots,n\}$ such that
+%$v_1, \dots, v_{k-1}$ is LI and $v_k \in \myspan(v_1, \dots, v_{k-1})$.
+%Moreover, $\myspan(v_1, \dots, v_{n}) = \myspan(v_1, \dots, v_{k-1},v_{k+1},\dots,v_n)$.
+%
+%\emph{Proof.}
+%Take the smallest $k$ such that $v_1,\dots,v_k$ is LD.
+
+%\item
+%
+%The sum $U_1+\dots+U_m$ is the smallest subspace of $V$ containing $U_1,\dots,U_m$.
+%
+%\emph{Proof.}
+%Any other such subspace containing each $U_j$ contains the sum.
+
+\item
+
+The sum $U_1+\dots+U_m$ is a \emph{direct sum} if for every $x \in (U_1+\dots+U_m)$, there exist unique vectors $u_1 \in U_1, \dots, u_m \in U_m$ such that $x=u_1 + \dots + u_m$.
+
+\item
+In case $U_1+\dots+U_m$ is a direct sum, we also denote it by $U_1 \oplus \dots \oplus U_m$ as a way to indicate this property.
+
+\item
+
+The sum $U_1+\dots+U_m$ is a direct sum iff the only $m$-tuple $u_1 \in U_1,\dots,u_m\in U_m$ that gives $u_1 + \dots + u_m = \0$ is the trivial combination $u_1=\dots=u_m=\0$.
+
+\emph{Proof.}
+For the converse, take two representations of a given $x$ and subtract.
+
+\item
+
+The sum $U + W$ is a direct sum if and only if $U \cap W = \{\0\}$.
+
+\emph{Proof.}
+If sum is direct, for $v \in U \cap W$ we have $v + (-v) = \0$, implying that $v=\0$.
+If $U \cap W = \{\0\}$, solutions to $u+w = \0$, are trivial since $w = -u \in U \cap W$.
+
+%\item
+%
+%The span of a family $\B$ is the smallest subspace containing $\B$.
+%
+%\emph{Proof.}
+%$\myspan \B$ contains $\B$ and is contained in any subspace that contains $\B$.
+
+\item
+
+If $\mydim V < \infty$ and $U$ is a subspace, there is a subspace $W$ such that $V = U \oplus W$.
+
+\emph{Proof.}
+Complete a basis and show uniqueness of $v = u+w$.
+
+\spitem
+
+For a direct sum $U \oplus W$, we have $\mydim(U \oplus W) = \mydim U + \mydim W$.
+
+\emph{Proof.}
+Join any two bases $u_1,\dots,u_k$ for $U$ and $w_1,\dots,w_m$ for $W$. See what linear combinations give $\0$ by first considering $u + w = \0$. Infinite case is trivial.
+
+\spitem
+
+Suppose $\mydim V<\infty$. If $\mydim(U+W) = \mydim U + \mydim W$, then the sum is direct.
+
+\emph{Proof.}
+Assume the general equality below holds for every vector space $V$ and subspaces $U$ and $W$.
+When $\mydim V < \infty$ we can subtract and get $\mydim(U \cap W) = \mydim U + \mydim W - \mydim (U+W) = 0$, so $U \cap W = \{\0\}$ and hence $U+W = U \oplus W$.
+
+\spitem
+For $V$ vector space, $U,W$ subspaces, $\mydim U + \mydim W = \mydim (U+W) + \mydim (U \cap W)$.
+
+\emph{Proof.}
+%It remains to prove the general equality.
+If $\mydim U = \infty$ or $\mydim W = \infty$, we have $\mydim (U+W) = \infty$ and the equality holds. So we can assume that $V$ is finite-dimensional (otherwise instead of $V$ use $\tilde{V}=U+W$ which is finite-dimensional). Let $Z = U \cap W$. Take $\tilde{U}$ and $\tilde{W}$ such that $U=Z \oplus \tilde{U}$ and $W=Z \oplus \tilde{W}$. We will show that $(\tilde{U}\oplus Z)+ \tilde{W}$ is a direct sum, so $\mydim(U+W) = \mydim (\tilde{U} \oplus Z) + \mydim \tilde{W} = \mydim \tilde{U} + \mydim Z + \mydim \tilde{W} = \mydim U + \mydim W - \mydim Z$, proving the desired equality. Suppose $u+z+w=\0$ with $u \in \tilde{U}, z\in Z, w\in \tilde{W}$. Then $w = -z-u \in U$, so $w \in U \cap \tilde{W} \subseteq Z$. But $Z \cap \tilde{W} = \{\0\}$, hence $w = \0$, proving the claim.
+
+%, hence $z+w \in Z$. Since $z+w=(z+w)+\0 \in Z \oplus \tilde{W}$, we have $z = z+w$ and $w=\0$, proving the claim.
+
+\end{itemize}
+
+
+\clearpage
+\section{Linear maps revisited}
+
+Main reference:
+Axler \S3.B, \S3.D
+
+%Let $\F = \C$ or $\R$ be fixed.
+
+\begin{itemize}
+
+\item
+
+A function $T : V \to W $ is called \emph{injective} if $T u = T v$ implies $u = v$.
+
+\item
+
+Let $ T \in \cL(V, W)$. Then $T$ is injective if and only if $ \myker T = \{\0\} $.
+
+\emph{Proof.}
+Use that $Tu = Tv$ if and only if $(u-v) \in \myker T$.
+
+\item
+
+A function $T : V \to W $ is called \emph{surjective} if $\myrange T = W$.
+
+\item
+
+\emph{Rank-Nullity Theorem.}
+For $T\in\cL(V,W)$, $\mydim\myrange T + \mydim \myker T = \mydim V$.
+
+\emph{Proof.}
+Seen in Lecture~\ref{sec:rank}.
+
+\item
+
+If $\mydim W < \mydim V < \infty$, then $T\in\cL(V,W)$ cannot be injective.
+
+\emph{Proof.}
+By Rank-Nullity Theorem, $\mydim \myker T > 0$.
+
+\item
+
+If $\mydim V < \mydim W < \infty$, then $T\in\cL(V,W)$ cannot be surjective.
+
+\emph{Proof.}
+By Rank-Nullity Theorem, $\mydim \myrange T < \mydim W$.
+
+\item
+
+A linear map is invertible if and only if it is injective and surjective.
+
+\emph{Proof.}
+Seen in Lecture~\ref{sec:invertible}.
+Need to check that the inverse is linear.
+
+\spitem
+
+Finite-dimensional spaces are isomorphic iff they have the same dimension.
+
+\emph{Proof.}
+Let $V$ and $W$ be finite-dimensional spaces and let $v_1,\dots,v_n$ be a basis for $V$.
+If there exists an isomorphism $T \in \cL(V,W)$, then $Tv_1,\dots,Tv_n$ is a basis for $W$ and hence $\mydim W = n$.
+Conversely, suppose $\mydim W = n$. Take $w_1,\dots,w_n$ a basis for $W$ and define $T \in \cL(V,W)$ by $Tv_1=w_1,\dots,Tv_n=w_n$. Then $T$ maps a basis to a basis, and hence it is an isomorphism.
+
+\item
+
+For finite-dimensional spaces $V$ and $W$, $\mydim \cL(V,W) = (\mydim V) (\mydim W)$.
+
+\emph{Proof.}
+We will show that the space $\cL(V,W)$ is isomorphic to $\F^{m \times n}$.
+Fix a basis $\A = v_1,\dots,v_n$ for $V$ and $\B = w_1,\dots,w_m$ for $W$.
+Define $R:\cL(V,W) \to \F^{m \times n}$ by $R(T) = [T]_{\B\A}$.
+This $R$ is linear and bijective, so it is an isomorphism.
+
+\item
+
+Suppose $V$ is finite-dimensional and $T \in \cL(V)$.
+Then the following are
+equivalent:
+(a) $T$ is invertible;
+(b) $T$ is injective;
+(c) $T$ is surjective.
+
+\emph{Proof.}
+By the Rank-Nullity Theorem, (c) is equivalent to $\myker T = \{\0\}$, which in turn is equivalent to (b).
+By above proposition, (a) is equivalent to ``(b) and (c)'' and this completes the proof.
+
+\end{itemize}
+
+
+%\end{document}
+
+
+\clearpage
+\section{Invariant spaces and eigenvectors}
+
+Main reference:
+Axler \S5.A, \S5.B
+
+\begin{itemize}
+
+\item
+
+%5.5
+A number $\lambda \in \F$ is called an \emph{eigenvalue of $ T \in \cL(V) $} if $Tv=\lambda v$ for some $ v \ne \0$.
+
+\item
+
+%5.6
+A number $\lambda \in \F$ is an eigenvalue of $T$ if and only if $T - \lambda I$ is not injective.
+
+\emph{Proof.}
+$Tv = \lambda v$ is equivalent to $v \in \myker (T- \lambda I)$.
+
+\item
+
+%5.7
+A vector $v$ is an \emph{eigenvector of $T$} corresponding to $\lambda \in \F$ if $v \ne \0$ and $Tv = \lambda v$.
+
+\item
+
+%5.10
+%Let $V$ be a finite-dimensional vector space and let $T\in\mathcal{L}(V)$ be an operator with distinct eigenvalues $\lambda_1,\dots,\lambda_m$. If $v_1,\dots,v_m$ are eigenvectors respectively associated to $\lambda_1,\dots,\lambda_m$, then $v_1,\dots,v_m$ are linearly independent.
+
+Eigenvectors corresponding to distinct eigenvalues are linearly independent.
+
+\emph{Proof.}
+%As in Lecture~\ref{sec:diagonalization},
+Apply $T - \lambda_m I$ to a null linear combination, and use induction on $m$.
+
+\item
+
+If $V$ is finite-dimensional then $T \in \cL(V)$ has at most $\mydim V$ distinct eigenvalues.
+
+\emph{Proof.}
+A LI family has at most $\mydim V$ vectors.
+
+\item
+
+A subspace $U$ of $V$ is said to be \emph{invariant under $T$} if $Tu\in U$ for any $u\in U$.
+
+Examples:
+$\{\0\}$, $V$, $\myker T$, $\myrange T$, $\myrange T^2$.
+
+%\item
+%
+%If $U$ is invariant under $T$, then the \emph{restriction} $T_{|_U}$ is an operator in $\cL(U)$.
+
+\item
+
+%, and $T^{-m} = (T^{-1})^m$
+We define $T^0 = I$, $T^{m+1}=T^m T$.
+\\
+For $p \in \cP(\F)$ and $T \in \cL(V)$, we define $p(T)=a_n T^n + \dots + a_2 T^2 + a_1 T + a_0 I \in \cL(V)$.
+
+\item
+
+Factoring polynomials: $(pq)(T) = p(T)q(T)$. In particular, $ p(T)q(T) = q(T)p(T) $.
+
+\emph{Proof.}
+Expanding and using the distributive property works for $T$ as it does for $z$.
+
+\item
+
+%5.26
+
+Let $\B = v_1,\dots,v_n$ be a basis for $V$ and $T \in \cL(V)$.
+These are equivalent:
+\\
+(a) $ [T]_\B $ is upper-triangular;
+\\
+(b) $ Tv_j \in \myspan(v_1,\dots,v_j) $ for $j=1,\dots,n$;
+\\
+(c) $ \myspan(v_1,\dots,v_j) $ is invariant under $T$ for $j=1,\dots,n$.
+
+\emph{Proof.}
+(b$ \Rightarrow $c)
+For $v = \alpha_1 v_1 + \cdots + \alpha_j v_j$, $Tv \in \myspan(v_1) + \dots + \myspan(v_1,\dots,v_j)$.
+
+\item
+
+%5.21
+
+If $V$ is complex finite-dimensional, and $T \in \cL(V)$, then $T$ has an eigenvalue.
+
+\emph{Proof without determinant.}
+Since $\mydim \cL(V)=n^2$, the family $I,T,T^2,\dots,T^{n^2}$ is LD.
+Hence there is a linear combination
+$\alpha_0 I + \alpha_1 T + \alpha_2 T^2 + \dots + \alpha_k T^kv = \0$ with $\alpha_k = 1$.
+Now the polynomial $\sum_{j=0}^k \alpha_j z^j$ can be factorized as $(z-\lambda_1)\cdots(z-\lambda_k)$, so $(T-\lambda_1 I)\cdots(T-\lambda_k I)=\0$, and thus one of the factors is not injective.
+
+\item
+
+If $V$ is complex finite-dimensional, then $[T]_\B$ is upper-triangular for some basis $\B$.
+
+%Let $V$ be a \textbf{complex finite-dimensional} vector space and let $T\in\mathcal{L}(V)$. Then,  there exists a basis $\B$ of $V$ such that $[T]_{\B}$ is upper-triangular.
+
+\emph{Proof.}
+We prove by induction on $n$.
+Take $\lambda$ as an eigenvalue.
+Subspace $U = \myrange (T - \lambda I) \ne V$ is invariant because $ T u = (T-\lambda I)u + \lambda u $.
+For the restriction $T_{|_U}$, by induction there is a basis $u_1,\dots,u_k$ for $U$ such that $Tu_j \in \myspan(u_1,\dots,u_j)$ for $j=1,\dots,k$.
+Complete it to a basis $u_1,\dots,u_k,v_{k+1},\dots,v_n$ for $V$.
+Now $Tv_j = \lambda v_j + u$ for $u \in U$, so $Tv_j \in \myspan(u_1,\dots,u_k,v_j)$, hence $[T]_\B$ is upper triangular.
+
+\emph{Counter-example.}
+$T(x,y)=(-y,x)$ on $\R^2$ cannot be made upper-triangular.
+
+\end{itemize}
+
+
+\clearpage
+\section{Decomposition into eigenspaces}
+
+Main reference:
+Axler \S5.C
+
+%\end{document}
+
+Assume the dimension of $V$ is finite, denoted $n$.
+
+%Auxiliar material:
+%Treil \S4, with $A \in \cL(V)$ denoting an operator.
+
+\begin{itemize}
+
+\item
+
+$T\in\mathcal{L}(V)$ is \emph{diagonalizable} if there exists a basis $\B$ of $V$ such that $[T]_{\B}$ is diagonal.
+
+\item
+
+%5.36
+
+The \emph{eigenspace} of $T$ corresponding to $\lambda \in \F$ is defined as
+\[
+E(\lambda,T) = \myker(T - \lambda I).
+\]
+
+\item
+
+%5.38
+
+Let $\lambda_1,\dots,\lambda_m \in \F$ denote distinct eigenvalues of $T$.
+Then
+\[
+E(\lambda_1,T) + \dots + E(\lambda_m,T)
+=
+E(\lambda_1,T) \oplus \dots \oplus E(\lambda_m,T)
+.
+\]
+
+\emph{Proof.}
+Check that $u_1 + \dots + u_m = \0$, $ u_j \in E(\lambda_j,T) $ only has the trivial solution.
+
+%. Each $u_j$ is either $\0$ or a $\lambda_j$-eigenvector. But since eigenvectors are LI, they can only be $\0$.
+
+\item
+
+Let  $\lambda_1,\dots,\lambda_m$ be all distinct eigenvalues of $T$. The following are equivalent: 
+
+\begin{enumerate}
+\item $T$ is diagonalizable;
+\item $V$ has a basis $u_1,\dots,u_n$ consisting of eigenvectors of $T$;
+\item There are invariant one-dimensional $U_1,\dots,U_n$ such that $V = U_1 \oplus \dots \oplus U_n$;
+\item $V= E(\lambda_1,T) \oplus \cdots \oplus E(\lambda_m,T)$;
+\item $\mydim E(\lambda_1,T) + \dots + \mydim E(\lambda_m,T) = n$.
+\end{enumerate}
+
+\emph{Proof.}
+(1 $ \Leftrightarrow $ 2) by definition of $[T]_{\B}$.
+\\
+(2 $ \Rightarrow $ 3)
+Take $U_j = \myspan(u_j)$.
+Then $U_1+\dots+U_n=V$, and the sum is direct.
+\\
+(3 $ \Rightarrow $ 2)
+Take $u_j \in U_j \setminus \{\0\}$ eigenvector.
+$\{u_1,\dots,u_n\}$ spans $V$, so it is a basis.
+\\
+(2 $ \Rightarrow $ 4) If eigenvectors span $V$, we have $E(\lambda_1,T) \oplus \dots \oplus E(\lambda_m,T) = V$.
+\\
+(4 $ \Rightarrow $ 2) Let $\A_j$ be a basis for $E(\lambda_j,T)$ and take $\A = \A_1,\dots,\A_m$. Since $\myspan \A = V$, it contains a basis for $V$, and its elements are all eigenvectors.
+\\
+(4 $ \Leftrightarrow $ 5) Property of direct sum.
+
+\item
+
+If $T$ has $n$ distinct eigenvalues, then $T$ is diagonalizable.
+
+\emph{Proof.}
+There are $n$ linearly independent eigenvectors, which thus form a basis.
+
+\item	
+
+We define the \emph{determinant of an operator} $T \in \cL(V)$ by $\mydet T = \mydet [T]_\B$ for some basis $\B$.
+The \emph{trace} is defined as $\mytrace T = \mytrace [T]_\B$.
+The definitions do not depend on the choice of basis because similar bases have the same trace and determinant.
+
+\item
+
+We define the \emph{characteristic polynomial of an operator} $T \in \cL(V)$ by $p_T(z) = \mydet(T - z I)$.
+A number $\lambda \in \F$ is an eigenvalue if and only if it is a root of $p_T$.
+In this case, we define its \emph{algebraic multiplicity} as its multiplicity as a root of $p_T$, and its geometric multiplicity as $\mydim \myker (T - \lambda I)$.
+
+\item
+
+If $V$ is a complex vector space, then $T \in \cL(V)$ has $n$ eigenvalues counting algebraic multiplicity.
+Moreover, $\mydet T=\prod_{j=1}^n\lambda_j$ and $\mytrace T=\sum_{j=1}^n\lambda_j$.
+
+
+\end{itemize}
+
+\end{document}
+
+

@@ -1,0 +1,733 @@
+\documentclass[12pt]{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{dsfont}
+\usepackage[pass]{geometry}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage[utf8]{inputenc}
+
+\newtheorem{theorem}[equation]{Theorem}
+\newtheorem{assumption}[equation]{Assumption}
+\newtheorem{corollary}[equation]{Corollary}
+\newtheorem{conjecture}[equation]{Conjecture}
+\newtheorem{lemma}[equation]{Lemma}
+\newtheorem{proposition}[equation]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[equation]{Definition}
+
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\E}{\mathbb{E}}
+% \newcommand{\I}{1\!\!\!\;\mathrm{I}}
+\newcommand{\I}{\mathds{1}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\V}{\mathbb{V}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\renewcommand{\geq}{\geqslant}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+\renewcommand{\le}{\leqslant}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{.6em}
+\renewcommand{\baselinestretch}{1.15}
+
+\renewcommand{\t}{t}
+\newcommand{\y}{y}
+\renewcommand{\E}{E}
+\renewcommand{\P}{P}
+\renewcommand{\V}{V}
+
+\usepackage{embedall}
+
+\begin{document}
+\title{Large Deviation Principle \\ for i.i.d\ Random Variables}
+\author{Leonardo T. Rolla}
+\maketitle
+
+{\let\thefootnote\relax
+\footnotetext{\copyright 2017-\the\year\ Leonardo T. Rolla
+\href{http://creativecommons.org/licenses/by-sa/3.0/}
+{\includegraphics[height=1.0em]{by-sa.pdf}}. This typeset file has the source code embedded in it. If you re-use part of this code, you are kindly requested --if possible-- to convey the source code along with or embedded in the typeset file, and to keep this request.}}
+
+\begin{abstract}
+Let $(X_n)_n$ be i.i.d.\ random variables and $S_n= X_1+\dots+X_n$.
+We state and prove Chernoff's Concentration Inequality for $\frac{S_n}{n}$ around $\mu$.
+We state Cramér's Large Deviation Principle for sums of
+\[
+e^{-I(J^\circ) \cdot n + o(n)}
+\le
+\P\left( \tfrac{S_n}{n} \in J \right)
+\le
+e^{-I(J^*) \cdot n + o(n)}
+,
+\quad
+J \text{ interval.}
+\]
+We prove the lower bound assuming for simplicity that the supremum
+\[
+I(a)
+=
+\sup_{\t \in \R} \left[ \big. a\t - \log M(\t) \right]
+\]
+is a maximum.
+We prove the upper bound assuming for simplicity that $X$ has exponential moments.
+\end{abstract}
+
+
+Requirements:
+% \\
+% --
+% Definition of a convex function
+% \\
+% --
+% Definition and basic properties of $\sup$ and $\inf$
+% \\
+% --
+% Jensen's inequality
+\\
+--
+One-sided derivatives of moment generating functions
+\\
+--
+Biasing the distribution of a random variable by an integrable function
+% (for the proof of the lower bound in the LDP)
+\\
+--
+Hölder's inequality (for the accessory remark that $\log M$ is convex)
+
+Notation.
+The term ``$o(b_n)$'' denotes a function $g(n)$ satisfying $\frac{g(n)}{b_n} \to 0$.
+This function depends on $a$, $\delta$, $J$ and on the distribution of $X$.
+Each time it appears, it denotes a different function.
+
+\section{Concentration Inequality}
+
+Let $X$ be a random variable with $\E X=\mu$.
+
+Let $M(\t)=\E e^{\t X}$, which is finite on an interval from $\D_M^- \le 0$ to $\D_M^+ \ge 0$.
+
+Let $X_n$ be i.i.d. and $S_n=X_1 + \dots + X_n$.
+
+The weak law of large number was proved as
+\[
+\P\left( \tfrac{S_n}{n} \ge a \right)
+\le
+\P\left[ (\tfrac{S_n}{n}-\mu)^2 \ge (a-\mu)^2 \right]
+\le
+\tfrac{1}{(a-\mu)^2} \E\left( \tfrac{S_n}{n}-\mu \right)^2
+=
+\tfrac{\V X}{(a-\mu)^{2}} \cdot \frac{1}{n}
+\]
+
+So this means that when $EX^2<\infty$ the probability of $\tfrac{S_n}{n}$ deviating from $\mu$ by a fixed amount $a-\mu$ decays at least as fast as $\frac{1}{n}$.
+In the proof of the LLN by Cantelli we see that when $\E X^4<\infty$ this probability decays at least as fast as $\frac{1}{n^2}$, and in general if $\E X^{2k}<\infty$ it decays at least as fast as $\frac{1}{n^k}$.
+
+We now try to do better using moments of $e^{\t X}$ rather than $X^{2k}$.
+For $\t \ge 0$,
+\begin{multline}
+\nonumber
+\P\left( \tfrac{S_n}{n} \ge a \right)
+\le
+\P\left[ e^{\t S_n} \ge e^{\t a n} \right]
+\le
+\tfrac{1}{e^{\t a n}} \E e^{\t S_n}
+=
+{e^{- \t a n}} M(\t)^n
+=
+{e^{- [a \t -\log M(\t)] n}}
+.
+\end{multline}
+Likewise, for $a < \mu$ and $\t \le 0$,
+\begin{equation}
+\label{eq:decay}
+\P\left( \tfrac{S_n}{n} \le a \right)
+\le
+{e^{- [a \t -\log M(\t)] n}}
+.
+\end{equation}
+
+So if the expression in brackets can be made positive, we will have established that this probability in fact decays at least as fast as exponential.
+
+\begin{theorem}
+[Chernoff's Concentration Inequality]
+\label{thm:chernoff}
+If $\D_M^+>0$, then for any $a > \mu$ there is $\t>0$ such that $[a\t-\log M(\t)]>0$.
+In particular, $\P\left( \tfrac{S_n}{n} \ge a \right)$ decays at least exponentially fast in $n$.
+Analogously for $a < \mu$ if $\D_M^-<0$.
+\end{theorem}
+\begin{proof}
+% [Proof of Theorem~\ref{thm:chernoff}]
+Suppose $\D_M^+>0$ and let $a>\mu$. Then, as right-side derivatives,
+\[
+\frac{\dd}{\dd \t}\left[ \Big. a\t -\log M(\t) \right]_{\big|_{\t=0}}
+=
+a - \frac{M'(0)}{M(0)}
+=
+a-\mu>0
+,
+\]
+so for $\t$ positive and small the above expression is positive.
+
+Similarly, if we suppose that $\D_M^-<0$ and take $a<\mu$, then by taking left-side derivative we see that the term in bracket will be positive for $\t$ negative and small.
+\end{proof}
+
+\section{Large Deviation Principle}
+
+% The estimate in Theorem~\ref{thm:chernoff} is the best possible, in a precise sense.
+
+We start with the fundamental concept of rate function.
+
+\begin{definition}
+[rate function]
+Let $X$ be a random variable.
+We define the function $I$, the \emph{rate function} associated to the distribution of $X$, by
+\[
+I(a) = \sup_{\t \in \R} \left[ \big. a\t - \log M(\t) \right]
+.
+\]
+\end{definition}
+
+We can think of the rate function as an attempt to make the most out of estimate~(\ref{eq:decay}).
+The reason why the function $I$ deserves this name is that,
+once we maximize $[a\t - \log M(\t)]$ over all $\t$,
+inequality~(\ref{eq:decay}) is not ``yet another'' upper bound, but actually the best possible estimate.
+The next theorem makes this claim precise.
+Given $A \subseteq \R$, to describe the ``easiest way'' for $\frac{S_n}{n}$ to be in $A$ we
+denote
+\(
+\displaystyle
+I(A) = \inf_{a\in A} I(a)
+.
+\)
+
+\begin{theorem}
+[Cramér's Large Deviation Principle]
+\label{thm:cramer}
+Let $J$ be an interval.
+Denote by $J^\circ$ and $J^*$ the corresponding open and closed intervals.
+Then
+\begin{align*}
+e^{-I(J^\circ) \cdot n + o(n)}
+\le
+\P\left( \tfrac{S_n}{n} \in J \right)
+\le
+e^{-I(J^*) \cdot n + o(n)}
+% \P\left( \tfrac{S_n}{n} \in J \right) & \ge e^{-I(J^\circ) \cdot n + o(n)}
+% ,
+% \\
+% \P\left( \tfrac{S_n}{n} \in J \right) & \le e^{-I(J^*) \cdot n + o(n)}
+.
+\end{align*}
+In particular, when $I(J^\circ) = I(J^*)$, we have the exact rate of exponential decay for these probabilities:
+\[
+\P\left( \tfrac{S_n}{n} \in J \right) = e^{-I(J) \cdot n + o(n)}
+.
+\]
+\end{theorem}
+
+
+% \section{Rate function}
+
+Before proving the above theorem, let us discuss the relation between $M$ and $I$, and its geometric interpretation.
+
+% , as well as some properties used in the proof.
+
+\begin{proposition}
+\label{prop:convex}
+The functions $I$ and $\log M$ are convex.
+\end{proposition}
+\begin{proof}
+% [Proof of Proposition~\ref{prop:convex}]
+We start with the convexity of $I$.
+Let $0 < \alpha < 1$ and $\beta=1-\alpha$.
+For $a_1$ and $a_2 \in \R$,
+\begin{align*}
+I(\alpha a_1 + \beta a_2)
+& =
+\sup_{\t\in\R}
+\left[ \big. (\alpha a_1 + \beta a_2)\t - (\alpha_1+\alpha_2) M(\t) \right]
+\\
+& =
+\sup_{\t\in\R}
+\left[ \big. \alpha (a_1 \t - M(\t)) + \beta (a_2 \t - M(\t)) \right]
+\\
+& \le
+\sup_{\t\in\R}
+\left[ \big. \alpha (a_1 \t - M(\t)) \right]
++
+\sup_{\t\in\R}
+\left[ \big. \beta (a_2 \t - M(\t)) \right]
+\\
+& =
+\alpha I(a_1)
++
+\beta I(a_2)
+.
+\end{align*}
+We now turn to the convexity of $M$. Let $\t_1$ and $\t_2 \in \R$.
+Using Hölder's inequality we get
+\begin{align*}
+\log M( \alpha \t_1 + \beta \t_2 )
+& =
+\log \E \left[ e^{\alpha \t_1 X} \cdot e^{\beta \t_2 X} \right]
+\\
+& \le
+\log
+\left\{
+\left[ \E \left( e^{\alpha \t_1 X} \right)^{\frac{1}{\alpha}} \right]^\alpha
+\left[ \E \left( e^{\beta  \t_2 X} \right)^{\frac{1}{\beta }} \right]^\beta
+\right\}
+\\
+& =
+\alpha \log \E e^{\t_1 X}
++
+\beta  \log \E e^{\t_2 X}
+\\
+& =
+\alpha \log M(\t_1) + \beta \log M(\t_2 )
+.
+\qedhere
+\end{align*}
+\end{proof}
+
+In case the supremum in the definition of $I(a)$ is attained at $y\in\R$, we have
+\(
+0 = 
+\tfrac{\dd}{\dd y}\left[ \big. a y - \log M(y) \right]
+=
+a - \frac{M'(y)}{M(y)}
+,
+\)
+so
+\(
+a = \tfrac{\dd}{\dd y} \log M(y) = \tfrac{M'(y)}{M(y)},
+\)
+and solving $y$ for $a$ we can sometimes compute
+\[
+I(a) = a \cdot y - \log M(y), \quad y=y(a)
+.
+\]
+{\centering\includegraphics{legendre.pdf}\par}
+
+Let us illustrate this with a few examples.
+
+If $X\sim\mathrm{Poisson}(\lambda)$, we have
+\[
+\log M(t)=\lambda(e^t-1)
+,
+\]
+so
+\[
+a = [\log M(y)]' = \lambda e^y,
+\qquad
+y = \log \tfrac{a}{\lambda}
+,
+\]
+and
+\[
+I(a) = ay - \log M(y) = a \log \tfrac{a}{\lambda} - a + \lambda
+.
+\]
+In fact,
+\[
+I(a) =
+\begin{cases}
+a \log \tfrac{a}{\lambda} - a + \lambda ,& a \geq 0, \\
++\infty & a<0.
+\end{cases}
+\]
+
+If $X\sim\mathcal{N}(\mu,1)$, we have
+\[
+\log M(t)= \frac{t^2}{2} + t\mu
+,
+\]
+so
+\[
+a = [\log M(y)]' = y + \mu
+,
+\qquad
+y = a - \mu
+,
+\]
+and
+\[
+I(a)
+=
+ a(a-\mu) - \left[ \tfrac{(a-\mu)^2}{2} + \mu(a-\mu) \right]
+=
+\frac{(a-\mu)^2}{2}
+, \quad a \in \R
+.
+\]
+
+If $X\sim\mathrm{Exp}(1)$, we have
+\[
+M(t)= \frac{1}{1-t}
+,
+\quad t<1
+,
+\]
+so
+\[
+a = \frac{M'(y)}{M(y)} = \frac{(1-y)^{-2}}{(1-y)^{-1}} = \frac{1}{1-y}
+,
+\qquad
+y = 1 - \frac{1}{a}
+,
+\]
+and
+\[
+I(a)
+=
+ay-\log M(y)
+=
+a(1-\tfrac{1}{a}) \log M(y) = a-1-\log a
+.
+\]
+In fact,
+\[
+I(a) =
+\begin{cases}
+a-1-\log a ,& a > 0, \\
++\infty & a \leq 0.
+\end{cases}
+\]
+
+If $X\sim\mathrm{Bernoulli}(p)$, we have
+\[
+M(t)= p e^t + 1-p
+,
+\]
+so
+\[
+a = \frac{M'(y)}{M(y)} = \frac{pe^y}{pe^y + 1-p}
+,
+\qquad
+y = \log ( \tfrac{a}{p} \cdot \tfrac{1-p}{1-a} )
+,
+\]
+and
+\[
+I(a)
+=
+ay-\log M(y)
+=
+\cdots
+=
+a \log \tfrac{a}{p} + (1-a) \log \tfrac{1-a}{1-p}
+.
+\]
+In fact,
+\[
+I(a) =
+\begin{cases}
+a \log \tfrac{a}{p} + (1-a) \log \tfrac{1-a}{1-p} ,&  0 < a < 1, \\
+\log\tfrac{1}{p} ,& a=1, \\
+\log\tfrac{1}{1-p} ,& a=0, \\
++\infty & a < 0 \text{ or } a>1.
+\end{cases}
+\]
+
+If $X=\mu$ is constant,
+we have
+\[
+\log M(t)= \mu t
+,
+\]
+so
+\[
+a = [\log M(t)]' = \mu
+,
+\qquad
+y \text{ can be any number}
+,
+\]
+and
+\[
+I(a)
+=
+ay-\log M(y)
+=
+0
+.
+\]
+In fact,
+\[
+I(a) =
+\begin{cases}
+0 ,&  a=\mu \\
++\infty & a \ne \mu.
+\end{cases}
+\]
+
+
+\section{Proof of lower bound}
+
+\begin{theorem}
+\label{thm:lowercramer}
+For any $a\in\R$ and $\delta>0$,
+\[
+\displaystyle
+\P\left( \big. \tfrac{S_n}{n} \in [a-\delta,a+\delta] \right)
+\ge
+e^{-I(a)\cdot n + o(n)}
+.
+\]
+\end{theorem}
+The theorem is true as stated, with no assumptions on the distribution of $X$.
+However, we will assume that the supremum in $I(a)$ is attained, that is,
+\[
+I(a) = a \cdot \y - \log M(\y)
+\]
+for some $\y \in ( \D_M^- , \D_M^+)$.
+Dropping this assumption requires complicated technical steps that we cannot go into.
+\begin{proof}
+% [Proof of Theorem~\ref{thm:lowercramer}]
+Since the supremum is attained in the interior of $(\D_M^-,\D_M^+)$, we have
+\[
+0
+=
+\frac{\dd}{\dd \t}\left[ \Big. a\t -\log M(\t) \right]_{\big|_{\t=\y}}
+=
+a - \frac{M'(\y)}{M(\y)}
+,
+\]
+and therefore
+\[
+\frac{\E[Xe^{\y X}]}{\E[e^{\y X}]} = a
+.
+\]
+
+The main observation is that the expression on the left-hand side corresponds to the expectation of a random variable $Y$ which is distributed as the variable $X$ biased by the factor $f(x)=e^{\y x}$, $x\in\R$.
+That is, for a random variable $Y$ whose distribution is given by
+\[
+\P(Y \in B) =
+\tfrac{\E[ \I_{B}(X) e^{\y X}]}{\E[e^{\y X}]} =
+\E\left[ \I_{B}(X) \tfrac{ e^{\y X} }{M(\y)}\right]
+,
+\]
+we have $\E Y=a$.
+So for i.i.d.\ $Y_1,Y_2,\dots$ distributed as this biased version of $X$, the occurrence of $\frac{Y_1+\dots+Y_n}{n} \approx a$ is not a rare event.
+
+The proof then consists in controlling the likelihood ratio of $(X_1,\dots,X_n)$ with respect to $(Y_1,\dots,Y_n$) on a subset of $\R^n$ that is typical for the latter vector, so that such ratio does not get lower than $e^{-I(a)\cdot n - o(n)}$.
+
+Fix an $\varepsilon \in (0,\delta]$, and define the set
+\[
+B^{\varepsilon}_n = \left\{ (z_1,\dots,z_n) : \left| \tfrac{z_1+\dots+z_n}{n} - a \right | \le \varepsilon \right\}
+\subseteq \R^d
+.
+\]
+Then
+\begin{align*}
+\P\left( \tfrac{S_n}{n} \in [a-\varepsilon,a+\varepsilon] \right)
+& =
+\E\left[ \I_{B^{\varepsilon}_n}(X_1,\dots,X_n) \right]
+\\
+& =
+\E\left[ \tfrac{M(\y)^n}{ e^{\y (X_1+\dots+X_n)} } \,
+\I_{B^{\varepsilon}_n}(X_1,\dots,X_n)
+\tfrac{ e^{\y X_1} }{M(\y)} \cdots \tfrac{ e^{\y X_n} }{M(\y)}
+\right]
+\\
+& \ge
+% \cdot
+\E\left[
+\frac{M(\y)^n}{ e^{a \y n + |\y| \varepsilon n} }
+\I_{B^{\varepsilon}_n}(X_1,\dots,X_n)
+\tfrac{ e^{\y X_1} }{M(\y)} \cdots \tfrac{ e^{\y X_n} }{M(\y)}
+\right]
+\\
+& =
+e^{-\left[ a\y - \log M(\y) - |\y|\varepsilon \right] \cdot n }
+\cdot
+\P\left( \big. (Y_1,\dots,Y_n) \in B^{\varepsilon}_n \right)
+\\
+& =
+e^{-\left[ a\y - \log M(\y) - |\y|\varepsilon \right] \cdot n }
+\cdot
+\P\left( \tfrac{Y_1+\dots+Y_n}{n} \in [a-\varepsilon,a+\varepsilon] \right)
+.
+\end{align*}
+The latter probability converges to $1$ by the Law of Large Numbers, thus
+% given $\varepsilon \in (0,\delta]$ we have
+\[
+\P\left( \left| \tfrac{S_n}{n} -a \right| \le \delta \right)
+\ge
+\P\left( \left| \tfrac{S_n}{n} -a \right| \le \varepsilon \right)
+\ge
+e^{-I(a)\cdot n - 2|\y|\varepsilon \cdot n }
+\]
+for large enough $n$.
+Since $\varepsilon \in (0,\delta]$ was arbitrary, this gives
+\[
+\P\left( \left| \tfrac{S_n}{n} -a \right| \le \delta \right)
+\ge
+e^{-I(a)\cdot n + o(n) }
+,
+\]
+completing the proof.
+\end{proof}
+
+\begin{proof}
+[Proof of the lower bound in Theorem~\ref{thm:cramer}]
+Let $\varepsilon>0$.
+Take $a\in J^\circ$ such that $I(a) \le I(J^\circ) + \varepsilon$.
+Take $\delta>0$ such that $[a-\delta,a+\delta] \subseteq J$.
+Then using Theorem~\ref{thm:lowercramer} we get
+\begin{align*}
+\P\left( \tfrac{S_n}{n} \in J \right)
+\ge
+\P\left( \tfrac{S_n}{n} \in [a-\delta,a+\delta] \right)
+\ge
+e^{-I(a)\cdot n + o(n)}
+\ge
+e^{-I(J^\circ) \cdot n -\varepsilon n +  o(n)}
+.
+\end{align*}
+Since $\varepsilon$ is arbitrary,
+\(
+\P\left( \tfrac{S_n}{n} \in J \right)
+\ge
+e^{-I(J^\circ) \cdot n +  o(n)}
+,
+\)
+completing the proof.
+\end{proof}
+
+
+\section{Proof of upper bound}
+
+The upper bound in Theorem~\ref{thm:cramer} is a direct consequence of Theorem~\ref{thm:chernoff}, Jensen's inequality and convexity of $I$.
+
+% Comparatively to the previous section, the proof does not add much more insight than
+% Proving it is a relatively tedious formality that we fulfill 
+
+% The theorem is true as stated, and we could be prove it with no assumptions on the distribution of $X$.
+There are three cases depending on where $M$ is finite.
+The main case is $\D_M^- < 0 < \D_M^+$.
+The trivial case is $\D_M^- = 0 = \D_M^+$, which implies that $I$ is identically $0$ so $\P\left( \tfrac{S_n}{n} \in J \right) \le e^{-I(J) \cdot n}$ always holds.
+The case $\D_M^- < 0 = \D_M^+$ or $\D_M^- = 0 < \D_M^+$ can have interesting behavior, and it has subcases depending on whether $\mu$ is finite.
+
+The proof uses monotonicity properties of the rate function that follow from convexity.
+We consider the main case only.
+Proving the general result would require the study of convexity properties of $I$ for all corner cases.
+
+\begin{proposition}
+\label{prop:ratefunction}
+Suppose that $\D_M^- < 0 < \D_M^+$.
+Then the rate function $I$ is increasing on $[\mu,+\infty)$ and decreasing on $(-\infty,\mu]$.
+Moreover,
+$I(\mu)=0$
+and
+\[
+I(a)=\sup_{\t \ge 0}[a\t - \log M(\t)]
+\text{ for } a \ge \mu
+\]
+\text{ and }
+\[
+I(a)=\sup_{\t \le 0}[a\t - \log M(\t)]
+\text{ for } a \le \mu
+.
+\]
+\end{proposition}
+\begin{proof}
+% [Proof of Proposition~\ref{prop:ratefunction}]
+Taking $\t=0$ we have $[a\t - \log M(\t)] = 0$, so $I(a)\ge 0$ for all $a$.
+Now, by Jensen's inequality, $M(\t)=\E e^{\t X} \ge e^{\E\t X} = e^{\t \mu}$, so
+\[
+\mu \t - \log M(\t) \le 0.
+\]
+This implies that $I(\mu) = 0$.
+It also implies that, for $a>\mu$ and $\t<0$,
+\(
+a \t - \log M(\t) < 0
+,
+\)
+so $I(a)=\sup_{a \ge 0}[a\t - \log M(\t)]$.
+Analogously, for $a<\mu$ we have $I(a)=\sup_{a \le 0}[a\t - \log M(\t)]$.
+
+By Theorem~\ref{thm:chernoff}, $I(y)>0$ for all $y\ne \mu$.
+% This combined with convexity imply that 
+In particular, for any $y>x>\mu$, we have $I(\mu)=0 < I(x) \le \frac{x-\mu}{y-\mu} I(y) < I(y)$, and therefore $I$ is increasing on $[\mu,\infty)$.
+Analogously, if $y<x<\mu$, we have $I(\mu)=0 < I(x) \le \frac{\mu-x}{\mu-y} I(y) < I(y)$, so $I$ is decreasing on $(-\infty,\mu]$.
+\end{proof}
+
+% A full proof of Theorem~\ref{thm:chernoff} will follow from the above observations and general properties of moment generating functions.
+% It is used in the proof of Proposition~\ref{prop:ratefunction}.
+% In the proof we will use Proposition~\ref{prop:ratefunction} and Theorem~\ref{thm:lowercramer} below.
+
+\begin{proof}
+[Proof of the upper bound in Theorem~\ref{thm:cramer}]
+Write $J^*=[c,a] \subseteq \R$.
+If $c \le \mu \le a$, $I(J^*)=0$ and there is nothing to prove.
+So we can assume that $a<\mu$, as the case $c>\mu$ is handled similarly.
+Let $\varepsilon>0$.
+By Proposition~\ref{prop:ratefunction}, we have
+\[
+I(J^*)=I(a)=\sup_{\t \ge 0}[a\t - \log M(\t)]
+,
+\]
+so we can take $\t \ge 0$ such that $[a\t - \log M(\t)]\ge I(J^*)-\varepsilon$.
+Now using estimate~(\ref{eq:decay}) we get
+\begin{align*}
+\P\left( \tfrac{S_n}{n} \in J \right)
+\le
+\P\left( \tfrac{S_n}{n} \le a \right)
+\le
+e^{-I(J^*) \cdot n - \varepsilon n}
+.
+\end{align*}
+Since $\varepsilon$ is arbitrary,
+\(
+\P\left( \tfrac{S_n}{n} \in J \right)
+\le
+e^{-I(J^*) \cdot n + o(n)}
+,
+\)
+completing the proof.
+\end{proof}
+
+\section*{Hölder's inequality}
+
+Let $p\ge 1$, $q\ge 1$ be such that $\frac{1}{p} + \frac{1}{q} = 1$.
+
+\begin{proposition}
+[Young's inequality]
+For $a,b\ge 0$,
+\(
+\displaystyle
+ab \le \frac{a^p}{p} + \frac{b^q}{q}
+\)
+\end{proposition}
+
+\begin{proposition}
+[Hölder's inequality]
+If $X$ and $Y$ have finite $p$- and $q$-moments, respectively, then $XY$ is integrable and
+\(
+E[XY] \leq \|X\|_p \cdot \|Y\|_q
+.
+\)
+\end{proposition}
+
+
+\nocite{Gamarnik13}
+\nocite{OlivieriVares05}
+\nocite{DemboZeitouni10}
+
+\bibliographystyle{leo}
+\bibliography{leo}
+% \bibliography{../../../bazaar/bib/leo}
+
+
+\end{document}
+
+
+

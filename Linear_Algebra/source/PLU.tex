@@ -1,0 +1,589 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts} 
+\usepackage{hyperref}
+\usepackage{framed}
+\usepackage{color}
+\usepackage{amssymb}
+
+\usepackage[a4paper]{geometry}
+
+\usepackage[normalem]{ulem}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+\hypersetup{colorlinks=true,urlcolor=blue,linkcolor=black,citecolor=black}
+
+\hyphenpenalty 6000
+\tolerance 4000
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{remark}{Remark}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem*{ack}{Acknowledgement}
+
+\renewcommand{\epsilon}{\varepsilon}
+
+\newcommand{\abs}[1]{\left\vert #1\right\vert}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\inner}[2]{\langle #1, #2 \rangle}
+\newcommand{\proj}[1]{P_{\!\!{}_{#1}\,}}
+
+\newcommand{\dd}{{\mathrm{d}}}
+\newcommand{\e}{{\mathrm{e}}}
+\newcommand{\re}{{\mathrm{re}}}
+\newcommand{\0}{\mathbf{0}}
+
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\T}{\vec{T}} 
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\PR}{\mathbb{P}}
+\newcommand{\Pb}{\overline{\mathbb{P}}}
+
+\DeclareMathOperator{\mydeg}{\mathsf{deg}}
+\DeclareMathOperator{\myspan}{\mathsf{span}}
+\DeclareMathOperator{\myrange}{\mathsf{range}}
+\DeclareMathOperator{\mynull}{\mathsf{ker}}
+\DeclareMathOperator{\myker}{\mathsf{ker}}
+\DeclareMathOperator{\mydim}{\mathsf{dim}}
+\DeclareMathOperator{\myrank}{\mathsf{rank}}
+\DeclareMathOperator{\mytrace}{\mathsf{trace}}
+\DeclareMathOperator{\mydet}{\mathsf{det}}
+\DeclareMathOperator{\mysgn}{\mathsf{sgn}}
+\DeclareMathOperator{\mydiag}{\mathsf{diag}}
+
+\DeclareMathOperator{\mydot}{\boldsymbol{\cdot}}
+
+\renewcommand{\det}{use mydet}
+
+\newcommand{\va}{\vec{a}}
+\newcommand{\vb}{\vec{b}}
+\newcommand{\vc}{\vec{c}}
+\newcommand{\ve}{\vec{e}}
+\newcommand{\vx}{\vec{x}}
+\newcommand{\vy}{\vec{y}}
+\newcommand{\vr}{\vec{r}}
+\newcommand{\vu}{\vec{u}}
+\newcommand{\vv}{\vec{v}}
+\newcommand{\vw}{\vec{w}}
+
+\pagestyle{empty}
+
+\parindent 0pt
+\parskip .4em
+
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\usepackage{embedall}
+
+
+\begin{document}
+
+\title{PLU Factorization}
+\author{Leonardo T. Rolla}
+\maketitle
+
+{\let\thefootnote\relax
+\footnotetext{\copyright 2019-\the\year\ Leonardo T. Rolla
+\href{http://creativecommons.org/licenses/by-sa/3.0/}
+{\includegraphics[height=1.0em]{by-sa.pdf}}. This typeset file has the source code embedded in it. If you re-use part of this code, you are kindly requested --if possible-- to convey the source code along with or embedded in the typeset file, and to keep this request.}}
+
+%\subsection*{Theory}
+
+LU Factorization is like performing row reduction on an invertible matrix $A$ until it becomes an upper triangular echelon form $U$.
+The difference is that we keep track of the operations in a smart way.
+The operations are encoded in a lower triangular matrix $L$, so that $A=LU$.
+With this factorization, the system $Ax=b$ can later on be solved for any vector $b$.
+
+During the pure row reduction procedure, sometimes row exchange is needed if we have a zero entry on the diagonal.
+Even when the entry is not zero but small, this is still very bad as it will imply adding a very large multiple of this row to the ones below it.
+To minimize the impact of rounding off error, a simple technique is that of \emph{partial pivoting}.
+It consists in always performing a row exchange, taking as pivot the largest candidate in the current column.
+A permutation matrix $P$ will keep track of these row exchanges, resulting in the factorization $PA = LU$.
+To solve $Ax=b$, we permute $b$, solve $Lz=Pb$ for $z$ using forward substitution, then solve $Ux=z$ for $x$ using backward substitution.
+
+To explain the factorization we proceed as follows.
+Start with $P_0 = I, L_0 = I, U_0=A$.
+At all steps, we have \[P_k A = L_k U_k.\]
+Here $P_k$ is always a permutation matrix, $L_k$ is always lower triangular, and $U_k$ will be upper triangular after the last step.
+The next step always consists in applying row replacement $E$ or row exchange $Q$ to $U_k$ towards its row reduction, and compensate accordingly to keep the above equality. At each step, we have an elementary matrix $E$ or $Q$, and apply either
+\[
+\begin{cases}
+P_{k+1} = P_k \\
+L_{k+1} = L_k E^{-1} \\
+U_{k+1} = E U_k
+\end{cases}
+\quad
+\text{or}
+\quad
+\begin{cases}
+P_{k+1} = Q P_k \\
+L_{k+1} = Q L_k Q \\
+U_{k+1} = Q U_k
+\end{cases}
+.
+\]
+Note that $Q^{-1}=Q$.
+Moreover, when the procedure is done in the right order, $Q L_k Q$ swaps two lower rows of $L_k$ without moving the diagonal terms.
+The reader can check this in the example below.
+
+\section*{Worked example}
+
+Start with
+\[
+A=
+\begin{bmatrix}
+  1	& -1	&  1	&  2 \\
+ -2	&  1	&  1	&  1 \\
+  2	& -1	&  2	&  3 \\
+ -4	&  1	&  0	&  2 \\
+\end{bmatrix}
+,
+\]
+so we have the trivial equality
+\[
+\begin{bmatrix}
+  1	&  0	&  0	&  0 \\
+  0	&  1	&  0	&  0 \\
+  0	&  0	&  1	&  0 \\
+  0	&  0	&  0	&  1 \\
+\end{bmatrix}
+A
+=
+\begin{bmatrix}
+  1	&  0	&  0	&  0 \\
+  0	&  1	&  0	&  0 \\
+  0	&  0	&  1	&  0 \\
+  0	&  0	&  0	&  1 \\
+\end{bmatrix}
+\begin{bmatrix}
+  1	& -1	&  1	&  2 \\
+ -2	&  1	&  1	&  1 \\
+  2	& -1	&  2	&  3 \\
+ -4	&  1	&  0	&  2 \\
+\end{bmatrix}
+.
+\]
+
+To have $-4$ as the pivot, we apply the permutation
+\[
+Q = 
+\begin{bmatrix}
+  0	&  0	&  0	&  1 \\
+  0	&  1	&  0	&  0 \\
+  0	&  0	&  1	&  0 \\
+  1	&  0	&  0	&  0 \\
+\end{bmatrix}
+.
+\]
+So we take $P' = Q I$, $L' = Q I Q = I$, $U' = QU$.
+The equality then becomes
+\[
+\begin{bmatrix}
+  0	&  0	&  0	&  1 \\
+  0	&  1	&  0	&  0 \\
+  0	&  0	&  1	&  0 \\
+  1	&  0	&  0	&  0 \\
+\end{bmatrix}
+A
+=
+\begin{bmatrix}
+  1	&  0	&  0	&  0 \\
+  0	&  1	&  0	&  0 \\
+  0	&  0	&  1	&  0 \\
+  0	&  0	&  0	&  1 \\
+\end{bmatrix}
+\begin{bmatrix}
+ -4	&  1	&  0	&  2 \\
+ -2	&  1	&  1	&  1 \\
+  2	& -1	&  2	&  3 \\
+  1	& -1	&  1	&  2 \\
+\end{bmatrix}
+.
+\]
+
+Now apply three row replacements (which we do at once to save space), using
+\[
+E =
+\begin{bmatrix}
+  1	&  0	&  0	&  0 \\
+ -1/2	&  1	&  0	&  0 \\
+  1/2	&  0	&  1	&  0 \\
+  1/4	&  0	&  0	&  1 \\
+\end{bmatrix}
+.
+\]
+By taking $L' = LE^{-1}$ and $U'=EU$, the previous equality becomes
+\[
+\begin{bmatrix}
+  0	&  0	&  0	&  1 \\
+  0	&  1	&  0	&  0 \\
+  0	&  0	&  1	&  0 \\
+  1	&  0	&  0	&  0 \\
+\end{bmatrix}
+A
+=
+\begin{bmatrix}
+  1	&  0	&  0	&  0 \\
+  1/2	&  1	&  0	&  0 \\
+ -1/2	&  0	&  1	&  0 \\
+ -1/4	&  0	&  0	&  1 \\
+\end{bmatrix}
+\begin{bmatrix}
+ -4	&  1	&  0	&  2 \\
+  0	&  1/2	&  1	&  0 \\
+  0	& -1/2	&  2	&  4 \\
+  0	& -3/4	&  1	&  5/2 \\
+\end{bmatrix}
+.
+\]
+
+We now want $-3/4$ as the pivot, so we apply
+\[
+Q =
+\begin{bmatrix}
+  1	&  0	&  0	&  0 \\
+  0	&  0	&  0	&  1 \\
+  0	&  0	&  1	&  0 \\
+  0	&  1	&  0	&  0 \\
+\end{bmatrix}
+.
+\]
+As before, taking $P' = Q P$, $L' = Q L Q$ and $U' = QU$, the equality becomes
+\[
+\begin{bmatrix}
+  0	&  0	&  0	&  1 \\
+  1	&  0	&  0	&  0 \\
+  0	&  0	&  1	&  0 \\
+  0	&  1	&  0	&  0 \\
+\end{bmatrix}
+A
+=
+\begin{bmatrix}
+  1	&  0	&  0	&  0 \\
+ -1/4	&  1	&  0	&  0 \\
+ -1/2	&  0	&  1	&  0 \\
+  1/2	&  0	&  0	&  1 \\
+\end{bmatrix}
+\begin{bmatrix}
+ -4	&  1	&  0	&  2 \\
+  0	& -3/4	&  1	&  5/2 \\
+  0	& -1/2	&  2	&  4 \\
+  0	&  1/2	&  1	&  0 \\
+\end{bmatrix}
+.
+\]
+
+We now do two row replacements at once, using
+\[
+E =
+\begin{bmatrix}
+  1	&  0	&  0	&  0 \\
+  0	&  1	&  0	&  0 \\
+  0	& -2/3	&  1	&  0 \\
+  0	&  2/3	&  0	&  1 \\
+\end{bmatrix}
+.
+\]
+After this operation, taking $L' = LE^{-1}$ and $U'=EU$ the equality becomes:
+\[
+\begin{bmatrix}
+  0	&  0	&  0	&  1 \\
+  1	&  0	&  0	&  0 \\
+  0	&  0	&  1	&  0 \\
+  0	&  1	&  0	&  0 \\
+\end{bmatrix}
+A
+=
+\begin{bmatrix}
+  1	&  0	&  0	&  0 \\
+ -1/4	&  1	&  0	&  0 \\
+ -1/2	&  2/3	&  1	&  0 \\
+  1/2	& -2/3	&  0	&  1 \\
+\end{bmatrix}
+\begin{bmatrix}
+ -4	&  1	&  0	&  2 \\
+  0	& -3/4	&  1	&  5/2 \\
+  0	&  0	&  4/3	&  7/3 \\
+  0	&  0	&  5/3	&  5/3 \\
+\end{bmatrix}
+.
+\]
+
+We now want $5/3$ as the pivot, so we apply
+\[
+Q =
+\begin{bmatrix}
+  1	&  0	&  0	&  0 \\
+  0	&  1	&  0	&  0 \\
+  0	&  0	&  0	&  1 \\
+  0	&  0	&  1	&  0 \\
+\end{bmatrix}
+.
+\]
+
+Again, taking $P' = Q P$, $L' = Q L Q$ and $U' = QU$, the equality becomes
+%Again, permuting the corresponding rows of $P$ and $U$, and permuting the corresponding rows as well as corresponding columns of $L$, we get
+\[
+\begin{bmatrix}
+  0	&  0	&  0	&  1 \\
+  1	&  0	&  0	&  0 \\
+  0	&  1	&  0	&  0 \\
+  0	&  0	&  1	&  0 \\
+\end{bmatrix}
+A
+=
+\begin{bmatrix}
+  1	&  0	&  0	&  0 \\
+ -1/4	&  1	&  0	&  0 \\
+  1/2	& -2/3	&  1	&  0 \\
+ -1/2	&  2/3	&  0	&  1 \\
+\end{bmatrix}
+\begin{bmatrix}
+ -4	&  1	&  0	&  2 \\
+  0	& -3/4	&  1	&  5/2 \\
+  0	&  0	&  5/3	&  5/3 \\
+  0	&  0	&  4/3	&  7/3 \\
+\end{bmatrix}
+.
+\]
+
+The last step is the row replacement given by
+\[
+E =
+\begin{bmatrix}
+  1	&  0	&  0	&  0 \\
+  0	&  1	&  0	&  0 \\
+  0	&  0	&  1	&  0 \\
+  0	&  0	& -4/5	&  1 \\
+\end{bmatrix}
+.
+\]
+This finally yields the factorization
+\[
+\begin{bmatrix}
+  0	&  0	&  0	&  1 \\
+  1	&  0	&  0	&  0 \\
+  0	&  1	&  0	&  0 \\
+  0	&  0	&  1	&  0 \\
+\end{bmatrix}
+A
+=
+\begin{bmatrix}
+  1	&  0	&  0	&  0 \\
+ -1/4	&  1	&  0	&  0 \\
+  1/2	& -2/3	&  1	&  0 \\
+ -1/2	&  2/3	&  4/5	&  1 \\
+\end{bmatrix}
+\begin{bmatrix}
+ -4	&  1	&  0	&  2 \\
+  0	& -3/4	&  1	&  5/2 \\
+  0	&  0	&  5/3	&  5/3 \\
+  0	&  0	&  0	&  1 \\
+\end{bmatrix}
+.
+\]
+
+\section*{Compact representation}
+
+Since the diagonal of $L$ only has $1$, the factorization can be encoded in an $n \times n$ matrix plus a permutation vector:
+
+\[
+\begin{array}{|r|rrr|rrrr|}
+\hline
+  1	& \phantom{-0.000}&\phantom{-0.000}&\phantom{-0.000}&  1.000	& -1.000	&  1.000	&  2.000 \\
+  2	& 		& 		&		& -2.000	&  1.000	&  1.000	&  1.000 \\
+  3	& 		& 		&  		&  2.000	& -1.000	&  2.000	&  3.000 \\
+  4	& 		& 		& 		& -4.000	&  1.000	&  0.000	&  2.000 \\
+\hline
+\end{array}
+\]
+
+\[
+\begin{array}{|r|rrr|rrrr|}
+\hline
+  4	& \phantom{-0.000}&\phantom{-0.000}&\phantom{-0.000}& -4.000	&  1.000	&  0.000	&  2.000 \\
+  2	& 		&  		&		& -2.000	&  1.000	&  1.000	&  1.000 \\
+  3	& 		& 		&  		&  2.000	& -1.000	&  2.000	&  3.000 \\
+  1	& 	 	& 		& 		&  1.000	& -1.000	&  1.000	&  2.000 \\
+\hline
+\end{array}
+\]
+
+\[
+\begin{array}{|r|rrr|rrrr|}
+\hline
+  4	& \phantom{-0.000}&\phantom{-0.000}&\phantom{-0.000}& -4.000	&  1.000	&  0.000	&  2.000 \\
+  2	&  0.500	&  		&		& 		&  0.500	&  1.000	&  1.000 \\
+  3	& -0.500	& 		&  		& 		& -0.500	&  2.000	&  3.000 \\
+  1	& -0.250 	& 		& 		& 		& -0.750	&  1.000	&  2.500 \\
+\hline
+\end{array}
+\]
+
+\[
+\begin{array}{|r|rrr|rrrr|}
+\hline
+  4	& \phantom{-0.000}&\phantom{-0.000}&\phantom{-0.000}& -4.000	&  1.000	&  0.000	&  2.000 \\
+  1	& -0.250	&  		&		& 		& -0.750	&  1.000	&  2.500 \\
+  3	& -0.500	& 		&  		& 		& -0.500	&  2.000	&  3.000 \\
+  2	&  0.500 	& 		& 		& 		&  0.500	&  1.000	&  1.000 \\
+\hline
+\end{array}
+\]
+
+\[
+\begin{array}{|r|rrr|rrrr|}
+\hline
+  4	& \phantom{-0.000}&\phantom{-0.000}&\phantom{-0.000}& -4.000	&  1.000	&  0.000	&  2.000 \\
+  1	& -0.250	&  		&		& 		& -0.750	&  1.000	&  2.500 \\
+  3	& -0.500	&  0.667	&  		& 		& 		&  1.333	&  2.333 \\
+  2	&  0.500 	& -0.667	& 		& 		& 		&  1.667	&  1.667 \\
+\hline
+\end{array}
+\]
+
+\[
+\begin{array}{|r|rrr|rrrr|}
+\hline
+  4	& \phantom{-0.000}&\phantom{-0.000}&\phantom{-0.000}& -4.000	&  1.000	&  0.000	&  2.000 \\
+  1	& -0.250	&  		&		& 		& -0.750	&  1.000	&  2.500 \\
+  2	&  0.500 	& -0.667	& 		& 		& 		&  1.667	&  1.667 \\
+  3	& -0.500	&  0.667	& 		& 		& 		&  1.333	&  2.333 \\
+\hline
+\end{array}
+\]
+
+\[
+\begin{array}{|r|rrr|rrrr|}
+\hline
+  4	& \phantom{-0.000}&\phantom{-0.000}&\phantom{-0.000}& -4.000	&  1.000	&  0.000	&  2.000 \\
+  1	& -0.250	&  		&		& 		& -0.750	&  1.000	&  2.500 \\
+  2	&  0.500 	& -0.667	& 		& 		& 		&  1.667	&  1.667 \\
+  3	& -0.500	&  0.667	&  0.800	& 		& 		&  		&  1.000 \\
+\hline
+\end{array}
+\]
+
+\pagebreak[4]
+
+\section*{Matrix manipulation software}
+
+Below is the output of \emph{Octave} when we ask it for the PLU factorization of $A$:
+
+\begin{verbatim}
+octave:1> A = [ 1 -1 1 2 ; -2 1 1 1 ; 2 -1 2 3 ; -4 1 0 2 ]
+A =
+
+   1  -1   1   2
+  -2   1   1   1
+   2  -1   2   3
+  -4   1   0   2
+
+octave:2> [L, U, P] = lu(A)
+L =
+
+   1.00000   0.00000   0.00000   0.00000
+  -0.25000   1.00000   0.00000   0.00000
+   0.50000  -0.66667   1.00000   0.00000
+  -0.50000   0.66667   0.80000   1.00000
+
+U =
+
+  -4.00000   1.00000   0.00000   2.00000
+   0.00000  -0.75000   1.00000   2.50000
+   0.00000   0.00000   1.66667   1.66667
+   0.00000   0.00000   0.00000   1.00000
+
+P =
+
+   0   0   0   1
+   1   0   0   0
+   0   1   0   0
+   0   0   1   0
+
+octave:3> _
+\end{verbatim}
+
+The computations in the previous pages show that \emph{Octave} got it right indeed ;-)
+
+\pagebreak[4]
+
+\section*{Efficiency of LU factorization}
+
+Finding the LU factorization is as fast as finding $A_\e$ by row reduction, and at least 3 times faster than finding $A^{-1}$.
+Suppose you have found $L$, $U$ and $A^{-1}$, and you want to solve $Ax=b$ for many different vectors $b$.
+Solving $Ax=b$ by $Lz=b$ and $Ux=z$ is at least as fast as computing the product $A^{-1}b$, and the result is more accurate.
+
+If the matrix has many zeros, using LU is much better and faster than using $A^{-1}$.
+
+{\small
+\begin{verbatim}
+octave:23> A
+A =
+
+   2.00000   1.00000   0.00000   0.00000   0.00000   0.00000
+   1.00000   3.00000   1.00000   0.00000   0.00000   0.00000
+   0.00000   1.00000   3.00000   1.00000   0.00000   0.00000
+   0.00000   0.00000   1.00000   3.00000   1.00000   0.00000
+   0.00000   0.00000   0.00000   1.00000   3.00000   1.00000
+   0.00000   0.00000   0.00000   0.00000   1.00000   2.00000
+
+octave:24> [L,U] = lu(A)
+L =
+
+   1.00000   0.00000   0.00000   0.00000   0.00000   0.00000
+   0.50000   1.00000   0.00000   0.00000   0.00000   0.00000
+   0.00000   0.40000   1.00000   0.00000   0.00000   0.00000
+   0.00000   0.00000   0.38462   1.00000   0.00000   0.00000
+   0.00000   0.00000   0.00000   0.38235   1.00000   0.00000
+   0.00000   0.00000   0.00000   0.00000   0.38202   1.00000
+
+U =
+
+   2.00000   1.00000   0.00000   0.00000   0.00000   0.00000
+   0.00000   2.50000   1.00000   0.00000   0.00000   0.00000
+   0.00000   0.00000   2.60000   1.00000   0.00000   0.00000
+   0.00000   0.00000   0.00000   2.61538   1.00000   0.00000
+   0.00000   0.00000   0.00000   0.00000   2.61765   1.00000
+   0.00000   0.00000   0.00000   0.00000   0.00000   1.61798
+
+octave:25> inv(A)
+ans =
+
+   0.61806  -0.23611   0.09028  -0.03472   0.01389  -0.00694
+  -0.23611   0.47222  -0.18056   0.06944  -0.02778   0.01389
+   0.09028  -0.18056   0.45139  -0.17361   0.06944  -0.03472
+  -0.03472   0.06944  -0.17361   0.45139  -0.18056   0.09028
+   0.01389  -0.02778   0.06944  -0.18056   0.47222  -0.23611
+  -0.00694   0.01389  -0.03472   0.09028  -0.23611   0.61806
+
+octave:26> _
+\end{verbatim}
+}
+
+\end{document}
+

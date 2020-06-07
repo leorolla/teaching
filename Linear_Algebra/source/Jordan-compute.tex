@@ -1,0 +1,783 @@
+\documentclass[11pt]{article}
+
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts} 
+\usepackage{hyperref}
+\usepackage{framed}
+\usepackage{color}
+\usepackage{amssymb}
+
+\usepackage[normalem]{ulem}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+\hypersetup{colorlinks=true,urlcolor=blue,linkcolor=black,citecolor=black}
+
+\hyphenpenalty 6000
+\tolerance 4000
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{remark}{Remark}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem*{ack}{Acknowledgement}
+
+\renewcommand{\epsilon}{\varepsilon}
+
+\newcommand{\abs}[1]{\left\vert #1\right\vert}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\inner}[2]{\langle #1, #2 \rangle}
+\newcommand{\proj}[1]{P_{\!\!{}_{#1}}}
+
+\newcommand{\dd}{{\mathrm{d}}}
+\newcommand{\e}{{\mathrm{e}}}
+\newcommand{\re}{{\mathrm{re}}}
+\newcommand{\0}{\mathbf{0}}
+
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\T}{\vec{T}} 
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\PR}{\mathbb{P}}
+\newcommand{\Pb}{\overline{\mathbb{P}}}
+
+\DeclareMathOperator{\mydeg}{\mathsf{deg}}
+\DeclareMathOperator{\myspan}{\mathsf{span}}
+\DeclareMathOperator{\myrange}{\mathsf{range}}
+\DeclareMathOperator{\mynull}{\mathsf{ker}}
+\DeclareMathOperator{\myker}{\mathsf{ker}}
+\DeclareMathOperator{\mydim}{\mathsf{dim}}
+\DeclareMathOperator{\myrank}{\mathsf{rank}}
+\DeclareMathOperator{\mytrace}{\mathsf{trace}}
+\DeclareMathOperator{\mydet}{\mathsf{det}}
+\DeclareMathOperator{\mysgn}{\mathsf{sgn}}
+\DeclareMathOperator{\mydiag}{\mathsf{diag}}
+
+\DeclareMathOperator{\mydot}{\boldsymbol{\cdot}}
+
+
+\renewcommand{\det}{use mydet}
+
+\newcommand{\va}{\vec{a}}
+\newcommand{\vb}{\vec{b}}
+\newcommand{\vc}{\vec{c}}
+\newcommand{\ve}{\vec{e}}
+\newcommand{\vx}{\vec{x}}
+\newcommand{\vy}{\vec{y}}
+\newcommand{\vr}{\vec{r}}
+\newcommand{\vu}{\vec{u}}
+\newcommand{\vv}{\vec{v}}
+\newcommand{\vw}{\vec{w}}
+
+\newcommand{\abba}{{\tiny \begin{bmatrix} a \ {-\!\!\;b} \\ b \ \ \ a \end{bmatrix}}}
+
+\pagestyle{empty}
+
+\parindent 0pt
+\parskip .4em
+
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+
+\usepackage[a4paper]{geometry}
+
+\theoremstyle{definition}
+\newtheorem{example}{Example}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+
+\usepackage{embedall}
+
+
+\begin{document}
+
+
+\section*{Methods to find a Jordan basis}
+
+\begin{center}
+\Large
+\textit{Note: we use $ (a,b,c) $ to denote the column vector $ [ \ a \ b \ c \ ]^T $.}
+\end{center}
+
+{\let\thefootnote\relax
+\footnotetext{\copyright \the\year\ Leonardo T. Rolla
+\href{http://creativecommons.org/licenses/by-sa/3.0/}
+{\includegraphics[height=1.0em]{by-sa.pdf}}. This typeset file has the source code embedded in it. If you re-use part of this code, you are kindly requested --if possible-- to convey the source code along with or embedded in the typeset file, and to keep this request.}}
+
+\subsection*{Quick and Dirty methods}
+
+\begin{itemize}
+%\item
+%Find all the eigenvalues.
+\item
+General method.
+For each eigenvalue $\lambda$:
+\begin{itemize}
+\item
+Find the eigenspace $E(\lambda,T)$ by solving $Tu = \lambda u$.
+\item
+Find a basis $\A$ to the eigenspace $E(\lambda,T)$.
+\item
+For each $v$ in $\A$:
+\begin{itemize}
+\item
+Find one $v'$ which solves $Tv' = \lambda v' + v$, if possible.
+\item
+Find one $v''$ which solves $Tv'' = \lambda v'' + v'$, if possible.
+\item
+Find $v'''$, $v''''$, etc., until the equation has no solutions.
+\end{itemize}
+\end{itemize}
+The result is always an L.I. family, but may not be spanning.
+\item
+Method indicated for the case of a unique $\lambda$:
+\begin{itemize}
+\item
+Pick a $v$ at random on $ G(\lambda,T) $, write $u=v$.
+\item
+Let $u' = Tu - \lambda u$, $u'' = Tu' - \lambda u'$, $u'''= Tu'' - \lambda u''$, etc., until it gives $\0$.
+\item
+If fewer than $n$ vectors have been found, find $v',v'',v''',\dots$ as above.
+\item
+Pick random $v$ outside the span of previous vectors, and repeat the process.
+\end{itemize}
+The result is always a spanning family, but may not be L.I.
+%\item
+%Check that the previous steps:
+%\begin{enumerate}
+%\item
+%produce exactly $n$ vectors;
+%\item
+%the vectors are linearly independent.
+%\end{enumerate}
+%If these conditions are met, the obtained family $\B$ forms a Jordan basis.
+%%\begin{proof}
+%%%For having $n$ L.I.\ vectors, 
+%%$\B$ is a basis, and $[T]_\B$ has the desired form because $Tv' = \lambda v' + v$ etc.
+%%\end{proof}
+%\par
+%If not, \textbf{the method has failed}, and it is better to use the Guaranteed Method.
+\end{itemize}
+
+\subsubsection*{Comments}
+
+%Both methods will typically fail
+%If Jordan blocks of an eigenvalue $ \lambda $ have different sizes, this will typically be the case.
+
+%Typically,
+
+Typically, these methods fail if and only if there is an eigenvalue $ \lambda $ whose Jordan blocks have different sizes.
+Exceptions in both directions are unlikely or impossible.
+
+The first method will fail if the basis $\A$ does not have vectors $v$ that belong to $\myrange (T-\lambda I)^k$ with $k$ as large as possible.
+Then the chain $v,v',v'',\dots$ will not be long enough.
+
+An example is $T(x,y,z)=(x,y+z,z)$, so $ \lambda=1 $ and $\A = \{ (1,1,0), (1,2,0) \}$ for $E(1,T)$.
+The basis $\A$ does not have a vector in $\myrange(T-I)$.
+So the equation $Tv' = v' + v$ has no solutions, and the method falls short of producing 3 vectors.
+
+The second method will fail if the threads
+$ u_1 \mapsto u_1' \mapsto \cdots $,
+$ u_2 \mapsto u_2' \mapsto \cdots $, etc become linearly dependent instead of reaching $ \0 $.
+
+An example is $T(x,y,z)=(x,y+z,z)$ with $ u_1 = (1,2,3) $, $ u_1'=(0,3,0) $, $ u_1''=\0 $ and $ u_2=(1,1,1), u_2'=(0,1,0), u_2''=\0 $, so $ u_2' $ is a multiple of $ u_1' $.
+
+%For simplicity, we apply the multiple eigenvalue case to $T(x,y,z)=(x,y+z,z)$ even though it has a single eigenvalue.
+
+%There are also examples where the method produces $n$ vectors but they are not linearly independent.
+
+\clearpage
+
+\subsection*{Guaranteed method}
+
+\begin{itemize}
+\item
+Find all the eigenvalues.
+\item
+For each eigenvalue $\lambda$:
+\begin{itemize}
+\item
+Let $N = T-\lambda I$.
+\item
+Compute $N^2, N^3, \dots, N^n$.
+\item
+Find the generalized eigenspace $G=G(\lambda,T)$ of solutions $u$ to $N^n u = \0$.
+\item
+Find a temporary basis for $G$.
+\item
+Let $U_0 = G$, $U_n = \{\0\}$ and $\B_n = \emptyset$. Then $\B_n$ is a Jordan basis for $U_n$.
+\item
+For $k=n-1,\dots,1,0$:
+\begin{itemize}
+\item
+Find $U_k = \myrange (N_{|_G})^k$ by applying $N^k$ to the temporary basis of $G$.
+\item
+From the previous step we have a Jordan basis $\B_{k+1}$ to $T_{|_{U_{k+1}}}$
+\\
+given by
+$N^{d_1}v_1,\dots,N^2 v_1, N v_1, v_1, \dots, N^{d_m}v_m,\dots,N^2 v_m, N v_m, v_m$,
+\\
+with the property that $N^{d_j+1} v_j = \0$ for all $j$.
+\item
+For $j=1,\dots,m$, find one $u_j$ such that $Nu_j = v_j$.
+\par
+Let $\tilde{\B}_k = N^{d_1}v_1,\dots,N^2 v_1, N v_1, v_1, u_1 \dots, N^{d_m}v_m,\dots,N^2 v_m, N v_m, v_m, u_m$
+\par
+Then $\tilde{\B}_k$ is a Jordan basis for $T_{|_{\myspan\tilde\B_k}}$.
+\item
+Find $\A_k$ be such that $\tilde{\B}_k \cup \A_k$ is a basis of $U_k$.
+\item
+For each $w \in \A_k$:
+\begin{itemize}
+\item
+Find $x \in \myspan \tilde{\B}_k$ such that $Nx=Nw$.
+\item
+Let $u=w-x$, so $Nu = \0$.
+\end{itemize}
+\item
+Let $\tilde{\A}_k$ be the set of vectors obtained above, so $\# \tilde\A_k = \#\A_k$.
+\item
+Let $\B_k = \tilde{\B}_k, \tilde{\A}_k$.
+Then $\B_k$ is a Jordan basis for $T_{|_{U_k}}$.
+\end{itemize}
+\item
+In the end, $\B_0$ is a Jordan basis for $T_{|_G}$.
+\end{itemize}
+\item
+Recollecting the Jordan bases for each $T_{|_{G(\lambda,T)}}$ produces a Jordan basis for $T$.
+\end{itemize}
+
+
+\subsection*{Comment}
+
+This method is guaranteed because is based on the proof of existence of Jordan bases found in Axler's Linear Algebra Done Right.
+
+In the previous example, $U_1 = \myspan(0,11,0)$.
+We can take $\A_1 = \{(0,-7,0)\}$, then $\tilde{\A_1}=\A_1$ and $\B_1=\A_1$.
+By solving $Nu=(0,-7,0)$ we can take $u=(5,8,-7)$ and $\tilde{\B}_0 = \{(0,-7,0),(5,8,-7)\}$.
+In order to extend $\tilde{\B}_0$ to a basis of $U_0 = \C^3$ we can take $\A_0 = \{(3,-2,7)\}$.
+For $w=(3,-2,7)$, we have $Nw=(0,7,0)$.
+Solving for $Nx = Nw$, the only solution $x \in \myspan(5,8,-7)$ is $x = (-5,-8,7)$, hence $u=w-x=(8,6,0)$ and $\tilde{\A}_0 = \{(8,6,0)\}$.
+Finally, $\B_0 = \tilde{\B}_0 \cup \tilde{\A}_0 = \{ (0,-7,0),(5,8,-7),(8,6,0) \}$ is a Jordan basis.
+
+%\subsubsection*{Example}
+% $T(x,y,z)=(x,y+z,z)$.
+
+
+\clearpage
+
+\section*{Examples}
+
+\begin{example}
+\[
+[T] = A =
+\begin{bmatrix}
+-4 & 9 \\
+-4 & 8
+\end{bmatrix}
+.
+\]
+\\
+\end{example}
+
+First with the Quick and Dirty method.
+\\
+
+Compute eigenvalues: $ \mydet(A-\lambda I)=0 $... get $\lambda=2$.
+
+Pick a random vector: $ u = (5,3) $.
+
+Take $ u' = Au - 2u $.
+Multiplying... $u' = (-3,-2)$.
+
+Quick and Dirty method succeeded!
+
+We already know what the Jordan form is and how to write the basis.
+Let's double-check:
+\[
+Q=
+\begin{bmatrix}
+-3 & 5 \\
+-2 & 3
+\end{bmatrix}
+\
+\Longrightarrow
+\
+Q^{-1}AQ = 
+\begin{bmatrix}
+2 & 1 \\
+0 & 2
+\end{bmatrix}
+.
+\]
+\\
+
+Let's see with the Guaranteed Method.
+\\
+
+Compute eigenvalues: $ \mydet(A-\lambda I)=0 $... get $\lambda=2$.
+
+Take $N=A-2I$.
+Multiplying... $N^2 = \0$, so $G(2,T)=\C^2$, take the canonical basis.
+
+We now compute $U_1$.
+
+Multiplying... $y = Ne_1 = (-6,-4)$ and $y' = Ne_2 = (9,6)$.
+
+Perform row reduction on $[y,y']$... we see that $\B_1=\{y\}$ is a basis for $U_1 = \myrange N$.
+
+We now compute $U_2$.
+
+Multiplying... $Ny = \0$, so $U_2 = \{\0\}$.
+
+We now build the basis from top down:
+
+For $k=2$, $\B_2 = \emptyset$.
+
+For $k = 1$:
+
+$U_1$ is one-dimensional, so take $\B_1 = \{y\}$.
+
+For $k=0$:
+
+Solving $Nx = y$ we get a solution $x=(4,2)$.
+So ${\B_0}=\{y,x\}$.
+
+We already know what the Jordan form is and how to write the basis.
+Let's double-check:
+\[
+Q=
+\begin{bmatrix}
+-6 & 4 \\
+-4 & 2
+\end{bmatrix}
+\
+\Longrightarrow
+\
+Q^{-1}AQ = 
+\begin{bmatrix}
+2 & 1 \\
+0 & 2
+\end{bmatrix}
+.
+\]
+
+
+\clearpage
+
+\begin{example}
+\[
+[T]=
+A=
+\begin{bmatrix}
+-2 & 2 & 1 \\
+-7 & 4 & 2 \\
+5 & 0 & 0
+\end{bmatrix}
+.
+\]
+\\
+\end{example}
+
+First with the Quick and Dirty method.
+\\
+
+Compute eigenvalues: $ \mydet(A-\lambda I)=0 $... get $\lambda=1$ and $0$.
+
+For $\lambda=0$:
+
+Solve $Ax=\0$... get $u=(0,1,-2)$.
+
+Solve $Ax=u$...
+no solutions (echelon form has a pivot at the last column).
+
+For $\lambda=1$:
+
+Solve $Ax=x$... get $ v=(1,-1,5) $.
+
+Solve $Ax=x+v$... get $ v'= (1,2,0) $.
+
+Solve $Ax=x+v'$...
+no solutions (echelon form has a pivot at the last column).
+
+Vectors $v,v' \in G(1,T)$ are L.I.\ because they belong to the same thread $v' \stackrel{N}{\mapsto} v \stackrel{N}{\mapsto} \0$.
+Vectors $u,v,v'$ are L.I.\ because $u$ belongs to $G(0,T)$.
+
+Quick and Dirty method succeeded!
+
+We already know what the Jordan form is and how to write the basis.
+Let's double-check:
+\[
+Q=
+\begin{bmatrix}
+0 & 1 & 1 \\
+1 & -1 & 2 \\
+-2 & 5 & 0
+\end{bmatrix}
+\
+\Longrightarrow
+\
+Q^{-1}AQ = 
+\left[
+\begin{array}{r|rr}
+0 & 0 & 0 \\
+\hline
+0 & 1 & 1 \\
+0 & 0 & 1
+\end{array}
+\right]
+.
+\]
+\\
+\\
+
+Let's see with the Guaranteed Method.
+\\
+
+Compute eigenvalues: $ \mydet(A-\lambda I)=0 $... get $\lambda=1$ and $0$.
+
+For $\lambda=1$:
+
+Take $N=A-I$.
+Multiplying...
+\[
+N^3 =
+\begin{bmatrix}
+0 & 0 & 0 \\
+-10 & 5 & 3 \\
+20 & -10 & -6
+\end{bmatrix}
+\]
+
+Solving $N^3 x = \0$... $U_0 = G(1,T)=\myspan \{y,y'\}$ with $y=(6,0,20)$ and $y'=(5,10,0)$.
+
+We now compute $U_1$.
+
+Multiplying... $Ny = (2,-2,10)$ and $Ny' = (5,-5,25)$.
+
+Doing row reduction on $ [Ny, Ny'] $... we get only one pivot, and it is at the first column.
+
+Hence, $z = (2,-2,10)$ is a basis for $U_1$.
+
+We now compute $U_2$.
+
+Multiplying... $Nz = \0$, so $U_2 = U_3 = \{\0\}$.
+
+We now build the basis from top down:
+
+For $k=3$, $\B_3 = \emptyset$.
+
+For $k=2$, $\B_2 = \emptyset$.
+
+For $k=1$:
+
+We can take $\A_1=\{w\}$ with $w=z$.
+
+No need to multiply since we know $Nw \in U_2 = \{\0\}$, so we take $\B_1=\tilde{\A}_1=\{(2,-2,10)\}$.
+
+For $k=0$:
+
+Solving $Nx=z$... get $v=(2,4,0)$ as solution.
+
+So we take $\tilde{\B}_0 = \{z,v\}$.
+
+Since $\mydim U_0 = 2$, we take $\A_0 = \emptyset$, $\tilde{\A}_0 = \emptyset$, and $\B_0=\{(2,-2,10),(2,4,0)\}$.
+
+For $\lambda=0$:
+
+Take $N=A$.
+Multiplying...
+\[
+N^3
+=
+\begin{bmatrix}
+-8 & 6 & 3 \\
+-1 & 0 & 0 \\
+-25 & 20 & 10
+\end{bmatrix}
+.
+\]
+Solving $N^3 x = \0$... $U_0=G(0,T)=\myspan(x)$ with $x=(0,1,-2)$.
+
+Since $G(0,T)$ is one-dimensional, the guaranteed method will not do much here.
+
+Compute range by multiplying...
+$N x = \0$.
+
+Hence $ U_3 = U_2 = U_1 = \{\0\} $ and $\B_3 = \B_2 = \B_1 = \emptyset$.
+
+So $\tilde{\B_0}=\emptyset$ as a basis for $U_0$ we can take ${\A}_0=\{w\}$ with $w=(0,1,-2)$.
+
+Multiplying... $Nw=\0$, so we take $x=\0$ and $u=w$.
+So $\B_0 = \{(0,1,-2)\}$.
+
+Finished.
+
+We already know what the Jordan form is and how to write the basis.
+Let's double-check:
+\[
+Q=
+\begin{bmatrix}
+2 & 2 & 0 \\
+-2 & 4 & 1 \\
+10 & 0 & -2
+\end{bmatrix}
+\
+\Longrightarrow
+\
+Q^{-1}AQ = 
+\left[
+\begin{array}{rr|r}
+1 & 1 & 0 \\
+0 & 1 & 0 \\
+\hline
+0 & 0 & 0
+\end{array}
+\right]
+.
+\]
+
+
+\clearpage
+
+\begin{example}
+\[
+[T] = A =
+\begin{bmatrix}
+-1 & -1 & 3 \\
+0 & 2 & 0 \\
+-3 & -1 & 5
+\end{bmatrix}
+.
+\]
+\\
+\end{example}
+
+First with the Quick and Dirty method.
+\\
+
+Compute eigenvalues: $ \mydet(A-\lambda I)=0 $... get $\lambda=2$.
+
+Pick a random vector: $ v = (1,5,3) $.
+
+Multiply... $y = Tv - \lambda v = (1,0,1)$.
+
+Multiply... $Ty - \lambda y = \0$.
+
+Solve $Tx = \lambda x + v$...
+no solutions (echelon form has a pivot at the last column).
+
+To pick a vector outside the span, perform row reduction on $[ v, y, I ]_{3 \times 5}$... there are pivots on the first three rows, so we can take $z=(1,0,0)$.
+
+Solve $Tx = \lambda x + z$...
+no solutions (echelon form has a pivot at the last column).
+
+Multiply... $w = Tz - \lambda z = (-3,0,-3)$.
+
+Multiply again... $Tw - \lambda w = \0$.
+
+We got four vectors, so \textbf{the method failed}.
+\\
+
+Let's see with the Guaranteed Method.
+\\
+
+Compute eigenvalues: $ \mydet(A-\lambda I)=0 $... get $\lambda=2$.
+
+Take $N=A-2I$.
+Multiplying... $N^3 = \0$, so $U_0 =\C^3$, take the canonical basis.
+
+We now compute $U_1$.
+
+Multiplying... 
+$y_1 = Ne_1 = (-3,0,-3)$,
+$y_2 = Ne_2 = (-1,0,-1)$,
+$y_3 = Ne_3 = (3,0,3)$.
+
+Performing row reduction on $ [y_1,y_2,y_3] $... we get pivot only at the first column, so $\{y_1\}$ is a basis for $U_1$.
+
+We now compute $U_2$.
+
+$Ny_1 = \0$, so $U_3 = U_2 = \{\0\}$.
+
+We now build the basis from top down:
+
+For $k=3$, $\B_3 = \emptyset$.
+
+For $k=2$, $\B_2 = \emptyset$.
+
+For $k=1$: $\B_1 = \{y_1\}$.
+
+For $k=0$:
+
+Solve $Nx = y_1$... get a solution $z = (2,0,1)$.
+
+Take $\tilde{\B}_0 = \{y_1,z\}$.
+
+Since $\{y_1,z,e_1,e_2,e_3\}$ span $U_0$, we perform row reduction on this $3 \times 5$ matrix... get pivots on columns 1 and 2 (as expected) as well as 4.
+So take $w=e_2$.
+
+Multiplying... $Nw = (-1,0,-1)$.
+
+Solving for $Nx = (-1,0,-1)$ with $x \in \myspan(z)$... we get $x = \frac{1}{3}z$.
+To avoid fractions, we take $u = 3 (w-x) = (-2,3,-1)$.
+
+So $\B_0 = \{y_1,z,u\}$.
+
+We already know what the Jordan form is and how to write the basis.
+Let's double-check:
+\[
+Q=
+\begin{bmatrix}
+-3 & 2 & -2 \\
+0 & 0 & 3 \\
+-3 & 1 & -1
+\end{bmatrix}
+\
+\Longrightarrow
+\
+Q^{-1}AQ = 
+\left[
+\begin{array}{rr|r}
+2 & 1 & 0 \\
+0 & 2 & 0 \\
+\hline
+0 & 0 & 2
+\end{array}
+\right]
+.
+\]
+
+\clearpage
+
+\section*{Simpler method}
+
+Produce some threads by picking vectors at random, then apply the \emph{stretch and reduce} algorithm.
+If necessary, add new threads to get a family that spans $G(\lambda,T)$.
+\\
+
+\hfil
+See our other handout entitled \emph{Finding a Jordan basis for a nilpotent operator}.
+\\
+
+\begin{example}
+Let us revisit the example where Quick and Dirty failed.
+\end{example}
+
+We got 4 vectors.
+They form 2 closed threads $\A_1,\A_2$:
+\[
+(1,5,3) \mapsto (1,0,1) \mapsto \0
+, \ \ \
+(1,0,0) \mapsto (-3,0,-3) \mapsto \0
+.
+\]
+Subtracting $-3 \A_1$ from $\A_2$ gives
+\[
+(1,5,3) \mapsto (1,0,1) \mapsto \0
+, \ \ \
+(4,15,9) \mapsto \0 \mapsto \0
+.
+\]
+
+The threads are closed and the tips are L.I.
+So regardless of how we got here, we found a Jordan basis!
+
+We already know what the Jordan form is and how to write the basis.
+Let's double-check:
+\[
+Q=
+\begin{bmatrix}
+1 & 1 & 4 \\
+0 & 5 & 15 \\
+1 & 3 & 9
+\end{bmatrix}
+\
+\Longrightarrow
+\
+Q^{-1}AQ = 
+\left[
+\begin{array}{rr|r}
+2 & 1 & 0 \\
+0 & 2 & 0 \\
+\hline
+0 & 0 & 2
+\end{array}
+\right]
+.
+\]
+
+\clearpage
+
+\begin{example}
+\[
+[T] =
+A=
+\left[\begin{matrix}1 & 18 & -8 & -2 & -9\\-4 & 1 & 1 & -4 & 1\\-3 & -7 & 5 & -2 & 4\\-2 & -17 & 8 & 1 & 9\\-5 & 7 & -2 & -6 & -1\end{matrix}\right]
+\]
+\end{example}
+
+Eigenvalues are given: 1 and 2.
+
+Start with $\lambda=2$,
+\[
+N=
+\left[\begin{matrix}-1 & 18 & -8 & -2 & -9\\-4 & -1 & 1 & -4 & 1\\-3 & -7 & 3 & -2 & 4\\-2 & -17 & 8 & -1 & 9\\-5 & 7 & -2 & -6 & -3\end{matrix}\right]
+.
+\]
+Solving $N^5 x = \0$... we get $ \{(1,0,0,-1,0),(0,0,1,0,-1)\} $ as a basis $G(2,T)$.
+We take the simple thread $ (1,0,0,-1,0) \mapsto (1,0,-1,-1,1) \mapsto \0 $ and we got a Jordan basis for $T$ restricted to $G(2,T)$.
+
+Now with $\lambda=1$
+\[
+N=
+\left[\begin{matrix}0 & 18 & -8 & -2 & -9\\-4 & 0 & 1 & -4 & 1\\-3 & -7 & 4 & -2 & 4\\-2 & -17 & 8 & 0 & 9\\-5 & 7 & -2 & -6 & -2\end{matrix}\right]
+.
+\]
+Solving $N^5 x = \0$... we get $ \{( 1, 1, 0, 0, 2 ), ( 11, -1, 0, -8, 0 ), ( 3, 7, 16, 0, 0 )\} $ as a basis $G(1,T)$.
+Computing each thread, we get first $( 1, 1, 0, 0, 2 ) \mapsto (0,-2,-2,-1,-2) \mapsto \0 $, and then
+\[
+(11,-1,0,-8,0)
+\mapsto
+(-2,-12,-10,-5,-14)
+\mapsto
+(0,4,4,2,4)
+\mapsto
+\0
+.
+\]
+We can ignore the first thread, and the second thread alone provides a Jordan basis!
+
+We already know what the Jordan form is and how to write the basis.
+Let's double-check:
+\[
+Q=
+\left[\begin{matrix}1 & 1 & 0 & -2 & 11\\0 & 0 & 4 & -12 & -1\\-1 & 0 & 4 & -10 & 0\\-1 & -1 & 2 & -5 & -8\\1 & 0 & 4 & -14 & 0\end{matrix}\right]
+\
+\Longrightarrow
+\
+Q^{-1}AQ = 
+\left[\begin{array}{rr|rrr}2 & 1 & 0 & 0 & 0\\0 & 2 & 0 & 0 & 0\\\hline 0 & 0 & 1 & 1 & 0\\0 & 0 & 0 & 1 & 1\\0 & 0 & 0 & 0 & 1\end{array}\right]
+.
+\]
+
+\end{document}

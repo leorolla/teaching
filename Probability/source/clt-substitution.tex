@@ -1,0 +1,181 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage[hmargin=25mm]{geometry}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage[utf8]{inputenc}
+
+\newtheorem{theorem}[equation]{Theorem}
+\newtheorem{assumption}[equation]{Assumption}
+\newtheorem{corollary}[equation]{Corollary}
+\newtheorem{conjecture}[equation]{Conjecture}
+\newtheorem{lemma}[equation]{Lemma}
+\newtheorem{proposition}[equation]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[equation]{Definition}
+
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\E}{\mathbb{E}}
+% \newcommand{\I}{1\!\!\!\;\mathrm{I}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\V}{\mathbb{V}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\newcommand{\ind}{\perp\mkern-10mu\perp}
+
+\renewcommand{\geq}{\geqslant}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+\renewcommand{\le}{\leqslant}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{.6em}
+\renewcommand{\baselinestretch}{1.15}
+
+\usepackage{embedall}
+
+\begin{document}
+
+\title{Lyapunov's Central Limit Theorem}
+\author{Leonardo T. Rolla}
+\date{June 1, 2017}
+\maketitle
+
+{\let\thefootnote\relax
+\footnotetext{\copyright 2017-\the\year\ Leonardo T. Rolla
+\href{http://creativecommons.org/licenses/by-sa/3.0/}
+{\includegraphics[height=1.0em]{by-sa.pdf}}. This typeset file has the source code embedded in it. If you re-use part of this code, you are kindly requested --if possible-- to convey the source code along with or embedded in the typeset file, and to keep this request.}}
+
+\begin{theorem}
+% [De~Moivre 1730, Laplace 1812]
+Let $(X_n)_n$ be independent with finite third moments such that
+\[
+\frac{\sum_{i=1}^{n} E|X_i-EX_i|^3}{\left( \sum_{i=1}^{n} VX_i \right)^{3/2}} \to 0
+\text{ as }
+n\to \infty
+.
+\]
+Then,
+\[
+E f\left( \frac{S_n-ES_n}{\sqrt{VS_n}} \right) \to \int_\R f(x) \frac{e^{-x^2/2}}{\sqrt{2\pi}} \dd x
+\text{ as }
+n\to \infty
+\]
+for any $f$ such that $f$, $f'$, $f''$ and $f'''$ are bounded.
+\end{theorem}
+
+% Remark.
+It turns out, convergence for all $f$ satisfying these conditions is equivalent to convergence for all bounded continuous $f$, which is equivalent to convergence in distribution.
+
+\section*{Proof}
+
+We can assume $EX_i=0$ without loss of generality.
+Write $\sigma_i = \sqrt{VX_i}$.
+Consider $(Y_n)_n$ independent, and also independent of $(X_n)_n$, with distribution $\mathcal{N}(0,\sigma_i^2)$.
+\\{}
+[We accept without proof existence of such sequence in the same probability space.]
+
+Write
+\[
+W_n
+=
+\frac{Y_1+\dots+Y_n}{\sqrt{VS_n}}
+\sim
+\mathcal{N}(0,1)
+\quad
+\text{ and }
+\quad
+Z_n
+=
+\frac{X_1+\dots+X_n}{\sqrt{VS_n}}
+.
+\]
+Fix $n$, define $Z^0 = W_n$ and, for $i=1,\dots,n$, define
+\[
+V^i = Z^{i-1} - \frac{Y_i}{\sqrt{VS_n}}
+\quad
+\text{ and }
+\quad
+Z^i = V^{i} + \frac{X_i}{\sqrt{VS_n}},
+\]
+so that $Z^n = Z_n$.
+Now,
+\[
+Ef(Z_n) - Ef(W_n)
+=
+Ef(Z^n) - Ef(Z^0)
+=
+\sum_{i=1}^n
+Ef(Z^i)-Ef(Z^{i-1})
+.
+\]
+Using the Taylor expansion of $f$,
+\begin{align*}
+f(Z^i)
+=
+f(V_i+\frac{X_i}{\sqrt{VS_n}})
+& =
+f(V^i) + f'(V^i) \frac{X_i}{\sqrt{VS_n}} + \frac{f''(V_i)}{2}\frac{X_i^2}{{VS_n}} + \frac{f'''(\theta^i)}{6}\frac{X_i^3}{(VS_n)^{3/2}}
+,
+\\
+f(Z^{i-1})
+=
+f(V_i+\frac{Y_i}{\sqrt{VS_n}})
+& =
+f(V^i) + f'(V^i) \frac{Y_i}{\sqrt{VS_n}} + \frac{f''(V_i)}{2}\frac{Y_i^2}{{VS_n}} + \frac{f'''(\tilde\theta^i)}{6}\frac{Y_i^3}{(VS_n)^{3/2}}
+,
+\end{align*}
+where $\theta_i$ and $\tilde\theta_i$ come from the Taylor polynomial and depend on $V_i$, $X_i$ and $Y_i$.
+
+Notice that $EX_i=EY_i$, $EX_i^2=EY_i^2$, $X_i \ind V^i$ and $Y_i \ind V^i$, and recall that $f$ and its first three derivatives are bounded.
+We want to take expectation above and subtract. Since $f$ is bounded, $f(V^i)$ is integrable and this first term cancels out.
+Also, $f'(V^i)$ is integrable and, by independence,
+\[
+E[f'(V^i) X_i] = Ef'(V^i) \cdot EX_i = Ef'(V^i) \cdot EY_i = E[f'(V^i) Y_i],
+\]
+so this term also cancels out, as well as the third one for the same reason.
+Thus,
+\[
+Ef(Z^i) - Ef(Z^{i-1}) = \frac{E[f'''(\theta_i){X_i^3}] - E[f'''(\tilde\theta_i)Y_i^3]}{6({VS_n})^{3/2}}
+,
+\]
+so taking $C=\sup_x |f'''(x)|$ we get
+\begin{align*}
+\left| \big. Ef(Z^i)-Ef(Z^{i-1}) \right|
+& \leq
+\frac{C E|X_i|^3 + CE|Y_i|^3}{6({VS_n})^{3/2}}
+\\
+& =
+C \frac{ E|X_i|^3 + \sigma_i^3 E|\mathcal{N}|^3 }{6({VS_n})^{3/2}}
+\\
+& \leq
+C \frac{ E|X_i|^3 }{({VS_n})^{3/2}}
+,
+\end{align*}
+where in the last inequality we used that $E|\mathcal{N}|^3 = \frac{4}{\sqrt{2\pi}} < 2$ and that
+\[
+\sigma_i = (E|X_i|^2)^{\frac{1}{2}} \leq (E|X_i|^3)^{\frac{1}{3}}
+\]
+by Jensen's inequality.
+Finally, summing over $i$,
+\[
+\left| \big. Ef(Z^i)-Ef(Z^{i-1}) \right|
+\le
+\sum_{i=1}^n
+\left| \big. Ef(Z^i)-Ef(Z^{i-1}) \right|
+\le
+C
+\frac{\sum_{i=1}^{n} E|X_i|^3}{\left( \sum_{i=1}^{n} VX_i \right)^{3/2}} \to 0
+\]
+as
+$n\to \infty$
+by assumption,
+concluding the proof of the theorem.
+
+\end{document}
